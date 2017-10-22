@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+
+  <body>
+
+    <h2>User Delete</h2>
+
+    <form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
+      <span>Are you sure you want to delete user <span th:text="${user.username}"></span>?</span>
+      <br />
+      <a th:href="@{__${user.id}__/changePassword}">
+        <button class="btn btn-default" type="submit">Yes</button>
+      </a>
+      <a th:href="@{/users}">
+        <span class="btn btn-primary">No</span>
+      </a>
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    </form>
+
+  </body>
+</html>

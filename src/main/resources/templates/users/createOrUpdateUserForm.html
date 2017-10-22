@@ -1,31 +1,40 @@
 <html xmlns:th="http://www.thymeleaf.org"
-  th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+      th:replace="~{fragments/layout :: layout (~{::body},'users')}">
 
 <body>
 
-  <h2>User</h2>
-  <form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
-    <div class="form-group has-feedback">
+<h2>User</h2>
+<form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
+  <div class="form-group has-feedback">
+    <input
+        th:replace="~{fragments/inputField :: input ('Username', 'username')}"/>
+    <div th:if="${user['new']}">
       <input
-        th:replace="~{fragments/inputField :: input ('Username', 'username')}" />
-      <input
-        th:replace="~{fragments/passwordField :: input ('Password', 'password')}" />
-      <input
-        th:replace="~{fragments/inputField :: input ('Authority', 'authority')}" />
-      <!--<input-->
-        <!--th:replace="~{fragments/inputField :: input ('City', 'city')}" />-->
-      <!--<input-->
-        <!--th:replace="~{fragments/inputField :: input ('Telephone', 'telephone')}" />-->
-      <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+          th:replace="~{fragments/passwordField :: input ('Password', 'password')}"/>
     </div>
-    <div class="form-group">
-      <div class="col-sm-offset-2 col-sm-10">
-        <button
+
+    <input
+        th:replace="~{fragments/inputField :: input ('Authority', 'authority')}"/>
+    <!--<input-->
+    <!--th:replace="~{fragments/inputField :: input ('City', 'city')}" />-->
+    <!--<input-->
+    <!--th:replace="~{fragments/inputField :: input ('Telephone', 'telephone')}" />-->
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button
           th:with="text=${user['new']} ? 'Add User' : 'Update User'"
           class="btn btn-default" type="submit" th:text="${text}">Add
-          User</button>
-      </div>
+        User
+      </button>
+      <span th:unless="${user['new']}">
+        <a th:href="@{__${user.id}__/changePassword}">
+          <button class="btn btn-default">Change Password</button>
+        </a>
+      </span>
     </div>
-  </form>
+  </div>
+</form>
 </body>
 </html>

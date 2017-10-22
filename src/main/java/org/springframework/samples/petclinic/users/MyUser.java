@@ -3,9 +3,11 @@ package org.springframework.samples.petclinic.users;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.stream.Collectors;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -14,6 +16,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -22,10 +25,8 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 @ToString
 @EqualsAndHashCode
 @Setter
-@Builder
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 public class MyUser implements UserDetails {
 
     @Id
@@ -33,6 +34,7 @@ public class MyUser implements UserDetails {
     private Long id;
 
     @NotNull
+    @Column(unique = true)
     private String username;
 
     @NotNull
@@ -90,6 +92,18 @@ public class MyUser implements UserDetails {
 
     public boolean isNew() {
         return this.id == null;
+    }
+
+    @Builder
+    public MyUser(Long id, String username, String password, boolean isExpired, boolean isLocked,
+        boolean enabled, String authority) {
+        this.id = id;
+        this.username = username;
+        this.isExpired = isExpired;
+        this.isLocked = isLocked;
+        this.enabled = enabled;
+        this.authority = authority;
+        this.setPassword(password);
     }
 
     public void setPassword(String password) {

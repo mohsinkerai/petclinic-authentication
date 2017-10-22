@@ -3,16 +3,20 @@ package org.springframework.samples.petclinic.users;
 import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.samples.petclinic.owner.Owner;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
 @Controller
 @PreAuthorize("hasAuthority('ADMIN')")
+@Slf4j
 public class UserController {
 
     private final UserRepository userRepository;
@@ -50,6 +54,45 @@ public class UserController {
             user.setLocked(false);
             this.userRepository.save(user);
             return "redirect:/users";
+        }
+    }
+
+    @RequestMapping("/user/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        MyUser repositoryUser = userRepository.findOne(id);
+        if (repositoryUser != null) {
+            model.addAttribute("user", repositoryUser);
+            return VIEWS_USERS_CREATE_OR_UPDATE_FORM;
+        } else {
+            throw new RuntimeException("Invalid User ID" + id);
+        }
+    }
+
+    @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
+    public String editSave(@PathVariable("id") Long id, @Valid MyUser user,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return VIEWS_USERS_CREATE_OR_UPDATE_FORM;
+        } else {
+            // TODO: check user.getId == id
+            MyUser repositoryUser = userRepository.findOne(id);
+            if (repositoryUser != null) {
+                log.info("User Received {} and repository user {}", user, repositoryUser);
+                return "redirect:/users";
+            } else {
+                throw new RuntimeException("Invalid User ID" + id);
+            }
+        }
+    }
+
+    @RequestMapping(value = "/user/delete/{id}")
+    public String delete(@PathVariable("id") Long id, Model model) {
+        MyUser repositoryUser = userRepository.findOne(id);
+        if (repositoryUser != null) {
+            model.addAttribute("user", repositoryUser);
+            return "users/userDelete";
+        } else {
+            throw new RuntimeException("Invalid User ID" + id);
         }
     }
 }

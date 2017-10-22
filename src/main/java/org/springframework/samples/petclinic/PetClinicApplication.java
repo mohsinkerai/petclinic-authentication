@@ -56,7 +56,7 @@ public class PetClinicApplication implements CommandLineRunner{
             .isLocked(false)
             .enabled(true)
             .username("foo")
-            .password(new BCryptPasswordEncoder().encode("bar"))
+            .password("bar")
             .build();
 
         MyUser user2 = MyUser.builder()
@@ -65,7 +65,7 @@ public class PetClinicApplication implements CommandLineRunner{
             .isLocked(false)
             .enabled(true)
             .username("admin")
-            .password(new BCryptPasswordEncoder().encode("123"))
+            .password("123")
             .build();
 
         log.info("User 1 is {} and user 2 is {}",user, user2);
