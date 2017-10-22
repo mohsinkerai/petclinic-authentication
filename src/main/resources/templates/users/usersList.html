@@ -1,6 +1,6 @@
 <!DOCTYPE html>
 
-<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'owners')}">
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'users')}">
 
   <body>
 
@@ -19,7 +19,8 @@
           <tr th:each="user : ${selections}">
               <td th:text="${user.id}"/>
               <td th:text="${user.username}"/>
-              <td><span th:each="authority : ${user.authorities}" th:text="${authority.authority}+','"/></td>
+              <td th:text="${user.authority}"/>
+              <!--<td><span th:each="authority : ${user.authority}" th:text="${authority.authority}+','"/></td>-->
               <td th:text="${user.enabled}"/>
           </tr>
         </tbody>

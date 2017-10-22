@@ -65,7 +65,7 @@
           <span>Veterinarians</span>
         </li>
 
-        <li sec:authorize="hasAuthority('ADMIN')" th:replace="::menuItem ('/users','Users','Total Users','user','Users')">
+        <li sec:authorize="hasAuthority('ADMIN')" th:replace="::menuItem ('/users','users','Total Users','user','Users')">
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           <span>Error</span>
         </li>

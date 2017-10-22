@@ -16,8 +16,9 @@ import lombok.Setter;
 import lombok.ToString;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 
-@Entity(name="user")
+@Entity(name = "user")
 @ToString
 @EqualsAndHashCode
 @Setter
@@ -43,17 +44,17 @@ public class MyUser implements UserDetails {
 
     private boolean enabled;
 
-    private String authorities;
+    private String authority;
 
-    public void setAuthorities(String authorities) {
-        Arrays.stream(authorities.split(",")).map(UserAuthority::new)
+    public void setAuthority(String authority) {
+        Arrays.stream(authority.split(",")).map(UserAuthority::new)
             .collect(Collectors.toList());
-        this.authorities = authorities;
+        this.authority = authority;
     }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(authorities.split(",")).map(UserAuthority::new)
+        return Arrays.stream(authority.split(",")).map(UserAuthority::new)
             .collect(Collectors.toList());
     }
 
@@ -85,5 +86,13 @@ public class MyUser implements UserDetails {
     @Override
     public boolean isEnabled() {
         return enabled;
+    }
+
+    public boolean isNew() {
+        return this.id == null;
+    }
+
+    public void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 }

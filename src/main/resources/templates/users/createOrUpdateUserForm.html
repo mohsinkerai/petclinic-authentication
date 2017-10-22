@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org"
+  th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+
+<body>
+
+  <h2>User</h2>
+  <form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
+    <div class="form-group has-feedback">
+      <input
+        th:replace="~{fragments/inputField :: input ('Username', 'username')}" />
+      <input
+        th:replace="~{fragments/passwordField :: input ('Password', 'password')}" />
+      <input
+        th:replace="~{fragments/inputField :: input ('Authority', 'authority')}" />
+      <!--<input-->
+        <!--th:replace="~{fragments/inputField :: input ('City', 'city')}" />-->
+      <!--<input-->
+        <!--th:replace="~{fragments/inputField :: input ('Telephone', 'telephone')}" />-->
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}" />
+    </div>
+    <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button
+          th:with="text=${user['new']} ? 'Add User' : 'Update User'"
+          class="btn btn-default" type="submit" th:text="${text}">Add
+          User</button>
+      </div>
+    </div>
+  </form>
+</body>
+</html>
