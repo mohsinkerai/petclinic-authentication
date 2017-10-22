@@ -29,7 +29,7 @@
   </form>
 
   <br />
-  <a sec:authorize="hasRole('ROLE_ADMIN')" class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
+  <a sec:authorize="hasAuthority('ADMIN')" class="btn btn-default" th:href="@{/owners/new}">Add Owner</a>
 
 </body>
 </html>
