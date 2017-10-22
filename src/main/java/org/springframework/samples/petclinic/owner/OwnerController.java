@@ -21,6 +21,7 @@ import java.util.Map;
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -55,6 +56,7 @@ class OwnerController {
     }
 
     @RequestMapping(value = "/owners/new", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String initCreationForm(Map<String, Object> model) {
         Owner owner = new Owner();
         model.put("owner", owner);
@@ -62,6 +64,7 @@ class OwnerController {
     }
 
     @RequestMapping(value = "/owners/new", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String processCreationForm(@Valid Owner owner, BindingResult result) {
         if (result.hasErrors()) {
             return VIEWS_OWNER_CREATE_OR_UPDATE_FORM;

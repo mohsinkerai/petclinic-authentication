@@ -1,14 +1,29 @@
 package org.springframework.samples.petclinic.system.config;
 
+import javax.sql.DataSource;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.security.SecurityProperties;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.annotation.Order;
+import org.springframework.samples.petclinic.users.UserService;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
-import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.util.matcher.AntPathRequestMatcher;
 
 @Configuration
+@EnableGlobalMethodSecurity(prePostEnabled = true)
+@Order(SecurityProperties.ACCESS_OVERRIDE_ORDER)
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
+
+    private final UserService userService;
+
+    @Autowired
+    public WebSecurityConfig(UserService userService) {
+        this.userService = userService;
+    }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
@@ -16,6 +31,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .authorizeRequests()
             .antMatchers( "/webjars/**", "/resources/**", "**/*.css", "**/*.js").permitAll()
             .antMatchers("/").permitAll()
+//            .antMatchers("/owners/new").hasRole("ADMIN")
             .anyRequest().authenticated()
             .and()
             .formLogin()
@@ -30,14 +46,15 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth
-            .inMemoryAuthentication()
-            .withUser("foo")
-            .password("bar")
-            .roles("USER")
-            .and()
-            .withUser("admin")
-            .password("123")
-            .roles("ADMIN", "USER");
+//        auth
+//            .inMemoryAuthentication()
+//            .withUser("foo")
+//            .password("bar")
+//            .roles("USER")
+//            .and()
+//            .withUser("admin")
+//            .password("123")
+//            .roles("ADMIN", "USER");
+        auth.userDetailsService(userService).passwordEncoder(new BCryptPasswordEncoder());
     }
 }

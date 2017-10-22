@@ -16,20 +16,61 @@
 
 package org.springframework.samples.petclinic;
 
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.samples.petclinic.users.MyUser;
+import org.springframework.samples.petclinic.users.UserRepository;
+import org.springframework.security.crypto.bcrypt.BCrypt;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.stereotype.Component;
 
 /**
  * PetClinic Spring Boot Application.
- * 
+ *
  * @author Dave Syer
  *
  */
 @SpringBootApplication
-public class PetClinicApplication {
+@Component
+@Slf4j
+public class PetClinicApplication implements CommandLineRunner{
+
+    private final UserRepository userRepository;
+
+    public PetClinicApplication(
+        UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
 
     public static void main(String[] args) throws Exception {
         SpringApplication.run(PetClinicApplication.class, args);
     }
 
+    @Override
+    public void run(String... strings) throws Exception {
+        MyUser user = MyUser.builder()
+            .authorities("ADMIN,USER")
+            .isExpired(false)
+            .isLocked(false)
+            .enabled(true)
+            .username("foo")
+            .password(new BCryptPasswordEncoder().encode("bar"))
+            .build();
+
+        MyUser user2 = MyUser.builder()
+            .authorities("ADMIN,USER")
+            .isExpired(false)
+            .isLocked(false)
+            .enabled(true)
+            .username("admin")
+            .password(new BCryptPasswordEncoder().encode("123"))
+            .build();
+
+        log.info("User 1 is {} and user 2 is {}",user, user2);
+
+        userRepository.save(user);
+        userRepository.save(user2);
+    }
 }
