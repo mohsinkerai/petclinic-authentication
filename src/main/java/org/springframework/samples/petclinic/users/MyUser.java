@@ -7,19 +7,17 @@ import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
-import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.util.Assert;
 
 @Entity(name = "user")
 @ToString
@@ -107,6 +105,8 @@ public class MyUser implements UserDetails {
     }
 
     public void setPassword(String password) {
+        Assert.hasLength(password, "password should has some length");
+        Assert.isTrue(password.length() > 5, "Minimum password length should be 6");
         this.password = new BCryptPasswordEncoder().encode(password);
     }
 }

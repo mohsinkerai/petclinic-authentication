@@ -30,9 +30,10 @@
       </button>
       <span th:unless="${user['new']}">
         <a th:href="@{__${user.id}__/changePassword}">
-          <button class="btn btn-default">Change Password</button>
+          <span class="btn btn-default">Change Password</span>
         </a>
       </span>
+      <a th:href="@{/users}"><span class="btn btn-primary">Cancel</span></a>
     </div>
   </div>
 </form>

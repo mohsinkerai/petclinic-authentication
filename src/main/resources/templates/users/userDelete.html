@@ -4,14 +4,12 @@
 
   <body>
 
-    <h2>User Delete</h2>
+    <h2>User Disable</h2>
 
     <form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
-      <span>Are you sure you want to delete user <span th:text="${user.username}"></span>?</span>
+      <span>Are you sure you want to disable user <span th:text="${user.username}"></span>?</span>
       <br />
-      <a th:href="@{__${user.id}__/changePassword}">
-        <button class="btn btn-default" type="submit">Yes</button>
-      </a>
+      <button class="btn btn-default" type="submit">Yes</button>
       <a th:href="@{/users}">
         <span class="btn btn-primary">No</span>
       </a>

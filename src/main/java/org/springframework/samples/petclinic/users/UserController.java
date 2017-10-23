@@ -37,14 +37,14 @@ public class UserController {
         return "users/usersList";
     }
 
-    @RequestMapping(value = "/users/new", method = RequestMethod.GET)
+    @RequestMapping(value = "/user/new", method = RequestMethod.GET)
     public String initCreationForm(Map<String, Object> model) {
         MyUser user = new MyUser();
         model.put("user", user);
         return VIEWS_USERS_CREATE_OR_UPDATE_FORM;
     }
 
-    @RequestMapping(value = "/users/new", method = RequestMethod.POST)
+    @RequestMapping(value = "/user/new", method = RequestMethod.POST)
     public String processCreationForm(@Valid MyUser user, BindingResult result) {
         if (result.hasErrors()) {
             return VIEWS_USERS_CREATE_OR_UPDATE_FORM;
@@ -85,12 +85,48 @@ public class UserController {
         }
     }
 
-    @RequestMapping(value = "/user/delete/{id}")
+    @RequestMapping(value = "/user/disable/{id}")
     public String delete(@PathVariable("id") Long id, Model model) {
         MyUser repositoryUser = userRepository.findOne(id);
         if (repositoryUser != null) {
             model.addAttribute("user", repositoryUser);
             return "users/userDelete";
+        } else {
+            throw new RuntimeException("Invalid User ID" + id);
+        }
+    }
+
+    @RequestMapping(value = "/user/disable/{id}", method = RequestMethod.POST)
+    public String disable(@PathVariable("id") Long id) {
+        MyUser repositoryUser = userRepository.findOne(id);
+        if (repositoryUser != null) {
+            repositoryUser.setEnabled(false);
+            userRepository.save(repositoryUser);
+            return "redirect:/users";
+        } else {
+            throw new RuntimeException("Invalid User ID" + id);
+        }
+    }
+
+    @RequestMapping(value = "/user/edit/{id}/changePassword")
+    public String changePassword(@PathVariable("id") Long id, Model model) {
+        UserPassword userPassword = new UserPassword();
+        model.addAttribute("user", userPassword);
+        return "users/userChangePassword";
+    }
+
+    @RequestMapping(value = "/user/edit/{id}/changePassword", method = RequestMethod.POST)
+    public String changePassword(@PathVariable("id") Long id, @Valid UserPassword user,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "users/userChangePassword";
+        }
+        // TODO: check user.getId == id
+        MyUser repositoryUser = userRepository.findOne(id);
+        if (repositoryUser != null) {
+            repositoryUser.setPassword(user.getPassword());
+            userRepository.save(repositoryUser);
+            return "redirect:/users";
         } else {
             throw new RuntimeException("Invalid User ID" + id);
         }
