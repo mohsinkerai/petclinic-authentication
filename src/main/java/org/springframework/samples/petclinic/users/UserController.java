@@ -5,6 +5,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -27,13 +29,10 @@ public class UserController {
     }
 
     @RequestMapping(value = "/users", method = RequestMethod.GET)
-    public String processFindForm(MyUser owner, BindingResult result, Map<String, Object> model) {
-
-        // find owners by last name
-        List<MyUser> users = userRepository.findAll();
-        // multiple owners found
-        model.put("selections", users);
-        return "users/usersList";
+    public String processFindForm(Pageable pageable, Map<String, Object> model) {
+        Page<MyUser> users = userRepository.findAll(pageable);
+        model.put("page", users);
+        return "users/list";
     }
 
     @RequestMapping(value = "/user/new", method = RequestMethod.GET)
