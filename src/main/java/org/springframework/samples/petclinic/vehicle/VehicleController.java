@@ -5,7 +5,8 @@ import java.util.Map;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.samples.petclinic.owner.Owner;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -31,9 +32,11 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
-    public String processFindForm(Owner owner, BindingResult result, Map<String, Object> model) {
-        List<Vehicle> vehicles = vehicleRepository.findAll();
-        model.put("vehicles", vehicles);
+    public String processFindForm(Pageable pageable,
+        Map<String, Object> model) {
+//        List<Vehicle> vehicles = vehicleRepository.findByEnabledTrue();
+        Page<Vehicle> vehicles = vehicleRepository.findAll(pageable);
+        model.put("page", vehicles);
         return VIEW_ALL;
     }
 
