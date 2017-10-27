@@ -70,6 +70,11 @@
           <span>Error</span>
         </li>
 
+        <li sec:authorize="isAuthenticated()" th:replace="::menuItem ('/vehicle','vehicle','Vehicles','road','Vehicle')">
+          <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
+          <span>Error</span>
+        </li>
+
         <li sec:authorize="isAuthenticated()" th:replace="::menuItem ('/logout','error','Logout User','off','Logout')">
           <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
           <span>Error</span>

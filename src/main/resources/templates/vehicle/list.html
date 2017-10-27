@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'vehicle')}">
+
+<body>
+
+<h2>Vehicles</h2>
+<a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
+<table id="vehicles" class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 50px;">Id</th>
+    <th style="width: 150px;">Car Registration Number</th>
+    <th style="width: 200px;">Driver Name</th>
+    <th style="width: 120px">Car Model</th>
+    <th style="width: 120px">Car Color</th>
+    <th style="width: 120px" sec:authorize="hasAuthority('ADMIN')">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="vehicle : ${vehicles}">
+    <td th:text="${vehicle.id}"/>
+    <td th:text="${vehicle.carRegistrationNumber}"/>
+    <td th:text="${vehicle.driverName}"/>
+    <td th:text="${vehicle.carModel}"/>
+    <td th:text="${vehicle.carColor}"/>
+    <td sec:authorize="hasAuthority('ADMIN')">
+      <a th:href="@{/vehicle/edit/__${vehicle.id}__}"><span
+          class="glyphicon glyphicon-pencil"></span></a>
+      <a th:href="@{/vehicle/delete/__${vehicle.id}__}"><span
+          class="glyphicon glyphicon-remove"></span></a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+</body>
+</html>
+

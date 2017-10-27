@@ -1,0 +1,31 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'users')}">
+
+<body>
+
+<h2>User</h2>
+<form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
+  <div class="form-group has-feedback">
+    <input
+        th:replace="~{fragments/inputField :: input ('Car Registration Number', 'carRegistrationNumber')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Name', 'driverName')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Car Model', 'carModel')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Car Color', 'carColor')}"/>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button
+          th:with="text=${vehicle['new']} ? 'Add Vehicle' : 'Update Vehicle'"
+          class="btn btn-default" type="submit" th:text="${text}">Add
+        Vehicle
+      </button>
+      <a th:href="@{/vehicle}"><span class="btn btn-primary">Cancel</span></a>
+    </div>
+  </div>
+</form>
+</body>
+</html>

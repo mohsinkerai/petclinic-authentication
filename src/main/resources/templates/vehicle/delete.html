@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org" th:replace="~{fragments/layout :: layout (~{::body},'vehicle')}">
+
+  <body>
+
+    <h2>User Disable</h2>
+
+    <form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
+      <span>Are you sure you want to delete vehicle? <span th:text="${user.carRegistrationNumber}"></span>?</span>
+      <br />
+      <button class="btn btn-default" type="submit">Yes</button>
+      <a th:href="@{/vehicle}">
+        <span class="btn btn-primary">No</span>
+      </a>
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    </form>
+
+  </body>
+</html>
