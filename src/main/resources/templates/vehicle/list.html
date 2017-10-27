@@ -11,10 +11,10 @@
   <thead>
   <tr>
     <th style="width: 50px;">Id</th>
-    <th style="width: 150px;">Car Registration Number</th>
-    <th style="width: 200px;">Driver Name</th>
-    <th style="width: 120px">Car Model</th>
-    <th style="width: 120px">Car Color</th>
+    <th style="width: 150px;"><a class="sorted" sd:pagination-sort="carRegistrationNumber">Car Registration Number</a></th>
+    <th style="width: 200px;"><a class="sorted" sd:pagination-sort="driverName">Driver Name</a></th>
+    <th style="width: 120px"><a class="sorted" sd:pagination-sort="carModel">Car Model</a></th>
+    <th style="width: 120px"><a class="sorted" sd:pagination-sort="carColor">Car Color</a></th>
     <th style="width: 120px" sec:authorize="hasAuthority('ADMIN')">Actions</th>
   </tr>
   </thead>
