@@ -55,16 +55,6 @@
           <span>Login</span>
         </li>
 
-        <li sec:authorize="isAuthenticated()" th:replace="::menuItem ('/owners/find','owners','find owners','search','Find owners')">
-          <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-          <span>Find owners</span>
-        </li>
-
-        <li sec:authorize="isAuthenticated()" th:replace="::menuItem ('/vets.html','vets','veterinarians','th-list','Veterinarians')">
-          <span class="glyphicon glyphicon-th-list" aria-hidden="true"></span>
-          <span>Veterinarians</span>
-        </li>
-
         <li sec:authorize="hasAuthority('ADMIN')" th:replace="::menuItem ('/users','users','Total Users','user','Users')">
           <span class="glyphicon glyphicon-user" aria-hidden="true"></span>
           <span>Error</span>
