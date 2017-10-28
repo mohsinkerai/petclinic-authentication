@@ -66,9 +66,9 @@ public class VehicleController {
 
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        Vehicle repositoryUser = vehicleRepository.findOne(id);
-        if (repositoryUser != null) {
-            model.addAttribute("vehicle", repositoryUser);
+        Vehicle vehicle = vehicleRepository.findOne(id);
+        if (vehicle != null && vehicle.isEnabled()) {
+            model.addAttribute("vehicle", vehicle);
             return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
         } else {
             throw new RuntimeException("Invalid User ID" + id);
@@ -82,16 +82,13 @@ public class VehicleController {
             return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
         } else {
             Vehicle vehicleRepository = this.vehicleRepository.findOne(id);
-            vehicleRepository.setCarColor(vehicle.getCarColor());
-            vehicleRepository.setCarModel(vehicle.getCarModel());
-            vehicleRepository.setCarRegistrationNumber(vehicle.getCarRegistrationNumber());
-            vehicleRepository.setDriverName(vehicle.getDriverName());
-            this.vehicleRepository.save(vehicleRepository);
-            if (vehicleRepository != null) {
-                return "redirect:/" + BASE_URL;
-            } else {
+            if (vehicleRepository == null) {
                 throw new RuntimeException("Invalid User ID" + id);
             }
+            vehicle.setId(vehicleRepository.getId());
+            vehicle.setEnabled(vehicleRepository.isEnabled());
+            this.vehicleRepository.save(vehicle);
+            return "redirect:/" + BASE_URL;
         }
     }
 
@@ -99,7 +96,7 @@ public class VehicleController {
     public String delete(@PathVariable("id") Long id, Model model) {
         Vehicle repositoryUser = vehicleRepository.findOne(id);
         if (repositoryUser != null) {
-            model.addAttribute("user", repositoryUser);
+            model.addAttribute("vehicle", repositoryUser);
             return VIEWS_VEHICLE_DELETE_CONFIRMATION;
         } else {
             throw new RuntimeException("Invalid User ID" + id);

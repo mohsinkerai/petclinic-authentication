@@ -18,6 +18,7 @@ package org.springframework.samples.petclinic;
 
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
+import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -39,6 +40,8 @@ public class PetClinicApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
+
+    private RandomStringGenerator stringGenerator = new RandomStringGenerator.Builder().withinRange('a','z').build();
 
     public PetClinicApplication(
         UserRepository userRepository,
@@ -76,10 +79,17 @@ public class PetClinicApplication implements CommandLineRunner {
         userRepository.save(user);
         userRepository.save(user2);
 
-        String[] types = new String[]{
-            "Toyota Corolla GLI",
-            "Suzuki Mehran",
-            "Toyota Hilux"
+        String[] make = new String[]{
+            "Suzuki",
+            "Toyota",
+            "Honda"
+        };
+
+        String[] model = new String[]{
+            "Corolla 2008",
+            "Alto 2007",
+            "Mehran 1991",
+            "Accord 2017"
         };
 
         String[] colors = new String[]{
@@ -89,19 +99,24 @@ public class PetClinicApplication implements CommandLineRunner {
             "Grey"
         };
 
-        String[] names = new String[]{
-            "Naveed Tejani",
-            "Alishah Sayani",
-            "Zeeshan Damani",
-            "Mohsin Kerai"
+        String[][] names = new String[][]{
+            {"Naveed", "", "Tejani"},
+            {"Alishah", "Jaffer", "Sayani"},
+            {"Zeeshan", "Moiz", "Damani"},
+            {"Mohsin", "Mansoor", "Kerai"}
         };
 
         for (int i = 0; i < 41; i++) {
             Vehicle vehicle = new Vehicle();
-            vehicle.setCarModel(types[RandomUtils.nextInt(0, types.length)]);
-            vehicle.setDriverName(names[RandomUtils.nextInt(0, names.length)]);
-            vehicle.setCarRegistrationNumber("ABC-" + RandomUtils.nextInt(100, 999));
-            vehicle.setCarColor(colors[RandomUtils.nextInt(0, colors.length)]);
+            vehicle.setMake(make[RandomUtils.nextInt(0, make.length)]);
+            vehicle.setModel(model[RandomUtils.nextInt(0, model.length)]);
+            vehicle.setColor(colors[RandomUtils.nextInt(0, colors.length)]);
+            int nameIndex = RandomUtils.nextInt(0, names.length);
+            vehicle.setFirstname(names[nameIndex][0]);
+            vehicle.setFathername(names[nameIndex][1]);
+            vehicle.setSurname(names[nameIndex][2]);
+            vehicle.setCnic(stringGenerator.generate(10));
+            vehicle.setRegistration("APM-" + RandomUtils.nextInt(100, 999));
             vehicle.setEnabled(true);
             vehicleRepository.save(vehicle);
         }
