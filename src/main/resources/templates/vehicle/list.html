@@ -6,12 +6,20 @@
 <body>
 
 <h2>Vehicles</h2>
-<a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
+<span class="pull-right">
+  <form th:object="${query}" class="form-horizontal" id="Search" method="get">
+    <input
+        th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>
+    <button class="btn btn-default" type="submit">Submit</button>
+  </form>
+  <a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
+</Span>
 <table id="vehicles" class="table table-striped">
   <thead>
   <tr>
     <th style="width: 50px;">Id</th>
-    <th style="width: 150px;"><a class="sorted" sd:pagination-sort="carRegistrationNumber">Car Registration Number</a></th>
+    <th style="width: 150px;"><a class="sorted" sd:pagination-sort="carRegistrationNumber">Car
+      Registration Number</a></th>
     <th style="width: 200px;"><a class="sorted" sd:pagination-sort="driverName">Driver Name</a></th>
     <th style="width: 120px"><a class="sorted" sd:pagination-sort="carModel">Car Model</a></th>
     <th style="width: 120px"><a class="sorted" sd:pagination-sort="carColor">Car Color</a></th>

@@ -102,6 +102,7 @@ public class PetClinicApplication implements CommandLineRunner {
             vehicle.setDriverName(names[RandomUtils.nextInt(0, names.length)]);
             vehicle.setCarRegistrationNumber("ABC-" + RandomUtils.nextInt(100, 999));
             vehicle.setCarColor(colors[RandomUtils.nextInt(0, colors.length)]);
+            vehicle.setEnabled(true);
             vehicleRepository.save(vehicle);
         }
     }

@@ -1,12 +1,12 @@
 package org.springframework.samples.petclinic.vehicle;
 
-import java.util.List;
 import java.util.Map;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
+import org.springframework.samples.petclinic.model.SearchDTO;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -33,9 +33,15 @@ public class VehicleController {
 
     @RequestMapping(value = "", method = RequestMethod.GET)
     public String processFindForm(Pageable pageable,
-        Map<String, Object> model) {
-//        List<Vehicle> vehicles = vehicleRepository.findByEnabledTrue();
-        Page<Vehicle> vehicles = vehicleRepository.findAll(pageable);
+        Map<String, Object> model, SearchDTO searchDTO) {
+        Page<Vehicle> vehicles;
+        if (searchDTO.getQuery() == null) {
+            vehicles = vehicleRepository.findByEnabledTrue(pageable);
+            searchDTO = new SearchDTO();
+        } else {
+            vehicles = vehicleRepository.findByEnabledTrue(pageable);
+        }
+        model.put("query", searchDTO);
         model.put("page", vehicles);
         return VIEW_ALL;
     }
