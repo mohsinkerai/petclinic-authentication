@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.users;
+package com.system.demo.users;
 
 import java.util.Arrays;
 import java.util.Collection;

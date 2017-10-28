@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.users;
+package com.system.demo.users;
 
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;

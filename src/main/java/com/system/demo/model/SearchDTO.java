@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.model;
+package com.system.demo.model;
 
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;

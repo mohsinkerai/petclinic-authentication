@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.vehicle;
+package com.system.demo.vehicle;
 
 public enum VehicleType {
     CAR("Car"),
@@ -12,5 +12,9 @@ public enum VehicleType {
 
     VehicleType(String displayName) {
         this.displayName = displayName;
+    }
+
+    public String getDisplayName() {
+        return this.displayName;
     }
 }

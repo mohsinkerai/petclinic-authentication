@@ -1,7 +1,9 @@
-package org.springframework.samples.petclinic.vehicle;
+package com.system.demo.vehicle;
 
 import java.io.Serializable;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -60,7 +62,7 @@ public class Vehicle implements Serializable {
     private String registration;
     private String color;
 
-    // Should be Enum
+    @Enumerated(EnumType.STRING)
     private VehicleType category;
 
     private boolean enabled;

@@ -46,8 +46,16 @@
         th:replace="~{fragments/inputField :: input ('Vehicle Registration', 'registration')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Vehicle Color', 'color')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Vehicle Category', 'category')}"/>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Vehicle Category</label>
+      <div class="col-sm-10">
+        <select class="col-sm-12 form-control" th:field="*{category}">
+          <option th:each="cat : ${T(com.system.demo.vehicle.VehicleType).values()}"
+                  th:value="${cat}"
+                  th:text="${cat.getDisplayName()}"></option>
+        </select>
+      </div>
+    </div>
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
   </div>
   <div class="form-group">

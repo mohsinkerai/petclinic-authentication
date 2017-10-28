@@ -14,18 +14,19 @@
  * limitations under the License.
  */
 
-package org.springframework.samples.petclinic;
+package com.system.demo;
 
+import com.system.demo.users.UserRepository;
+import com.system.demo.vehicle.VehicleType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.samples.petclinic.users.MyUser;
-import org.springframework.samples.petclinic.users.UserRepository;
-import org.springframework.samples.petclinic.vehicle.Vehicle;
-import org.springframework.samples.petclinic.vehicle.VehicleRepository;
+import com.system.demo.users.MyUser;
+import com.system.demo.vehicle.Vehicle;
+import com.system.demo.vehicle.VehicleRepository;
 import org.springframework.stereotype.Component;
 
 /**
@@ -118,6 +119,7 @@ public class PetClinicApplication implements CommandLineRunner {
             vehicle.setCnic(stringGenerator.generate(10));
             vehicle.setRegistration("APM-" + RandomUtils.nextInt(100, 999));
             vehicle.setEnabled(true);
+            vehicle.setCategory(VehicleType.FOURX4);
             vehicleRepository.save(vehicle);
         }
     }

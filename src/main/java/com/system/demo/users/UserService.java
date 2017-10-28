@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.users;
+package com.system.demo.users;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;

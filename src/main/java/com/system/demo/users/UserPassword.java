@@ -1,4 +1,4 @@
-package org.springframework.samples.petclinic.users;
+package com.system.demo.users;
 
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
