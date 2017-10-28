@@ -61,7 +61,7 @@ public class Vehicle implements Serializable {
     private String color;
 
     // Should be Enum
-    private String category;
+    private VehicleType category;
 
     private boolean enabled;
 
