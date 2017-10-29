@@ -16,6 +16,22 @@ public class VehicleService {
     }
 
     public Page<Vehicle> search(String query, Pageable pageable) {
+        return vehicleRepository.findByFirstnameContainingIgnoreCase(query, pageable);
+    }
+
+    public Page<Vehicle> findAll(Pageable pageable) {
         return vehicleRepository.findByEnabledTrue(pageable);
+    }
+
+    public Vehicle findOne(long key) {
+        return vehicleRepository.findOne(key);
+    }
+
+    public Vehicle createNew() {
+        return new Vehicle();
+    }
+
+    public Vehicle save(Vehicle vehicle) {
+        return vehicleRepository.save(vehicle);
     }
 }

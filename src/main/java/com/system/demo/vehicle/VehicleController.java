@@ -21,14 +21,16 @@ public class VehicleController {
 
     public static final String BASE_URL = "vehicle";
 
-    private final VehicleRepository vehicleRepository;
+    private final VehicleService vehicleService;
+
     private static final String VIEW_ALL = "vehicle/list";
     private static final String VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM = "vehicle/createOrUpdateVehicleForm";
     private static final String VIEWS_VEHICLE_DELETE_CONFIRMATION = "vehicle/delete";
 
     @Autowired
-    public VehicleController(VehicleRepository vehicleRepository) {
-        this.vehicleRepository = vehicleRepository;
+    public VehicleController(
+        VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -36,11 +38,10 @@ public class VehicleController {
         Map<String, Object> model, SearchDTO searchDTO) {
         Page<Vehicle> vehicles;
         if (searchDTO.getQuery() == null) {
-            vehicles = vehicleRepository.findByEnabledTrue(pageable);
+            vehicles = vehicleService.findAll(pageable);
             searchDTO = new SearchDTO();
         } else {
-            vehicles = vehicleRepository
-                .findByFirstnameContainingIgnoreCase(searchDTO.getQuery(), pageable);
+            vehicles = vehicleService.search(searchDTO.getQuery(), pageable);
         }
         model.put("query", searchDTO);
         model.put("page", vehicles);
@@ -49,7 +50,7 @@ public class VehicleController {
 
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initCreationForm(Map<String, Object> model) {
-        Vehicle vehicle = new Vehicle();
+        Vehicle vehicle = vehicleService.createNew();
         model.put("vehicle", vehicle);
         return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
     }
@@ -60,14 +61,14 @@ public class VehicleController {
             return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
         } else {
             vehicle.setEnabled(true);
-            this.vehicleRepository.save(vehicle);
+            vehicleService.save(vehicle);
             return "redirect:/" + BASE_URL;
         }
     }
 
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
-        Vehicle vehicle = vehicleRepository.findOne(id);
+        Vehicle vehicle = vehicleService.findOne(id);
         if (vehicle != null && vehicle.isEnabled()) {
             model.addAttribute("vehicle", vehicle);
             return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
@@ -82,20 +83,20 @@ public class VehicleController {
         if (bindingResult.hasErrors()) {
             return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
         } else {
-            Vehicle vehicleRepository = this.vehicleRepository.findOne(id);
+            Vehicle vehicleRepository = vehicleService.findOne(id);
             if (vehicleRepository == null) {
                 throw new RuntimeException("Invalid User ID" + id);
             }
             vehicle.setId(vehicleRepository.getId());
             vehicle.setEnabled(vehicleRepository.isEnabled());
-            this.vehicleRepository.save(vehicle);
+            vehicleService.save(vehicle);
             return "redirect:/" + BASE_URL;
         }
     }
 
     @RequestMapping(value = "/delete/{id}")
     public String delete(@PathVariable("id") Long id, Model model) {
-        Vehicle repositoryUser = vehicleRepository.findOne(id);
+        Vehicle repositoryUser = vehicleService.findOne(id);
         if (repositoryUser != null) {
             model.addAttribute("vehicle", repositoryUser);
             return VIEWS_VEHICLE_DELETE_CONFIRMATION;
@@ -106,10 +107,10 @@ public class VehicleController {
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
     public String disable(@PathVariable("id") Long id) {
-        Vehicle repositoryUser = vehicleRepository.findOne(id);
-        if (repositoryUser != null) {
-            repositoryUser.setEnabled(false);
-            vehicleRepository.save(repositoryUser);
+        Vehicle vehicle = vehicleService.findOne(id);
+        if (vehicle != null) {
+            vehicle.setEnabled(false);
+            vehicleService.save(vehicle);
             return "redirect:/" + BASE_URL;
         } else {
             throw new RuntimeException("Invalid User ID" + id);
