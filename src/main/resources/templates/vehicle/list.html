@@ -6,13 +6,15 @@
 <body>
 
 <h2>Vehicles</h2>
-<span class="pull-right">
+<span class="row">
   <form th:object="${query}" class="form-horizontal" id="Search" method="get">
-    <input
-        th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>
+    <div class="col-sm-8 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>
+    </div>
     <button class="btn btn-default" type="submit">Submit</button>
+    <a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
   </form>
-  <a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
 </Span>
 <table id="vehicles" class="table table-striped">
   <thead>
