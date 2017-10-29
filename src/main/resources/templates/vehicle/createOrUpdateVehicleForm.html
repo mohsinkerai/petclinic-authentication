@@ -21,6 +21,10 @@
     <input
         th:replace="~{fragments/inputField :: input ('Owner License', 'license')}"/>
     <input
+        th:replace="~{fragments/dateField :: input ('Owner License Issue Date', 'licenseIssue')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Owner License Expiry Date', 'licenseExpiry')}"/>
+    <input
         th:replace="~{fragments/inputField :: input ('Driver First Name', 'driverFirstname')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Driver Father Name', 'driverFathername')}"/>
@@ -36,6 +40,10 @@
         th:replace="~{fragments/inputField :: input ('Driver Cell Phone', 'driverCellPhone')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Driver License', 'driverLicense')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Driver License Issue Date', 'driverLicenseIssue')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Driver License Expiry Date', 'driverLicenseExpiry')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('How Long Driver Associate with Owner', 'driverWithOwner')}"/>
     <input

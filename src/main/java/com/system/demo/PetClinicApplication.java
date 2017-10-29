@@ -58,7 +58,7 @@ public class PetClinicApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         MyUser user = MyUser.builder()
-            .authority("ADMIN,REGISTRAR")
+            .authority("ADMIN,REGISTRAR,AUTHORIZER,CARDISSUER")
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
@@ -67,7 +67,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .build();
 
         MyUser user2 = MyUser.builder()
-            .authority("ADMIN,REGISTRAR")
+            .authority("ADMIN,REGISTRAR,AUTHORIZER,CARDISSUER")
             .isExpired(false)
             .isLocked(false)
             .enabled(true)

@@ -1,6 +1,7 @@
 package com.system.demo.vehicle;
 
 import java.io.Serializable;
+import java.util.Date;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -12,6 +13,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
+import org.springframework.format.annotation.DateTimeFormat;
 
 @Entity(name = "vehicle")
 @ToString
@@ -38,9 +40,11 @@ public class Vehicle implements Serializable {
     private String cellPhone;
 
     private String license;
-    // Checkout Thymeleaf Date (Java8 Probably)
-//    private String licenseIssue;
-//    private String licenseExpiry;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date licenseIssue;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date licenseExpiry;
 
     // Enable Boolean After Thymleaf Support
 //    private boolean driverDrives;
@@ -53,8 +57,11 @@ public class Vehicle implements Serializable {
     private String driverCellPhone;
     private String driverLicense;
     // Checkout DATE
-//    private String driverLicenseIssue;
-//    private String driverLicenseExpiry;
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date driverLicenseIssue;
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    private Date driverLicenseExpiry;
     private String driverWithOwner;
 
     private String make;
