@@ -20,11 +20,11 @@
   <thead>
   <tr>
     <th style="width: 50px;">Id</th>
-    <th style="width: 120px"><a class="sorted" sd:pagination-sort="make">Vehicle Details</a></th>
-    <th style="width: 200px;">Owner Name</a></th>
+    <th style="width: 200px"><a class="sorted" sd:pagination-sort="make">Vehicle Details</a></th>
+    <th style="width: 250px;">Owner Name</a></th>
     <th style="width: 120px"><a class="sorted" sd:pagination-sort="cellPhone">Owner Contact</a></th>
-    <th style="width: 200px;">Owner CNIC</a></th>
-    <th style="width: 120px" sec:authorize="hasAuthority('ADMIN')">Actions</th>
+    <th style="width: 120px;">Owner CNIC</a></th>
+    <th style="width: 50px">Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -34,7 +34,7 @@
     <td th:text="${vehicle.firstname + ' ' + vehicle.fathername + ' ' + vehicle.surname}"/>
     <td th:text="${vehicle.cellPhone}"/>
     <td th:text="${vehicle.cnic}"/>
-    <td sec:authorize="hasAuthority('ADMIN')">
+    <td>
       <a th:href="@{/vehicle/edit/__${vehicle.id}__}"><span
           class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/vehicle/delete/__${vehicle.id}__}"><span

@@ -58,7 +58,7 @@ public class PetClinicApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         MyUser user = MyUser.builder()
-            .authority("ADMIN")
+            .authority("ADMIN,REGISTRAR")
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
@@ -67,7 +67,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .build();
 
         MyUser user2 = MyUser.builder()
-            .authority("ADMIN,USER")
+            .authority("ADMIN,REGISTRAR")
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
@@ -75,10 +75,20 @@ public class PetClinicApplication implements CommandLineRunner {
             .password("123123")
             .build();
 
+        MyUser user3 = MyUser.builder()
+            .authority("REGISTRAR")
+            .isExpired(false)
+            .isLocked(false)
+            .enabled(true)
+            .username("registrar")
+            .password("registrar")
+            .build();
+
         log.info("User 1 is {} and user 2 is {}", user, user2);
 
         userRepository.save(user);
         userRepository.save(user2);
+        userRepository.save(user3);
 
         String[] make = new String[]{
             "Suzuki",
