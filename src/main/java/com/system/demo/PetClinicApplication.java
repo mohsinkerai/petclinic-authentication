@@ -27,6 +27,7 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 import com.system.demo.users.MyUser;
 import com.system.demo.vehicle.Vehicle;
 import com.system.demo.vehicle.VehicleRepository;
+import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
 /**
@@ -37,6 +38,7 @@ import org.springframework.stereotype.Component;
 @SpringBootApplication
 @Component
 @Slf4j
+@EnableAsync
 public class PetClinicApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;

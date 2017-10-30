@@ -13,17 +13,20 @@
           th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>
     </div>
     <button class="btn btn-default" type="submit">Submit</button>
+    <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
   </form>
 </Span>
-<table id="vehicles" class="table table-striped">
+<table id="volunteers" class="table table-striped">
   <thead>
   <tr>
     <th style="width: 50px;">Id</th>
     <th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>
-    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer Name</a></th>
+    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
+      Name</a></th>
     <th style="width: 120px;">Juridsdiction</a></th>
-    <th style="width: 50px">Local Council</th>
-    <th style="width: 50px">Jamatkhana</th>
+    <th style="width: 100px">Local Council</th>
+    <th style="width: 100px">Jamatkhana</th>
+    <th style="width: 50px">Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -35,8 +38,8 @@
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.jamatKhanna}"/>
     <td>
-      <a th:href="@{/vehicle/delete/__${vehicle.id}__}"><span
-          class="glyphicon glyphicon-remove"></span></a>
+      <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
+          class="glyphicon glyphicon-remove danger"></span></a>
     </td>
   </tr>
   </tbody>

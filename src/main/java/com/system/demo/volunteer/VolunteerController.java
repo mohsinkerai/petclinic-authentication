@@ -1,9 +1,13 @@
 package com.system.demo.volunteer;
 
+import com.system.demo.bulk.volunteer.StorageService;
+import com.system.demo.bulk.volunteer.event.FileUploadEvent;
 import com.system.demo.model.SearchDTO;
+import java.nio.file.Path;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -23,15 +27,21 @@ public class VolunteerController {
 
     public static final String BASE_URL = "volunteer";
 
+    private final ApplicationEventPublisher applicationEventPublisher;
     private final VolunteerService volunteerService;
+    private final StorageService storageService;
 
     private static final String VIEW_ALL = "volunteer/list";
     private static final String VIEWS_VEHICLE_DELETE_CONFIRMATION = "volunteer/delete";
 
     @Autowired
     public VolunteerController(
-        VolunteerService volunteerService) {
+        ApplicationEventPublisher applicationEventPublisher,
+        VolunteerService volunteerService,
+        StorageService storageService) {
+        this.applicationEventPublisher = applicationEventPublisher;
         this.volunteerService = volunteerService;
+        this.storageService = storageService;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -107,6 +117,9 @@ public class VolunteerController {
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public String fileSave(@RequestParam("file") MultipartFile file) {
         log.info("Received file {}", file);
+        Path targetPath = storageService.store(file);
+        FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath);
+        applicationEventPublisher.publishEvent(fileUploadEvent);
         return "redirect:/volunteer";
     }
 }

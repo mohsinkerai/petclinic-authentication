@@ -35,7 +35,8 @@ public class BatchConfiguration {
        // reader.setResource(resourceLoader.getResource(path));
         DelimitedLineTokenizer delimitedLineTokenizer = new DelimitedLineTokenizer();
         // Creating an item reader which will read csv file
-        Resource resource = resourceLoader.getResource(path);
+        Resource resource = resourceLoader.getResource("file:"+path);
+
         DefaultLineMapper<Volunteer> defaultLineMapper = new DefaultLineMapper<>();
         defaultLineMapper.setLineTokenizer(delimitedLineTokenizer);
 //        defaultLineMapper.setFieldSetMapper(new BeanWrapperFieldSetMapper<Volunteer>(){{
