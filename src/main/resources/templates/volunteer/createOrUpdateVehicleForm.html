@@ -1,0 +1,81 @@
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'vehicle')}">
+
+<body>
+
+<h2>Vehicle Registration Form</h2>
+<form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
+  <div class="form-group has-feedback">
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner First Name', 'firstname')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner Father Name', 'fathername')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner Surname', 'surname')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner CNIC', 'cnic')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner Home Phone', 'homePhone')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner Cell Phone', 'cellPhone')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Owner License', 'license')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Owner License Issue Date', 'licenseIssue')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Owner License Expiry Date', 'licenseExpiry')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver First Name', 'driverFirstname')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Father Name', 'driverFathername')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Surname', 'driverSurname')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Address', 'driverAddress')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver CNIC', 'driverCnic')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Home Phone', 'driverHomePhone')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver Cell Phone', 'driverCellPhone')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Driver License', 'driverLicense')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Driver License Issue Date', 'driverLicenseIssue')}"/>
+    <input
+        th:replace="~{fragments/dateField :: input ('Driver License Expiry Date', 'driverLicenseExpiry')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('How Long Driver Associate with Owner', 'driverWithOwner')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Vehicle Make', 'make')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Vehicle Model', 'model')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Vehicle Registration', 'registration')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Vehicle Color', 'color')}"/>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Vehicle Category</label>
+      <div class="col-sm-10">
+        <select class="col-sm-12 form-control" th:field="*{category}">
+          <option th:each="cat : ${T(com.system.demo.vehicle.VehicleType).values()}"
+                  th:value="${cat}"
+                  th:text="${cat.getDisplayName()}"></option>
+        </select>
+      </div>
+    </div>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  </div>
+  <div class="form-group">
+    <div class="col-sm-offset-2 col-sm-10">
+      <button
+          th:with="text=${vehicle['new']} ? 'Add Vehicle' : 'Update Vehicle'"
+          class="btn btn-default" type="submit" th:text="${text}">Add
+        Vehicle
+      </button>
+      <a th:href="@{/vehicle}"><span class="btn btn-primary">Cancel</span></a>
+    </div>
+  </div>
+</form>
+</body>
+</html>
