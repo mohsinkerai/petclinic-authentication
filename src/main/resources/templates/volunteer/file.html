@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'volunteer')}">
+
+<body>
+
+<h2>Volunteers File Upload</h2>
+<span class="row">
+  <form class="form-horizontal" id="File Upload" method="POST"
+        enctype="multipart/form-data">
+    <div class="col-sm-8 row">
+      <input
+          th:replace="~{fragments/fileField :: input ('File to Upload', 'file')}"/>
+    </div>
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <button class="btn btn-default" type="submit">Upload</button>
+  </form>
+</Span>
+<!--<span class="row">-->
+<!--<form th:object="${query}" class="form-horizontal" id="Search" method="get">-->
+<!--<div class="col-sm-8 row">-->
+<!--<input-->
+<!--th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>-->
+<!--</div>-->
+<!--<button class="btn btn-default" type="submit">Submit</button>-->
+<!--</form>-->
+<!--</Span>-->
+<!--<table id="vehicles" class="table table-striped">-->
+<!--<thead>-->
+<!--<tr>-->
+<!--<th style="width: 50px;">Id</th>-->
+<!--<th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>-->
+<!--<th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer Name</a></th>-->
+<!--<th style="width: 120px;">Juridsdiction</a></th>-->
+<!--<th style="width: 50px">Local Council</th>-->
+<!--<th style="width: 50px">Jamatkhana</th>-->
+<!--</tr>-->
+<!--</thead>-->
+<!--<tbody>-->
+<!--<tr th:each="volunteer : ${page}">-->
+<!--<td th:text="${volunteer.id}"/>-->
+<!--<td th:text="${volunteer.formId}"/>-->
+<!--<td th:text="${volunteer.volunteerName}"/>-->
+<!--<td th:text="${volunteer.jurisdiction}"/>-->
+<!--<td th:text="${volunteer.localCouncil}"/>-->
+<!--<td th:text="${volunteer.jamatKhanna}"/>-->
+<!--<td>-->
+<!--<a th:href="@{/vehicle/delete/__${vehicle.id}__}"><span-->
+<!--class="glyphicon glyphicon-remove"></span></a>-->
+<!--</td>-->
+<!--</tr>-->
+<!--</tbody>-->
+<!--</table>-->
+
+<!--<div class="row">-->
+<!--<div class="col-sm-6">-->
+<!--<nav class="pull-right">-->
+<!--<ul class="pagination" sd:pagination="full">-->
+<!--&lt;!&ndash; Pagination created by SpringDataDialect, this content is just for mockup &ndash;&gt;-->
+<!--<li class="disabled"><a href="#" aria-label="Previous"><span-->
+<!--aria-hidden="true">&laquo;</span></a></li>-->
+<!--<li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>-->
+<!--</ul>-->
+<!--</nav>-->
+<!--</div>-->
+<!--</div>-->
+
+</body>
+</html>
+
