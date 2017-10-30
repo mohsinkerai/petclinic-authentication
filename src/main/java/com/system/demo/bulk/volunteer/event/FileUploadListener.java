@@ -46,7 +46,7 @@ public class FileUploadListener {
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
 
         Job volunteerBulkJob = bulkJobBuilder.builBulkVolunteerJob
-            ("bulkVolunteerInsert to " + path);
+            ("bulkVolunteerInsert to " + fileUploadEvent.getFilePath().getFileName());
 
         Map<String, JobParameter> jobParamsMap = new HashMap<>();
 

@@ -1,5 +1,6 @@
 package com.system.demo.bulk.volunteer;
 
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -32,7 +33,12 @@ public class StorageService {
                     "Cannot store file with relative path outside current directory "
                         + filename);
             }
-            Path targetPath = this.rootLocation.resolve(filename);
+            Path targetPath = this.rootLocation.resolve(System.currentTimeMillis()+filename);
+            File targetFile = rootLocation.toFile();
+            if (!targetFile.exists()) {
+                targetFile.mkdir();
+                boolean mkdirs = targetFile.mkdirs();
+            }
             Files.copy(file.getInputStream(), targetPath,
                 StandardCopyOption.REPLACE_EXISTING);
             return targetPath;
