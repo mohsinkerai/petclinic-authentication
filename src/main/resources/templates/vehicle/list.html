@@ -20,22 +20,23 @@
   <thead>
   <tr>
     <th style="width: 50px;">Id</th>
-    <th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>
-    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer Name</a></th>
-    <th style="width: 120px;">Juridsdiction</a></th>
-    <th style="width: 50px">Local Council</th>
-    <th style="width: 50px">Jamatkhana</th>
+    <th style="width: 200px"><a class="sorted" sd:pagination-sort="make">Vehicle Details</a></th>
+    <th style="width: 250px;">Owner Name</a></th>
+    <th style="width: 120px"><a class="sorted" sd:pagination-sort="cellPhone">Owner Contact</a></th>
+    <th style="width: 120px;">Owner CNIC</a></th>
+    <th style="width: 50px">Actions</th>
   </tr>
   </thead>
   <tbody>
-  <tr th:each="volunteer : ${page}">
-    <td th:text="${volunteer.id}"/>
-    <td th:text="${volunteer.formId}"/>
-    <td th:text="${volunteer.volunteerName}"/>
-    <td th:text="${volunteer.jurisdiction}"/>
-    <td th:text="${volunteer.localCouncil}"/>
-    <td th:text="${volunteer.jamatKhanna}"/>
+  <tr th:each="vehicle : ${page}">
+    <td th:text="${vehicle.id}"/>
+    <td th:text="${vehicle.make + ' ' + vehicle.model + ' ' + vehicle.registration + ' ' + vehicle.color }"/>
+    <td th:text="${vehicle.firstname + ' ' + vehicle.fathername + ' ' + vehicle.surname}"/>
+    <td th:text="${vehicle.cellPhone}"/>
+    <td th:text="${vehicle.cnic}"/>
     <td>
+      <a th:href="@{/vehicle/edit/__${vehicle.id}__}"><span
+          class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/vehicle/delete/__${vehicle.id}__}"><span
           class="glyphicon glyphicon-remove"></span></a>
     </td>
