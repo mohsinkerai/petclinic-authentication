@@ -26,7 +26,7 @@
     <th style="width: 120px;">Juridsdiction</a></th>
     <th style="width: 100px">Local Council</th>
     <th style="width: 100px">Jamatkhana</th>
-    <th style="width: 50px">Actions</th>
+    <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
   </tr>
   </thead>
   <tbody>
@@ -37,7 +37,7 @@
     <td th:text="${volunteer.jurisdiction}"/>
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.jamatKhanna}"/>
-    <td>
+    <td sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
     </td>

@@ -88,6 +88,7 @@ public class VolunteerController {
 //    }
 
     @RequestMapping(value = "/delete/{id}")
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String delete(@PathVariable("id") Long id, Model model) {
         Volunteer repositoryUser = volunteerService.findOne(id);
         if (repositoryUser != null) {
@@ -99,6 +100,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String disable(@PathVariable("id") Long id) {
         Volunteer vehicle = volunteerService.findOne(id);
         if (vehicle != null) {

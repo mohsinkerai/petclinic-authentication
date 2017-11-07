@@ -24,7 +24,6 @@ import static com.system.demo.users.UserAuthority.REGISTRAR;
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
 import com.system.demo.users.MyUser;
-import com.system.demo.users.MyUserAuthority;
 import com.system.demo.users.UserRepository;
 import com.system.demo.vehicle.Vehicle;
 import com.system.demo.vehicle.VehicleRepository;

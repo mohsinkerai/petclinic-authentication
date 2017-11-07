@@ -69,6 +69,7 @@ public class VehicleController {
     }
 
     @RequestMapping("/edit/{id}")
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String edit(@PathVariable("id") Long id, Model model) {
         Vehicle vehicle = vehicleService.findOne(id);
         if (vehicle != null && vehicle.isEnabled()) {
@@ -80,6 +81,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String editSave(@PathVariable("id") Long id, @Valid Vehicle vehicle,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -97,6 +99,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/delete/{id}")
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String delete(@PathVariable("id") Long id, Model model) {
         Vehicle repositoryUser = vehicleService.findOne(id);
         if (repositoryUser != null) {
@@ -108,6 +111,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('AUTHORIZER')")
     public String disable(@PathVariable("id") Long id) {
         Vehicle vehicle = vehicleService.findOne(id);
         if (vehicle != null) {
