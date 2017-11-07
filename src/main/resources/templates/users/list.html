@@ -21,7 +21,7 @@
   <tr th:each="user : ${page}">
     <td th:text="${user.id}"/>
     <td th:text="${user.username}"/>
-    <td th:text="${user.authority}"/>
+    <td th:text="${user.authorities}"/>
     <!--<td><span th:each="authority : ${user.authority}" th:text="${authority.authority}+','"/></td>-->
     <td th:text="${user.enabled}"/>
     <td sec:authorize="hasAuthority('ADMIN')">

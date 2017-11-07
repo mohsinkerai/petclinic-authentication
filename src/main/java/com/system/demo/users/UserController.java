@@ -67,18 +67,17 @@ public class UserController {
 
     @RequestMapping(value = "/user/edit/{id}", method = RequestMethod.POST)
     public String editSave(@PathVariable("id") Long id, @Valid MyUser user,
-        BindingResult bindingResult) {
-        if (bindingResult.hasErrors()) {
-            return VIEWS_USERS_CREATE_OR_UPDATE_FORM;
+        BindingResult bindingResult, Model model) {
+
+        // TODO: check user.getId == id
+        MyUser repositoryUser = userRepository.findOne(id);
+        if (repositoryUser != null) {
+            repositoryUser.setAuthority(user.getAuthorities());
+            userRepository.save(repositoryUser);
+            log.info("User Received {} and repository user {}", user, repositoryUser);
+            return "redirect:/users";
         } else {
-            // TODO: check user.getId == id
-            MyUser repositoryUser = userRepository.findOne(id);
-            if (repositoryUser != null) {
-                log.info("User Received {} and repository user {}", user, repositoryUser);
-                return "redirect:/users";
-            } else {
-                throw new RuntimeException("Invalid User ID" + id);
-            }
+            throw new RuntimeException("Invalid User ID" + id);
         }
     }
 

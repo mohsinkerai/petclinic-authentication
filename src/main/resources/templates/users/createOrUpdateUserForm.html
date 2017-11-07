@@ -6,15 +6,23 @@
 <h2>User</h2>
 <form th:object="${user}" class="form-horizontal" id="add-owner-form" method="post">
   <div class="form-group has-feedback">
-    <input
-        th:replace="~{fragments/inputField :: input ('Username', 'username')}"/>
     <div th:if="${user['new']}">
+      <input
+          th:replace="~{fragments/inputField :: input ('Username', 'username')}"/>
       <input
           th:replace="~{fragments/passwordField :: input ('Password', 'password')}"/>
     </div>
+    <div th:else="${user['new']}">
+      <div>User: </div>
+      <div th:text="*{username}"></div>
+    </div>
 
-    <input
-        th:replace="~{fragments/inputField :: input ('Authority', 'authority')}"/>
+    <!--<input-->
+        <!--th:replace="~{fragments/inputField :: input ('Authority', 'authority')}"/>-->
+    <div th:each="authority : ${T(com.system.demo.users.UserAuthority).values()}">
+      <input type="checkbox" th:id="${{authority}}" th:value="${{authority}}" th:field="*{authorities}" />
+      <label th:for="${{authority}}" th:text="${{authority}}"></label>
+    </div>
     <!--<input-->
     <!--th:replace="~{fragments/inputField :: input ('City', 'city')}" />-->
     <!--<input-->

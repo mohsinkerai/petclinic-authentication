@@ -1,10 +1,13 @@
 package com.system.demo.users;
 
-import java.util.Arrays;
-import java.util.Collection;
-import java.util.stream.Collectors;
+import java.util.List;
+import javax.persistence.CollectionTable;
 import javax.persistence.Column;
+import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
+import javax.persistence.EnumType;
+import javax.persistence.Enumerated;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.validation.constraints.NotNull;
@@ -14,7 +17,6 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
-import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.util.Assert;
@@ -44,18 +46,25 @@ public class MyUser implements UserDetails {
 
     private boolean enabled;
 
-    private String authority;
+//    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+//    @JoinTable(name = "user_authority",
+//        joinColumns = @JoinColumn(name = "authority_id", referencedColumnName = "id"),
+//        inverseJoinColumns = @JoinColumn(name = "user_id", referencedColumnName = "id"))
+//    private List<MyUserAuthority> authority;
 
-    public void setAuthority(String authority) {
-        Arrays.stream(authority.split(",")).map(UserAuthority::new)
-            .collect(Collectors.toList());
-        this.authority = authority;
+    @ElementCollection(targetClass = UserAuthority.class, fetch = FetchType.EAGER)
+    @Enumerated(EnumType.STRING) // Possibly optional (I'm not sure) but defaults to ORDINAL.
+    @CollectionTable(name = "user_authority")
+    @Column(name = "authority") // Column name in person_interest
+    private List<UserAuthority> authorities;
+
+    public void setAuthority(List<UserAuthority> authority) {
+        this.authorities = authority;
     }
 
     @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return Arrays.stream(authority.split(",")).map(UserAuthority::new)
-            .collect(Collectors.toList());
+    public List<UserAuthority> getAuthorities() {
+        return authorities;
     }
 
     @Override
@@ -94,13 +103,13 @@ public class MyUser implements UserDetails {
 
     @Builder
     public MyUser(Long id, String username, String password, boolean isExpired, boolean isLocked,
-        boolean enabled, String authority) {
+        boolean enabled, List<UserAuthority> authority) {
         this.id = id;
         this.username = username;
         this.isExpired = isExpired;
         this.isLocked = isLocked;
         this.enabled = enabled;
-        this.authority = authority;
+        this.authorities = authority;
         this.setPassword(password);
     }
 

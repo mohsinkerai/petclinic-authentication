@@ -16,7 +16,18 @@
 
 package com.system.demo;
 
+import static com.system.demo.users.UserAuthority.ADMIN;
+import static com.system.demo.users.UserAuthority.AUTHORIZER;
+import static com.system.demo.users.UserAuthority.CARDISSUER;
+import static com.system.demo.users.UserAuthority.REGISTRAR;
+
+import com.google.common.collect.ImmutableList;
+import com.google.common.collect.Lists;
+import com.system.demo.users.MyUser;
+import com.system.demo.users.MyUserAuthority;
 import com.system.demo.users.UserRepository;
+import com.system.demo.vehicle.Vehicle;
+import com.system.demo.vehicle.VehicleRepository;
 import com.system.demo.vehicle.VehicleType;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
@@ -24,9 +35,6 @@ import org.apache.commons.text.RandomStringGenerator;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import com.system.demo.users.MyUser;
-import com.system.demo.vehicle.Vehicle;
-import com.system.demo.vehicle.VehicleRepository;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.stereotype.Component;
 
@@ -44,7 +52,8 @@ public class PetClinicApplication implements CommandLineRunner {
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
 
-    private RandomStringGenerator stringGenerator = new RandomStringGenerator.Builder().withinRange('a','z').build();
+    private RandomStringGenerator stringGenerator = new RandomStringGenerator.Builder()
+        .withinRange('a', 'z').build();
 
     public PetClinicApplication(
         UserRepository userRepository,
@@ -60,7 +69,18 @@ public class PetClinicApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         MyUser user = MyUser.builder()
-            .authority("ADMIN,REGISTRAR,AUTHORIZER,CARDISSUER")
+//            .authority(Lists.newArrayList(
+//                new MyUserAuthority("ADMIN"),
+//                new MyUserAuthority("REGISTRAR"),
+//                new MyUserAuthority("AUTHORIZER"),
+//                new MyUserAuthority("CARDISSUER")
+//            ))
+            .authority(Lists.newArrayList(
+                ADMIN,
+                REGISTRAR,
+                AUTHORIZER,
+                CARDISSUER
+            ))
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
@@ -69,7 +89,12 @@ public class PetClinicApplication implements CommandLineRunner {
             .build();
 
         MyUser user2 = MyUser.builder()
-            .authority("ADMIN,REGISTRAR,AUTHORIZER,CARDISSUER")
+            .authority(Lists.newArrayList(
+                ADMIN,
+                REGISTRAR,
+                AUTHORIZER,
+                CARDISSUER
+            ))
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
@@ -78,7 +103,11 @@ public class PetClinicApplication implements CommandLineRunner {
             .build();
 
         MyUser user3 = MyUser.builder()
-            .authority("REGISTRAR")
+            .authority(
+                ImmutableList.of(
+                    REGISTRAR
+                )
+            )
             .isExpired(false)
             .isLocked(false)
             .enabled(true)
