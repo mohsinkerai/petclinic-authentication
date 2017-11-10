@@ -6,6 +6,7 @@
 <body>
 
 <h2>Volunteers</h2>
+<p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh soon</p>
 <span class="row">
   <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right">Search</span></a>
   <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>

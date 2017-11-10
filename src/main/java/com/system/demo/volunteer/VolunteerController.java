@@ -140,6 +140,6 @@ public class VolunteerController {
         Path targetPath = storageService.store(file);
         FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath);
         applicationEventPublisher.publishEvent(fileUploadEvent);
-        return "redirect:/volunteer";
+        return "redirect:/volunteer?upload";
     }
 }
