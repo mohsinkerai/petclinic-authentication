@@ -1,5 +1,6 @@
 package com.system.demo.volunteer;
 
+import com.google.common.collect.Lists;
 import com.system.demo.bulk.volunteer.StorageService;
 import com.system.demo.bulk.volunteer.event.FileUploadEvent;
 import com.system.demo.model.SearchDTO;
@@ -9,6 +10,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -32,6 +34,7 @@ public class VolunteerController {
     private final StorageService storageService;
 
     private static final String VIEW_ALL = "volunteer/list";
+    private static final String SEARCH = "volunteer/search";
     private static final String VIEWS_VEHICLE_DELETE_CONFIRMATION = "volunteer/delete";
 
     @Autowired
@@ -57,6 +60,21 @@ public class VolunteerController {
         model.put("query", searchDTO);
         model.put("page", vehicles);
         return VIEW_ALL;
+    }
+
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public String search(Pageable pageable,
+        Map<String, Object> model, VolunteerSearchDTO searchDTO) {
+        Page<Volunteer> volunteers;
+        if (searchDTO.isEmpty()) {
+            searchDTO = new VolunteerSearchDTO();
+            volunteers = new PageImpl<Volunteer>(Lists.newArrayList());
+        } else {
+            volunteers = volunteerService.advancedSearch(searchDTO, pageable);
+        }
+        model.put("query", searchDTO);
+        model.put("page", volunteers);
+        return SEARCH;
     }
 
 //    @RequestMapping("/edit/{id}")

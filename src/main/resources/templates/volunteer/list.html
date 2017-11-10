@@ -7,14 +7,8 @@
 
 <h2>Volunteers</h2>
 <span class="row">
-  <form th:object="${query}" class="form-horizontal" id="Search" method="get">
-    <div class="col-sm-8 row">
-      <input
-          th:replace="~{fragments/searchField :: input ('Query', 'query')}"/>
-    </div>
-    <button class="btn btn-default" type="submit">Submit</button>
-    <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
-  </form>
+  <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right">Search</span></a>
+  <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
 </Span>
 <table id="volunteers" class="table table-striped">
   <thead>

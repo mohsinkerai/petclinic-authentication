@@ -28,6 +28,8 @@ import com.system.demo.users.UserRepository;
 import com.system.demo.vehicle.Vehicle;
 import com.system.demo.vehicle.VehicleRepository;
 import com.system.demo.vehicle.VehicleType;
+import com.system.demo.volunteer.Volunteer;
+import com.system.demo.volunteer.VolunteerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -50,15 +52,18 @@ public class PetClinicApplication implements CommandLineRunner {
 
     private final UserRepository userRepository;
     private final VehicleRepository vehicleRepository;
+    private final VolunteerRepository volunteerRepository;
 
     private RandomStringGenerator stringGenerator = new RandomStringGenerator.Builder()
         .withinRange('a', 'z').build();
 
     public PetClinicApplication(
         UserRepository userRepository,
-        VehicleRepository vehicleRepository) {
+        VehicleRepository vehicleRepository,
+        VolunteerRepository volunteerRepository) {
         this.userRepository = userRepository;
         this.vehicleRepository = vehicleRepository;
+        this.volunteerRepository = volunteerRepository;
     }
 
     public static void main(String[] args) throws Exception {
@@ -162,5 +167,25 @@ public class PetClinicApplication implements CommandLineRunner {
             vehicle.setCategory(VehicleType.FOURX4);
             vehicleRepository.save(vehicle);
         }
+
+        Volunteer volunteer = Volunteer
+            .builder()
+            .volunteerName("Zeeshan Damani")
+            .volunteerCnic("1234")
+            .age("98")
+            .jamatKhanna("Karimabad")
+            .build();
+
+        volunteerRepository.save(volunteer);
+
+        volunteer = Volunteer
+            .builder()
+            .volunteerName("Mohsin Kerai")
+            .volunteerCnic("9876")
+            .jamatKhanna("Alyabad")
+            .age("97")
+            .build();
+
+        volunteerRepository.save(volunteer);
     }
 }

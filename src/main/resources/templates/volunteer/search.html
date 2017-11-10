@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+
+<html xmlns:th="http://www.thymeleaf.org"
+      th:replace="~{fragments/layout :: layout (~{::body},'volunteer')}">
+
+<body>
+
+<h2>Volunteers</h2>
+<span class="row">
+  <form th:object="${query}" class="form-horizontal" id="Search" method="get">
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Volunteer-Name', 'name')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Volunteer CNIC', 'cnic')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Regional Council', 'regionalCouncil')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Jamatkhana', 'jamatkhana')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Day', 'day')}"/>
+    </div>
+    <button class="btn btn-default" type="submit">Submit</button>
+    <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
+  </form>
+</Span>
+<table id="volunteers" class="table table-striped">
+  <thead>
+    <tr>
+      <th style="width: 50px;">Volunteer Name</th>
+      <th style="width: 200px">Volunteer CNIC</th>
+      <th style="width: 250px;">Volunteer Age</th>
+      <th style="width: 120px;">Category</a></th>
+      <th style="width: 100px">Mobile Number</th>
+      <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+  <tr th:each="volunteer : ${page}">
+    <td th:text="${volunteer.volunteerName}"/>
+    <td th:text="${volunteer.volunteerCnic}"/>
+    <td th:text="${volunteer.age}"/>
+    <td th:text="${volunteer.category}"/>
+    <td th:text="${volunteer.cellPhone}"/>
+    <td sec:authorize="hasAuthority('AUTHORIZER')">
+      <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
+          class="glyphicon glyphicon-remove danger"></span></a>
+    </td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-sm-6">
+    <nav class="pull-right">
+      <ul class="pagination" sd:pagination="full">
+        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+        <li class="disabled"><a href="#" aria-label="Previous"><span
+            aria-hidden="true">&laquo;</span></a></li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
+
+</body>
+</html>
+
