@@ -18,16 +18,16 @@
 </Span>
 <table id="volunteers" class="table table-striped">
   <thead>
-  <tr>
-    <th style="width: 50px;">Id</th>
-    <th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>
-    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
-      Name</a></th>
-    <th style="width: 120px;">Juridsdiction</a></th>
-    <th style="width: 100px">Local Council</th>
-    <th style="width: 100px">Jamatkhana</th>
-    <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
-  </tr>
+    <tr>
+      <th style="width: 50px;">Id</th>
+      <th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>
+      <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
+        Name</a></th>
+      <th style="width: 120px;">Juridsdiction</a></th>
+      <th style="width: 100px">Local Council</th>
+      <th style="width: 100px">Jamatkhana</th>
+      <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
+    </tr>
   </thead>
   <tbody>
   <tr th:each="volunteer : ${page}">
