@@ -153,15 +153,17 @@ public class VolunteerController {
 
     //    @GetMapping(name = "/search/export")
     @RequestMapping(path = "/search/export", method = RequestMethod.GET)
-    public String export(VolunteerSearchDTO searchDTO, HttpServletResponse response)
+    public void export(VolunteerSearchDTO searchDTO, HttpServletResponse response)
         throws IOException {
         File file = volunteerService.exportCsv(searchDTO);
+
         response.setContentLength((int) file.length());
-        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
-        response.setContentType(URLConnection.guessContentTypeFromName("hello.csv"));
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("text/csv");
         response.setHeader("Content-Disposition", "attachment; filename=\"" + "hello.csv" + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
-
-        return "redirect:/volunteer";
+        response.flushBuffer();
+        inputStream.close();
+//        return "redirect:/volunteer";
     }
 }

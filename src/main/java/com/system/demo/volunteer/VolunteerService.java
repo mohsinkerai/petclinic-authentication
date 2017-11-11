@@ -69,7 +69,6 @@ public class VolunteerService {
             .collect(Collectors.toList());
         writer.writeAll(listOfVolunteer);
         writer.close();
-
         return new File("hello.csv");
     }
 
