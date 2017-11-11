@@ -29,6 +29,7 @@ import com.system.demo.vehicle.Vehicle;
 import com.system.demo.vehicle.VehicleRepository;
 import com.system.demo.vehicle.VehicleType;
 import com.system.demo.volunteer.Volunteer;
+import com.system.demo.volunteer.VolunteerCategory;
 import com.system.demo.volunteer.VolunteerRepository;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
@@ -174,6 +175,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .volunteerCnic("1234")
             .age("98")
             .jamatKhanna("Karimabad")
+            .category(VolunteerCategory.GOLD)
             .build();
 
         volunteerRepository.save(volunteer);
@@ -184,6 +186,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .volunteerCnic("9876")
             .jamatKhanna("Alyabad")
             .age("97")
+            .category(VolunteerCategory.GOLD)
             .build();
 
         volunteerRepository.save(volunteer);

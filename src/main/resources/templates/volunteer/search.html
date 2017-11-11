@@ -28,7 +28,24 @@
       <input
           th:replace="~{fragments/searchField :: input ('Day', 'day')}"/>
     </div>
+    <div class="form-group">
+      <label class="col-sm-1 control-label">Volunteer Category</label>
+      <div class="col-sm-3">
+        <select class="col-sm-12 form-control" th:field="*{category}">
+          <option th:each="cat : ${T(com.system.demo.volunteer.VolunteerCategory).values()}"
+                  th:value="${cat}"
+                  th:text="${cat.name()}"></option>
+        </select>
+      </div>
+    </div>
     <button class="btn btn-default" type="submit">Submit</button>
+    <a th:href="@{/volunteer/search/export(name=${param.name},
+      cnic=${param.cnic},
+      regionalCouncil=${param.regionalCouncil},
+      jamatkhana=${param.jamatkhana},
+      day=${param.day},
+      category=${param.category}
+    )}"><span class="btn btn-default pull-right">Volunteers File Export</span></a>
     <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
   </form>
 </Span>

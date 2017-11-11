@@ -4,8 +4,15 @@ import com.google.common.collect.Lists;
 import com.system.demo.bulk.volunteer.StorageService;
 import com.system.demo.bulk.volunteer.event.FileUploadEvent;
 import com.system.demo.model.SearchDTO;
+import java.io.BufferedInputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -15,6 +22,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -141,5 +149,19 @@ public class VolunteerController {
         FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath);
         applicationEventPublisher.publishEvent(fileUploadEvent);
         return "redirect:/volunteer?upload";
+    }
+
+    //    @GetMapping(name = "/search/export")
+    @RequestMapping(path = "/search/export", method = RequestMethod.GET)
+    public String export(VolunteerSearchDTO searchDTO, HttpServletResponse response)
+        throws IOException {
+        File file = volunteerService.exportCsv(searchDTO);
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new BufferedInputStream(new FileInputStream(file));
+        response.setContentType(URLConnection.guessContentTypeFromName("hello.csv"));
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + "hello.csv" + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+
+        return "redirect:/volunteer";
     }
 }
