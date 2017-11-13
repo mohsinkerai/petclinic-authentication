@@ -1,15 +1,25 @@
 package com.system.demo.vehicle;
 
+import com.google.common.collect.Lists;
 import com.system.demo.model.SearchDTO;
+import com.system.demo.volunteer.Volunteer;
+import com.system.demo.volunteer.VolunteerSearchDTO;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
 import java.util.Map;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.util.FileCopyUtils;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -26,6 +36,7 @@ public class VehicleController {
     private final VehicleService vehicleService;
 
     private static final String VIEW_ALL = "vehicle/list";
+    private static final String SEARCH = "vehicle/search";
     private static final String VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM = "vehicle/createOrUpdateVehicleForm";
     private static final String VIEWS_VEHICLE_DELETE_CONFIRMATION = "vehicle/delete";
 
@@ -39,7 +50,7 @@ public class VehicleController {
     public String processFindForm(Pageable pageable,
         Map<String, Object> model, SearchDTO searchDTO) {
         Page<Vehicle> vehicles;
-        if (searchDTO.getQuery() == null) {
+        if (searchDTO == null || searchDTO.getQuery() == null) {
             vehicles = vehicleService.findAll(pageable);
             searchDTO = new SearchDTO();
         } else {
@@ -123,5 +134,32 @@ public class VehicleController {
         }
     }
 
+    @RequestMapping(path = "/search/export", method = RequestMethod.GET)
+    public void export(VehicleSearchDTO searchDTO, HttpServletResponse response)
+        throws IOException {
+        File file = vehicleService.exportCsv(searchDTO);
 
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + "hello.csv" + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
+
+    @RequestMapping(value = "search", method = RequestMethod.GET)
+    public String search(Pageable pageable,
+        Map<String, Object> model, VehicleSearchDTO searchDTO) {
+        Page<Vehicle> volunteers;
+        if (searchDTO.isEmpty()) {
+            searchDTO = new VehicleSearchDTO();
+            volunteers = new PageImpl<Vehicle>(Lists.newArrayList());
+        } else {
+            volunteers = vehicleService.advancedSearch(searchDTO, pageable);
+        }
+        model.put("query", searchDTO);
+        model.put("page", volunteers);
+        return SEARCH;
+    }
 }

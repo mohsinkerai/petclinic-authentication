@@ -2,6 +2,7 @@ package com.system.demo.vehicle;
 
 import java.io.Serializable;
 import java.util.Date;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EnumType;
 import javax.persistence.Enumerated;
@@ -26,51 +27,64 @@ public class Vehicle implements Serializable {
     @Id
     @GeneratedValue
     private Long id;
+
+    //<editor-fold desc="Personal Information">
     @NotNull
-    private String firstname;
-    private String fathername;
-    private String surname;
-    private String address;
+    private String ownerName;
 
-    // Needs Regex
     @NotNull
-    private String cnic;
+    private String driverName;
 
-    private String homePhone;
-    private String cellPhone;
+    @NotNull
+    @Column(unique = true)
+    private String ownerCnic;
 
+    @NotNull
+    @Column(unique = true)
+    private String driverCnic;
+
+    @NotNull
+    private String ownerMobile;
+
+    @NotNull
+    private String driverMobile;
+
+    @NotNull
+    private String ownerCurrentAddress;
+
+    @NotNull
+    private String driverCurrentAddress;
+
+    private String ownerPermanentAddress;
+
+    private String driverPermanentAddress;
+    //</editor-fold>
+
+    //<editor-fold desc="License Info">
+    @NotNull
     private String license;
-
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private Date licenseIssue;
     @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @NotNull
     private Date licenseExpiry;
+    //</editor-fold>
 
-    // Enable Boolean After Thymleaf Support
-//    private boolean driverDrives;
-    private String driverFirstname;
-    private String driverFathername;
-    private String driverSurname;
-    private String driverAddress;
-    private String driverCnic;
-    private String driverHomePhone;
-    private String driverCellPhone;
-    private String driverLicense;
-    // Checkout DATE
+    //<editor-fold desc="Car Information">
+    @NotNull
+    private String registration;
+    private String chassisNumber;
+    private String engineNumber;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date driverLicenseIssue;
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
-    private Date driverLicenseExpiry;
-    private String driverWithOwner;
-
+    @NotNull
     private String make;
     private String model;
-    private String registration;
+    @NotNull
     private String color;
+    //</editor-fold>
 
-    @Enumerated(EnumType.STRING)
-    private VehicleType category;
+    private boolean isOwnerDriver;
 
     private boolean enabled;
 

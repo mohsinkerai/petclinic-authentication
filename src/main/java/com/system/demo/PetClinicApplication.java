@@ -27,10 +27,10 @@ import com.system.demo.users.MyUser;
 import com.system.demo.users.UserRepository;
 import com.system.demo.vehicle.Vehicle;
 import com.system.demo.vehicle.VehicleRepository;
-import com.system.demo.vehicle.VehicleType;
 import com.system.demo.volunteer.Volunteer;
 import com.system.demo.volunteer.VolunteerCategory;
 import com.system.demo.volunteer.VolunteerRepository;
+import java.util.Date;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -73,6 +73,14 @@ public class PetClinicApplication implements CommandLineRunner {
 
     @Override
     public void run(String... strings) throws Exception {
+        try {
+            PopulateData();
+        } catch (Exception ex) {
+            log.info("Exception in Populating Data", ex);
+        }
+    }
+
+    private void PopulateData() {
         MyUser user = MyUser.builder()
 //            .authority(Lists.newArrayList(
 //                new MyUserAuthority("ADMIN"),
@@ -146,26 +154,39 @@ public class PetClinicApplication implements CommandLineRunner {
             "Grey"
         };
 
-        String[][] names = new String[][]{
-            {"Naveed", "", "Tejani"},
-            {"Alishah", "Jaffer", "Sayani"},
-            {"Zeeshan", "Moiz", "Damani"},
-            {"Mohsin", "Mansoor", "Kerai"}
+        String[] names = new String[]{
+            "Naveed Tejani",
+            "Alishah Jaffer Sayani",
+            "Zeeshan Moiz Damani",
+            "Mohsin Mansoor Kerai"
         };
 
-        for (int i = 0; i < 41; i++) {
+        for (int i = 0; i < 25; i++) {
             Vehicle vehicle = new Vehicle();
             vehicle.setMake(make[RandomUtils.nextInt(0, make.length)]);
             vehicle.setModel(model[RandomUtils.nextInt(0, model.length)]);
             vehicle.setColor(colors[RandomUtils.nextInt(0, colors.length)]);
+
             int nameIndex = RandomUtils.nextInt(0, names.length);
-            vehicle.setFirstname(names[nameIndex][0]);
-            vehicle.setFathername(names[nameIndex][1]);
-            vehicle.setSurname(names[nameIndex][2]);
-            vehicle.setCnic(stringGenerator.generate(10));
+
+            vehicle.setDriverName(names[nameIndex]);
+            vehicle.setOwnerName(names[nameIndex]);
+            vehicle.setOwnerCnic(String.valueOf(RandomUtils.nextInt(99999, 999999)));
+            vehicle.setDriverCnic(String.valueOf(RandomUtils.nextInt(99999, 999999)));
+            vehicle.setOwnerMobile(String.valueOf(RandomUtils.nextInt(99999, 999999)));
+            vehicle.setDriverMobile(String.valueOf(RandomUtils.nextInt(99999, 999999)));
+            vehicle.setOwnerCurrentAddress("Dilkusha Forum");
+            vehicle.setDriverCurrentAddress("Karimabad Colony");
+
+            vehicle.setLicense(String.valueOf(RandomUtils.nextInt(99999, 999999)));
+            vehicle.setLicenseIssue(new Date());
+            vehicle.setLicenseExpiry(new Date());
+
             vehicle.setRegistration("APM-" + RandomUtils.nextInt(100, 999));
+            vehicle.setChassisNumber(String.valueOf(RandomUtils.nextInt(9999, 99999)));
+            vehicle.setEngineNumber(String.valueOf(RandomUtils.nextInt(9999, 99999)));
             vehicle.setEnabled(true);
-            vehicle.setCategory(VehicleType.FOURX4);
+            vehicle.setOwnerDriver(false);
             vehicleRepository.save(vehicle);
         }
 

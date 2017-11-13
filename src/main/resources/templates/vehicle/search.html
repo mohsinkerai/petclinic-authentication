@@ -5,11 +5,44 @@
 
 <body>
 
-<h2>Vehicles</h2>
+<h2>Vehicle</h2>
 <span class="row">
-    <a th:href="@{/vehicle/search}"><span class="btn btn-default pull-right">Search</span></a>
-    <a th:href="@{/vehicle/new}"><span class="btn btn-default pull-right">Add New Vehicle</span></a>
+  <form th:object="${query}" class="form-horizontal" id="Search" method="get">
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Driver Name', 'driverName')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Driver CNIC', 'driverCnic')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('License Number', 'license')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Registration', 'registration')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Make', 'make')}"/>
+    </div>
+    <div class="col-sm-4 row">
+      <input
+          th:replace="~{fragments/searchField :: input ('Color', 'color')}"/>
+    </div>
+    <button class="btn btn-default" type="submit">Submit</button>
+    <a th:href="@{/vehicle/search/export(driverName=${param.driverName},
+      driverCnic=${param.driverCnic},
+      license=${param.license},
+      registration=${param.registration},
+      make=${param.make},
+      color=${param.color}
+    )}"><span class="btn btn-default pull-right">Vehicle File Export</span></a>
+  </form>
 </Span>
+
 <table id="vehicles" class="table table-striped">
   <thead>
   <tr>
