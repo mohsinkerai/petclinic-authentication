@@ -61,7 +61,7 @@ public class VolunteerService {
         volunteerRepository.delete(id);
     }
 
-    public List<Volunteer> findByCnic(String nic){ return  volunteerRepository.findByCnic(nic); }
+    public List<Volunteer> findByCnic(String nic){ return  volunteerRepository.findByVolunteerCnic(nic); }
 
     public File exportCsv(VolunteerSearchDTO query) throws IOException {
         List<Volunteer> volunteers = this.advancedSearch(query);
