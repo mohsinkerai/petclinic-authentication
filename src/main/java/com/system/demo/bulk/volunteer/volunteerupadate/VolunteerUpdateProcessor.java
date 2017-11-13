@@ -37,7 +37,7 @@ public class VolunteerUpdateProcessor implements ItemProcessor<Volunteer,Volunte
         savedVolunteer.setDutyZone(v.getDutyZone());
         savedVolunteer.setDutyDay(v.getDutyDay());
         savedVolunteer.setDutyShift(v.getDutyShift());
-
+   //     volunteerService.updateVolunteer(savedVolunteer);
         return savedVolunteer;
     }
 

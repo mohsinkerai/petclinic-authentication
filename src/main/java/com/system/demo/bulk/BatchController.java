@@ -14,6 +14,7 @@ import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -38,11 +39,15 @@ public class BatchController {
     @Autowired
     private JobLauncher jobLauncher;
 
+    @Value("${python.script.path}")
+    String pyPath;
     @RequestMapping(value = "/volunteers", method = POST)
     public String uploadVolunteers(@RequestParam String path,
                                    @RequestParam String picFlag,
                                    @RequestParam String ImageSource) {
         try {
+
+         //   Runtime.getRuntime().exec("python "+pyPath);
             if (jobExplorer.findRunningJobExecutions(UploadTypes.VolunteerUpload.toString() + path).isEmpty()) {
                 Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(UploadTypes.VolunteerUpload.toString() + path);
                 Map<String, JobParameter> jobParamsMap = new HashMap<>();

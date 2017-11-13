@@ -29,5 +29,9 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     List<Volunteer> findByVolunteerCnic(String VolunteerCnic);
 
+   // void UpdateVolunteer(Volunteer v);
+
+
+
 
 }
