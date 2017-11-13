@@ -39,8 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .httpBasic()
             .and()
-            .csrf().disable()
-            .logout().logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
+            .logout()
+            .logoutRequestMatcher(new AntPathRequestMatcher("/logout")).logoutSuccessUrl("/login")
 //            .logoutUrl("/logout")
 //            .logoutSuccessUrl("/login?logout")
             .permitAll();
