@@ -17,6 +17,44 @@
     <button class="btn btn-default" type="submit">Upload</button>
   </form>
 </Span>
+
+<table id="volunteers" class="table table-striped">
+  <thead>
+  <tr>
+    <th style="width: 50px;">Id</th>
+    <th style="width: 200px"><a class="sorted" sd:pagination-sort="jobId">Job Id</a></th>
+    <th style="width: 120px;">Job Status</a></th>
+    <th style="width: 100px">Job Type</th>
+    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="jobName">Job Name</a></th>
+    <th style="width: 100px;">Actions</th>
+  </tr>
+  </thead>
+  <tbody>
+  <tr th:each="job : ${page}">
+    <td th:text="${job.id}"/>
+    <td th:text="${job.jobId}"/>
+    <td th:text="${job.jobStatus}"/>
+    <td th:text="${job.jobType}"/>
+    <td th:text="${job.jobName}"/>
+    <td><a th:href="@{/volunteer/file/__${job.jobId}__/errors}">
+      <button class="btn btn-primary">View Errors</button>
+    </a></td>
+  </tr>
+  </tbody>
+</table>
+
+<div class="row">
+  <div class="col-sm-6">
+    <nav class="pull-right">
+      <ul class="pagination" sd:pagination="full">
+        <!-- Pagination created by SpringDataDialect, this content is just for mockup -->
+        <li class="disabled"><a href="#" aria-label="Previous"><span
+            aria-hidden="true">&laquo;</span></a></li>
+        <li class="active"><a href="#">1 <span class="sr-only">(current)</span></a></li>
+      </ul>
+    </nav>
+  </div>
+</div>
 <!--<span class="row">-->
 <!--<form th:object="${query}" class="form-horizontal" id="Search" method="get">-->
 <!--<div class="col-sm-8 row">-->

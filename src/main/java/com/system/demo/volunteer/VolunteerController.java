@@ -3,13 +3,14 @@ package com.system.demo.volunteer;
 import com.google.common.collect.Lists;
 import com.system.demo.bulk.volunteer.StorageService;
 import com.system.demo.bulk.volunteer.event.FileUploadEvent;
+import com.system.demo.bulkprogress.jobdata.UserJobData;
+import com.system.demo.bulkprogress.jobdata.UserJobRepository;
 import com.system.demo.model.SearchDTO;
-import java.io.BufferedInputStream;
+import com.system.demo.users.MyUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
@@ -20,6 +21,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -40,6 +42,7 @@ public class VolunteerController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final VolunteerService volunteerService;
     private final StorageService storageService;
+    private final UserJobRepository userJobRepository;
 
     private static final String VIEW_ALL = "volunteer/list";
     private static final String SEARCH = "volunteer/search";
@@ -49,10 +52,12 @@ public class VolunteerController {
     public VolunteerController(
         ApplicationEventPublisher applicationEventPublisher,
         VolunteerService volunteerService,
-        StorageService storageService) {
+        StorageService storageService,
+        UserJobRepository userJobRepository) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.volunteerService = volunteerService;
         this.storageService = storageService;
+        this.userJobRepository = userJobRepository;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -138,7 +143,13 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/file")
-    public String file() {
+    public String file(Pageable pageable, Map<String, Object> model) {
+        MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication()
+            .getPrincipal();
+        Long userId = user.getId();
+
+        Page<UserJobData> userJobData = userJobRepository.findByUserId(userId, pageable);
+        model.put("page", userJobData);
         return "volunteer/file";
     }
 
