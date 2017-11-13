@@ -7,7 +7,6 @@ import com.system.demo.bulk.volunteer.volunteerupadate.VolunteerUpdateProcessor;
 import com.system.demo.vehicle.Vehicle;
 import com.system.demo.volunteer.Volunteer;
 import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerJobNotificationListener;
-import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.Step;
@@ -20,87 +19,123 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by Zeeshan Damani
- */
+import javax.annotation.Resource;
+
+/** Created by Zeeshan Damani */
 @Slf4j
-@AllArgsConstructor
 @Component
 @EnableBatchProcessing
 public class BulkJobBuilder {
 
-    private StepBuilderFactory stepBuilderFactory;
-    private JobBuilderFactory jobBuilderFactory;
-    private JpaItemWriter<Volunteer> volunteerBulkWriter;
-    @Qualifier("volunteerItemReader")
-    private FlatFileItemReader<Volunteer> volunteerItemReader;
-    private VolunteerItemWriterListener itemLoggerListener;
-    private VehicleItemWriterListener vehicleItemWriterListener;
-    private VolunteerBulkProcessor volunteerBulkProcessor;
-    private VolunteerJobNotificationListener volunteerJobNotificationListener;
-    private FlatFileItemReader<Vehicle> vehicleFlatFileItemReader;
-    private JpaItemWriter<Vehicle> vehicleJpaItemWriter;
-    @Qualifier("volunteerUpdateItemReader")
-    private FlatFileItemReader<Volunteer>  volunteerUpdateReader;
-    private VolunteerUpdateProcessor volunteerUpdateProcessor;
+  private final FlatFileItemReader<Volunteer> volunteerUpdateReader;
 
 
-    public Job buildVolunteerUpload(String jobName) {
+  private final FlatFileItemReader<Volunteer> volunteerItemReader;
 
-        Step step = stepBuilderFactory.get(jobName + " Step.")
+  private final StepBuilderFactory stepBuilderFactory;
+  private final JobBuilderFactory jobBuilderFactory;
+  private final JpaItemWriter<Volunteer> volunteerBulkWriter;
+  private final VolunteerItemWriterListener itemLoggerListener;
+  private final VehicleItemWriterListener vehicleItemWriterListener;
+  private final VolunteerBulkProcessor volunteerBulkProcessor;
+  private final VolunteerJobNotificationListener volunteerJobNotificationListener;
+  private final FlatFileItemReader<Vehicle> vehicleFlatFileItemReader;
+  private final JpaItemWriter<Vehicle> vehicleJpaItemWriter;
+  private final VolunteerUpdateProcessor volunteerUpdateProcessor;
+
+  public BulkJobBuilder(
+      @Qualifier("volunteerUpdateItemReader")
+      FlatFileItemReader<Volunteer> volunteerUpdateReader,
+      @Qualifier("volunteerItemReader")
+      FlatFileItemReader<Volunteer> volunteerItemReader,
+      StepBuilderFactory stepBuilderFactory,
+      JobBuilderFactory jobBuilderFactory,
+      JpaItemWriter<Volunteer> volunteerBulkWriter,
+      VolunteerItemWriterListener itemLoggerListener,
+      VehicleItemWriterListener vehicleItemWriterListener,
+      VolunteerBulkProcessor volunteerBulkProcessor,
+      VolunteerJobNotificationListener volunteerJobNotificationListener,
+      FlatFileItemReader<Vehicle> vehicleFlatFileItemReader,
+      JpaItemWriter<Vehicle> vehicleJpaItemWriter,
+      VolunteerUpdateProcessor volunteerUpdateProcessor) {
+    this.volunteerUpdateReader = volunteerUpdateReader;
+    this.volunteerItemReader = volunteerItemReader;
+    this.stepBuilderFactory = stepBuilderFactory;
+    this.jobBuilderFactory = jobBuilderFactory;
+    this.volunteerBulkWriter = volunteerBulkWriter;
+    this.itemLoggerListener = itemLoggerListener;
+    this.vehicleItemWriterListener = vehicleItemWriterListener;
+    this.volunteerBulkProcessor = volunteerBulkProcessor;
+    this.volunteerJobNotificationListener = volunteerJobNotificationListener;
+    this.vehicleFlatFileItemReader = vehicleFlatFileItemReader;
+    this.vehicleJpaItemWriter = vehicleJpaItemWriter;
+    this.volunteerUpdateProcessor = volunteerUpdateProcessor;
+  }
+
+  public Job buildVolunteerUpload(String jobName) {
+
+    Step step =
+        stepBuilderFactory
+            .get(jobName + " Step.")
             .<Volunteer, Volunteer>chunk(2)
             .reader(volunteerItemReader)
             .processor(volunteerBulkProcessor)
             .writer(volunteerBulkWriter)
             .listener(itemLoggerListener)
-            .faultTolerant().skipPolicy(new DatabaseJobSkipPolicy())
+            .faultTolerant()
+            .skipPolicy(new DatabaseJobSkipPolicy())
             .build();
 
-        return jobBuilderFactory.get(jobName)
-            .incrementer(new RunIdIncrementer())
-            .listener(volunteerJobNotificationListener)
-            .flow(step)
-            .end()
-            .build();
-    }
+    return jobBuilderFactory
+        .get(jobName)
+        .incrementer(new RunIdIncrementer())
+        .listener(volunteerJobNotificationListener)
+        .flow(step)
+        .end()
+        .build();
+  }
 
-    public Job buildVehicleUpload(String jobName) {
+  public Job buildVehicleUpload(String jobName) {
 
-        Step step = stepBuilderFactory.get(UploadTypes.VehicleUpload.toString())
+    Step step =
+        stepBuilderFactory
+            .get(UploadTypes.VehicleUpload.toString())
             .<Vehicle, Vehicle>chunk(2)
             .reader(vehicleFlatFileItemReader)
             .writer(vehicleJpaItemWriter)
             .listener(vehicleItemWriterListener)
-            .faultTolerant().skipPolicy(new DatabaseJobSkipPolicy())
+            .faultTolerant()
+            .skipPolicy(new DatabaseJobSkipPolicy())
             .build();
 
-        return jobBuilderFactory.get(jobName)
-            .incrementer(new RunIdIncrementer())
-            .listener(volunteerJobNotificationListener)
-            .flow(step)
-            .end()
-            .build();
-    }
+    return jobBuilderFactory
+        .get(jobName)
+        .incrementer(new RunIdIncrementer())
+        .listener(volunteerJobNotificationListener)
+        .flow(step)
+        .end()
+        .build();
+  }
 
+  public Job updateVolunteer(String jobName) {
 
-    public Job updateVolunteer(String jobName) {
-
-        Step step = stepBuilderFactory.get(UploadTypes.VehicleUpload.toString())
+    Step step =
+        stepBuilderFactory
+            .get(UploadTypes.VehicleUpload.toString())
             .<Volunteer, Volunteer>chunk(2)
             .reader(volunteerUpdateReader)
             .processor(volunteerUpdateProcessor)
             .listener(vehicleItemWriterListener)
-            .faultTolerant().skipPolicy(new DatabaseJobSkipPolicy())
+            .faultTolerant()
+            .skipPolicy(new DatabaseJobSkipPolicy())
             .build();
 
-        return jobBuilderFactory.get(jobName)
-            .incrementer(new RunIdIncrementer())
-            .listener(volunteerJobNotificationListener)
-            .flow(step)
-            .end()
-            .build();
-    }
-
-
-
+    return jobBuilderFactory
+        .get(jobName)
+        .incrementer(new RunIdIncrementer())
+        .listener(volunteerJobNotificationListener)
+        .flow(step)
+        .end()
+        .build();
+  }
 }

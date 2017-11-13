@@ -22,10 +22,6 @@ import com.system.demo.bulk.vehicle.VehicleFieldSetMapper;
 
 import javax.sql.DataSource;
 
-/**
- * Created by Zeeshan Damani
- */
-
 @Configuration
 @EnableBatchProcessing
 public class BatchConfiguration {
@@ -41,7 +37,6 @@ public class BatchConfiguration {
 
     @Bean(name = "volunteerItemReader")
     @StepScope
-    @Primary
     public FlatFileItemReader<Volunteer> volunteerItemCsvReader(@Value("#{jobParameters['sourceFilePath']}") String path) throws Exception {
 
         FlatFileItemReader<Volunteer> reader = new FlatFileItemReader<Volunteer>();
