@@ -4,5 +4,6 @@ public enum VolunteerCategory {
 
     GOLD,
     SILVER,
-    BRONZE;
+    BRONZE,
+    NTF;
 }

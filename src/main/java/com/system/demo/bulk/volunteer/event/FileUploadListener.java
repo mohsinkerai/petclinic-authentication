@@ -1,9 +1,11 @@
 package com.system.demo.bulk.volunteer.event;
 
-import com.system.demo.bulk.volunteer.job.BulkJobBuilder;
+import com.system.demo.bulk.BulkJobBuilder;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.system.demo.bulk.UploadTypes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameter;
@@ -15,7 +17,6 @@ import org.springframework.batch.core.launch.JobLauncher;
 import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
 import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
 import org.springframework.batch.core.repository.JobRestartException;
-import org.springframework.context.ApplicationListener;
 import org.springframework.context.event.EventListener;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
@@ -45,8 +46,7 @@ public class FileUploadListener {
 
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
 
-        Job volunteerBulkJob = bulkJobBuilder.builBulkVolunteerJob
-            ("bulkVolunteerInsert to " + fileUploadEvent.getFilePath().getFileName());
+        Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(UploadTypes.VolunteerUpload.toString() + fileUploadEvent.getFilePath().getFileName());
 
         Map<String, JobParameter> jobParamsMap = new HashMap<>();
 
