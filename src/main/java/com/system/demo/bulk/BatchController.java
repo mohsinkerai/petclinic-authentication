@@ -47,7 +47,7 @@ public class BatchController {
                                    @RequestParam String ImageSource) {
         try {
 
-         //   Runtime.getRuntime().exec("python "+pyPath);
+            Runtime.getRuntime().exec("python "+pyPath);
             if (jobExplorer.findRunningJobExecutions(UploadTypes.VolunteerUpload.toString() + path).isEmpty()) {
                 Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(UploadTypes.VolunteerUpload.toString() + path);
                 Map<String, JobParameter> jobParamsMap = new HashMap<>();

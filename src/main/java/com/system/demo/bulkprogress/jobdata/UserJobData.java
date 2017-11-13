@@ -1,7 +1,10 @@
 package com.system.demo.bulkprogress.jobdata;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
+import lombok.Data;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.Column;
@@ -17,8 +20,9 @@ import javax.persistence.Table;
 @Entity
 @Table(name = "user_job_data")
 @Builder
-@Getter
-@Setter
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class UserJobData {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
