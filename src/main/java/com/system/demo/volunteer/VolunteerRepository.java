@@ -27,8 +27,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         String JamatKhanna,
         VolunteerCategory category);
 
-    @Query(value = "from volunteer  where volunteerCnic = :nic ")
-    public List<Volunteer> findByCnic(@Param("nic")String nic);
+    List<Volunteer> findByVolunteerCnic(String VolunteerCnic);
 
 
 }
