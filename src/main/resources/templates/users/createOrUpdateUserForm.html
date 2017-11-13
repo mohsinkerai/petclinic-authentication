@@ -21,7 +21,7 @@
         <!--th:replace="~{fragments/inputField :: input ('Authority', 'authority')}"/>-->
     <div th:each="authority : ${T(com.system.demo.users.UserAuthority).values()}">
       <input type="checkbox" th:id="${{authority}}" th:value="${{authority}}" th:field="*{authorities}" />
-      <label th:for="${{authority}}" th:text="${{authority}}"></label>
+      <label th:for="${{authority}}" th:text="${{authority.getDisplayName()}}"></label>
     </div>
     <!--<input-->
     <!--th:replace="~{fragments/inputField :: input ('City', 'city')}" />-->

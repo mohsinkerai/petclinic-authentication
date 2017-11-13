@@ -60,7 +60,7 @@
           <span>Error</span>
         </li>
 
-        <li sec:authorize="hasAuthority('REGISTRAR')" th:replace="::menuItem ('/vehicle','vehicle','Vehicles','road','Vehicle')">
+        <li sec:authorize="hasAuthority('VEHICLE_REGISTRAR')" th:replace="::menuItem ('/vehicle','vehicle','Vehicles','road','Vehicle')">
           <span class="glyphicon glyphicon-off" aria-hidden="true"></span>
           <span>Error</span>
         </li>

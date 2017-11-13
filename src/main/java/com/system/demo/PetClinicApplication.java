@@ -20,6 +20,9 @@ import static com.system.demo.users.UserAuthority.ADMIN;
 import static com.system.demo.users.UserAuthority.AUTHORIZER;
 import static com.system.demo.users.UserAuthority.CARDISSUER;
 import static com.system.demo.users.UserAuthority.REGISTRAR;
+import static com.system.demo.users.UserAuthority.VEHICLE_AUTHORIZER;
+import static com.system.demo.users.UserAuthority.VEHICLE_CARDISSUER;
+import static com.system.demo.users.UserAuthority.VEHICLE_REGISTRAR;
 
 import com.google.common.collect.ImmutableList;
 import com.google.common.collect.Lists;
@@ -82,17 +85,14 @@ public class PetClinicApplication implements CommandLineRunner {
 
     private void PopulateData() {
         MyUser user = MyUser.builder()
-//            .authority(Lists.newArrayList(
-//                new MyUserAuthority("ADMIN"),
-//                new MyUserAuthority("REGISTRAR"),
-//                new MyUserAuthority("AUTHORIZER"),
-//                new MyUserAuthority("CARDISSUER")
-//            ))
             .authority(Lists.newArrayList(
                 ADMIN,
                 REGISTRAR,
                 AUTHORIZER,
-                CARDISSUER
+                CARDISSUER,
+                VEHICLE_REGISTRAR,
+                VEHICLE_AUTHORIZER,
+                VEHICLE_CARDISSUER
             ))
             .isExpired(false)
             .isLocked(false)
@@ -106,7 +106,10 @@ public class PetClinicApplication implements CommandLineRunner {
                 ADMIN,
                 REGISTRAR,
                 AUTHORIZER,
-                CARDISSUER
+                CARDISSUER,
+                VEHICLE_REGISTRAR,
+                VEHICLE_AUTHORIZER,
+                VEHICLE_CARDISSUER
             ))
             .isExpired(false)
             .isLocked(false)
@@ -118,7 +121,8 @@ public class PetClinicApplication implements CommandLineRunner {
         MyUser user3 = MyUser.builder()
             .authority(
                 ImmutableList.of(
-                    REGISTRAR
+                    REGISTRAR,
+                    VEHICLE_REGISTRAR
                 )
             )
             .isExpired(false)

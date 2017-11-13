@@ -2,6 +2,7 @@ package com.system.demo.vehicle;
 
 import com.google.common.collect.Lists;
 import com.system.demo.model.SearchDTO;
+import com.system.demo.users.UserAuthority;
 import com.system.demo.volunteer.Volunteer;
 import com.system.demo.volunteer.VolunteerSearchDTO;
 import java.io.File;
@@ -28,7 +29,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 @Slf4j
 @Controller
 @RequestMapping(VehicleController.BASE_URL)
-@PreAuthorize("hasAuthority('REGISTRAR')")
+@PreAuthorize("hasAuthority('VEHICLE_REGISTRAR')")
 public class VehicleController {
 
     public static final String BASE_URL = "vehicle";
@@ -80,7 +81,7 @@ public class VehicleController {
     }
 
     @RequestMapping("/edit/{id}")
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('VEHICLE_AUTHORIZER')")
     public String edit(@PathVariable("id") Long id, Model model) {
         Vehicle vehicle = vehicleService.findOne(id);
         if (vehicle != null && vehicle.isEnabled()) {
@@ -92,7 +93,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('VEHICLE_AUTHORIZER')")
     public String editSave(@PathVariable("id") Long id, @Valid Vehicle vehicle,
         BindingResult bindingResult) {
         if (bindingResult.hasErrors()) {
@@ -110,7 +111,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('VEHICLE_AUTHORIZER')")
     public String delete(@PathVariable("id") Long id, Model model) {
         Vehicle repositoryUser = vehicleService.findOne(id);
         if (repositoryUser != null) {
@@ -122,7 +123,7 @@ public class VehicleController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('VEHICLE_AUTHORIZER')")
     public String disable(@PathVariable("id") Long id) {
         Vehicle vehicle = vehicleService.findOne(id);
         if (vehicle != null) {
