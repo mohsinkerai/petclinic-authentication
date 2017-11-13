@@ -200,7 +200,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .volunteerCnic("1234")
             .age("98")
             .jamatKhanna("Karimabad")
-            .category(VolunteerCategory.GOLD)
+            .category(VolunteerCategory.RTF)
             .build();
 
         volunteerRepository.save(volunteer);
@@ -211,7 +211,7 @@ public class PetClinicApplication implements CommandLineRunner {
             .volunteerCnic("9876")
             .jamatKhanna("Alyabad")
             .age("97")
-            .category(VolunteerCategory.GOLD)
+            .category(VolunteerCategory.RTF)
             .build();
 
         volunteerRepository.save(volunteer);

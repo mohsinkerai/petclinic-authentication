@@ -1,9 +1,9 @@
 package com.system.demo.volunteer;
 
 public enum VolunteerCategory {
-
-    GOLD,
-    SILVER,
-    BRONZE,
-    NTF;
+    MHI_TEAM,
+    NTF,
+    RTF,
+    SPECIAL_ASSIGNMENT,
+    LTF;
 }
