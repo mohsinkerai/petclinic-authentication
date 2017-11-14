@@ -15,10 +15,10 @@
   <thead>
     <tr>
       <th style="width: 50px;">Id</th>
-      <th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>
+      <!--<th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>-->
       <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
         Name</a></th>
-      <th style="width: 120px;">Juridsdiction</a></th>
+      <!--<th style="width: 120px;">Juridsdiction</a></th>-->
       <th style="width: 100px">Local Council</th>
       <th style="width: 100px">Jamatkhana</th>
       <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
@@ -27,9 +27,9 @@
   <tbody>
   <tr th:each="volunteer : ${page}">
     <td th:text="${volunteer.id}"/>
-    <td th:text="${volunteer.formId}"/>
+    <!--<td th:text="${volunteer.formId}"/>-->
     <td th:text="${volunteer.volunteerName}"/>
-    <td th:text="${volunteer.jurisdiction}"/>
+    <!--<td th:text="${volunteer.jurisdiction}"/>-->
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.jamatKhanna}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">

@@ -57,6 +57,8 @@ public class VolunteerService {
         return volunteerRepository.findOne(id);
     }
 
+//    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
+
     public void delete(Long id) {
         volunteerRepository.delete(id);
     }

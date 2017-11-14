@@ -3,15 +3,17 @@ package com.system.demo.volunteer;
 import com.google.common.collect.Lists;
 import com.system.demo.bulk.volunteer.StorageService;
 import com.system.demo.bulk.volunteer.event.FileUploadEvent;
+import com.system.demo.bulkprogress.jobdata.UserJobData;
+import com.system.demo.bulkprogress.jobdata.UserJobRepository;
 import com.system.demo.model.SearchDTO;
-import java.io.BufferedInputStream;
+import com.system.demo.users.MyUser;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.net.URLConnection;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +22,9 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
@@ -40,6 +45,7 @@ public class VolunteerController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final VolunteerService volunteerService;
     private final StorageService storageService;
+    private final UserJobRepository userJobRepository;
 
     private static final String VIEW_ALL = "volunteer/list";
     private static final String SEARCH = "volunteer/search";
@@ -49,10 +55,12 @@ public class VolunteerController {
     public VolunteerController(
         ApplicationEventPublisher applicationEventPublisher,
         VolunteerService volunteerService,
-        StorageService storageService) {
+        StorageService storageService,
+        UserJobRepository userJobRepository) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.volunteerService = volunteerService;
         this.storageService = storageService;
+        this.userJobRepository = userJobRepository;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -138,15 +146,26 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/file")
-    public String file() {
+    public String file(Pageable pageable, Map<String, Object> model) {
+        MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication()
+            .getPrincipal();
+        Long userId = user.getId();
+
+        Page<UserJobData> userJobData = userJobRepository.findByUserId(userId, pageable);
+        model.put("page", userJobData);
         return "volunteer/file";
     }
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public String fileSave(@RequestParam("file") MultipartFile file) {
-        log.info("Received file {}", file);
+        // Expected to Receive a Zip File Here.
         Path targetPath = storageService.store(file);
-        FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath);
+        Long userId = Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getPrincipal)
+            .map(o -> ((MyUser) o).getId())
+            .orElse(-1l);
+        FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath, userId);
         applicationEventPublisher.publishEvent(fileUploadEvent);
         return "redirect:/volunteer?upload";
     }

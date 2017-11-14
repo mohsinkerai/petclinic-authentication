@@ -32,10 +32,6 @@ public class Volunteer {
     @Column(name = "volunteer_name")
     String volunteerName;
 
-    @Column(name = "volunteer_form_id")
-    @NotNull
-    private String formId;
-
     @Column(name = "volunteer_registration_date")
     String registrationDate;
 
@@ -56,12 +52,6 @@ public class Volunteer {
     @Column(name = "volunteer_cell_phone")
     String cellPhone;
 
-    @Column(name = "volunteer_designation")
-    String designation;
-
-    @Column(name = "volunteer_reports_to")
-    String reportsTo;
-
     @Column(name = "volunteer_category")
     VolunteerCategory category;
 
@@ -73,7 +63,7 @@ public class Volunteer {
     @Column(name = "local_council")
     Local localCouncil;
 
-    @Column(name = "volunteer_jamatkhanna   ")
+    @Column(name = "volunteer_jamatkhanna")
     String jamatKhanna;
 
     @Column(name = "volunteer_institution")

@@ -68,18 +68,16 @@ public class VehicleJobNotificationListener extends JobExecutionListenerSupport 
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("Starting Upload");
-        MyUser user =(MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         UserJobData userJobData = UserJobData.builder()
             .jobId(jobExecution.getId())
             .jobName(jobExecution.getJobParameters().getString("sourceFilePath"))
             .jobType(UploadTypes.VehicleUpload.toString())
             .jobStatus(jobExecution.getStatus().toString())
-            .userId(user.getId())
+            .userId(jobExecution.getJobParameters().getLong("userId"))
             .build();
 
        UserJobData createdUserJobData = userJobService.save(userJobData);
 
        jobExecution.getExecutionContext().put("userJobData",createdUserJobData);
     }
-
 }

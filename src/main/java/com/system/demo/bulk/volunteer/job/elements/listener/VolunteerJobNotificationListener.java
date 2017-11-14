@@ -68,13 +68,13 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
     @Override
     public void beforeJob(JobExecution jobExecution) {
         log.info("Starting Upload");
-        MyUser user =(MyUser) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        Long userId = jobExecution.getJobParameters().getLong("userId");
         UserJobData userJobData = UserJobData.builder()
             .jobId(jobExecution.getId())
             .jobName(jobExecution.getJobParameters().getString("sourceFilePath"))
             .jobType(UploadTypes.VolunteerUpload.toString())
             .jobStatus(jobExecution.getStatus().toString())
-            .userId(user.getId())
+            .userId(userId)
             .build();
 
        UserJobData createdUserJobData = userJobService.save(userJobData);

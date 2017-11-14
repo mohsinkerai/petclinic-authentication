@@ -4,6 +4,7 @@ import com.system.demo.bulkprogress.itemdata.FailItemService;
 import com.system.demo.bulkprogress.itemdata.FailItems;
 import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.volunteer.Volunteer;
+import java.util.List;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
 import org.springframework.batch.core.JobExecution;
@@ -11,8 +12,6 @@ import org.springframework.batch.core.configuration.annotation.JobScope;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-
-import java.util.List;
 
 /**
  * Created by Zeeshan Damani
@@ -30,12 +29,12 @@ public class VolunteerUpadteItemWriterListener implements ItemWriteListener<Volu
 
     @Override
     public void beforeWrite(List<? extends Volunteer> items) {
-        log.info("Inserting Some Volunteers: ");
+        log.info("Inserting Some Volunteers: {}", items);
     }
 
     @Override
     public void afterWrite(List<? extends Volunteer> items) {
-        log.info("Inserted Some Volunteers: ");
+        log.info("Inserted Some Volunteers: {}", items);
 
     }
 
@@ -44,13 +43,15 @@ public class VolunteerUpadteItemWriterListener implements ItemWriteListener<Volu
         Volunteer ItemsFailed;
         if (list.size() == 1) {
             ItemsFailed = list.get(0);
-            recordVolunteerWriteError(ex.getMessage(),ItemsFailed);
+            recordVolunteerWriteError(ex.getMessage(), ItemsFailed);
             log.info(ItemsFailed.getVolunteerCnic());
             log.info(ex.getCause().getMessage());
         }
     }
-    private void recordVolunteerWriteError(String message, Volunteer volunteer){
-        UserJobData userJobData = (UserJobData)jobExecution.getExecutionContext().get("userJobData");
+
+    private void recordVolunteerWriteError(String message, Volunteer volunteer) {
+        UserJobData userJobData = (UserJobData) jobExecution.getExecutionContext()
+            .get("userJobData");
 
         FailItems failItem = FailItems.builder()
             .failureReason(message)
