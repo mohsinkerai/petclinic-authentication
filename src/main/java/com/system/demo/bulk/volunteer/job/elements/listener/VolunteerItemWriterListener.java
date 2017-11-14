@@ -3,6 +3,7 @@ package com.system.demo.bulk.volunteer.job.elements.listener;
 import com.system.demo.bulkprogress.itemdata.FailItemService;
 import com.system.demo.bulkprogress.itemdata.FailItems;
 import com.system.demo.bulkprogress.jobdata.UserJobData;
+import com.system.demo.bulkprogress.jobdata.UserJobService;
 import com.system.demo.volunteer.Volunteer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.ItemWriteListener;
@@ -21,6 +22,9 @@ import java.util.List;
 @Component
 @JobScope
 public class VolunteerItemWriterListener implements ItemWriteListener<Volunteer> {
+
+    @Autowired
+    UserJobService userJobService;
 
     @Autowired
     FailItemService failItemService;

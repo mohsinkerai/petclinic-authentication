@@ -1,7 +1,9 @@
 package com.system.demo.bulkprogress.itemdata;
 
-import com.system.demo.bulkprogress.jobdata.UserJobData;
+import java.util.List;
 import lombok.AllArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 
 /**
@@ -19,5 +21,9 @@ public class FailItemService {
 
     public FailItems save(FailItems failItems) {
         return failItemRepository.save(failItems);
+    }
+
+    public Page<FailItems> findByJobId(long jobId, Pageable pageable) {
+        return failItemRepository.findByUserJobId(jobId, pageable);
     }
 }

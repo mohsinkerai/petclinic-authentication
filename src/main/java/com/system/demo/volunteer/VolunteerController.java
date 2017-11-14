@@ -3,6 +3,8 @@ package com.system.demo.volunteer;
 import com.google.common.collect.Lists;
 import com.system.demo.bulk.volunteer.StorageService;
 import com.system.demo.bulk.volunteer.event.FileUploadEvent;
+import com.system.demo.bulkprogress.itemdata.FailItemService;
+import com.system.demo.bulkprogress.itemdata.FailItems;
 import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.bulkprogress.jobdata.UserJobRepository;
 import com.system.demo.model.SearchDTO;
@@ -45,6 +47,7 @@ public class VolunteerController {
     private final ApplicationEventPublisher applicationEventPublisher;
     private final VolunteerService volunteerService;
     private final StorageService storageService;
+    private final FailItemService failItemService;
     private final UserJobRepository userJobRepository;
 
     private static final String VIEW_ALL = "volunteer/list";
@@ -56,10 +59,12 @@ public class VolunteerController {
         ApplicationEventPublisher applicationEventPublisher,
         VolunteerService volunteerService,
         StorageService storageService,
+        FailItemService failItemService,
         UserJobRepository userJobRepository) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.volunteerService = volunteerService;
         this.storageService = storageService;
+        this.failItemService = failItemService;
         this.userJobRepository = userJobRepository;
     }
 
@@ -170,12 +175,29 @@ public class VolunteerController {
         return "redirect:/volunteer?upload";
     }
 
+    @RequestMapping(value = "/file/{jobId}/errors", method = RequestMethod.GET)
+    public String fileError(Pageable pageable, Map<String, Object> model,
+        @PathVariable("jobId") long jobId) {
+        UserJobData userJobdata = userJobRepository.getUserJobDataByJobId(jobId);
+        Long userId = Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getPrincipal)
+            .map(o -> (MyUser) o)
+            .map(MyUser::getId)
+            .orElse(-2l);
+        if (userJobdata != null && userJobdata.getUserId() == userId) {
+            Page<FailItems> failItems = failItemService.findByJobId(jobId, pageable);
+            model.put("page", failItems);
+            return "volunteer/errors";
+        }
+        throw new RuntimeException("Invalid JobId w.r.t user");
+    }
+
     //    @GetMapping(name = "/search/export")
     @RequestMapping(path = "/search/export", method = RequestMethod.GET)
     public void export(VolunteerSearchDTO searchDTO, HttpServletResponse response)
         throws IOException {
         File file = volunteerService.exportCsv(searchDTO);
-
         response.setContentLength((int) file.length());
         InputStream inputStream = new FileInputStream(file);
         response.setContentType("text/csv");

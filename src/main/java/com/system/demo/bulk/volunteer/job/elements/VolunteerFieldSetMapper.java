@@ -31,7 +31,7 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
 
             return volunteer;
 
-        } catch (ArrayIndexOutOfBoundsException ex) {
+        } catch (Exception ex) {
             volunteer.setDutyDay((""));
             volunteer.setDutyShift("");
             volunteer.setDutyZone( "");
