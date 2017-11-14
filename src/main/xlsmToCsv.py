@@ -37,10 +37,14 @@ for sheet in workbook.sheets():
                     else:
                         if counter in emptyCol:
                             continue
+                    if(type(cell) == 'str'):
+                        newStr = cell.replace(",", "")
+                    else:
+                        newStr = cell
                     try:
-                        out.append(cell)
+                        out.append(newStr)
                     except:
-                        out.append(cell)
+                        out.append(newStr)
                 print(type(out))
                 writer.writerow(out)
 

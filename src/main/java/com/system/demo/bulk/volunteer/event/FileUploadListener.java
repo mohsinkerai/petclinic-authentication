@@ -73,13 +73,14 @@ public class FileUploadListener {
         }
 
         long userId = fileUploadEvent.getUserId();
+        String csvPath = zipExtractionFolder + "\\data.csv";
+        log.info("Csv Path is {}", csvPath);
 
-        // TODO: Exec Python Command Here.
         Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(
-            UploadTypes.VolunteerUpload.toString() + fileUploadEvent.getFilePath().getFileName());
+            UploadTypes.VolunteerUpload.toString() + csvPath);
 
         Map<String, JobParameter> jobParamsMap = new HashMap<>();
-        jobParamsMap.put("sourceFilePath", new JobParameter(path));
+        jobParamsMap.put("sourceFilePath", new JobParameter(csvPath));
         jobParamsMap.put("timestamp",
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
         // TODO: Fill this Params
