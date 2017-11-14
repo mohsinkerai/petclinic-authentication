@@ -1,9 +1,8 @@
 package com.system.demo.bulk.volunteer.job.elements.listener;
 
+import com.system.demo.bulk.UploadTypes;
 import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.bulkprogress.jobdata.UserJobService;
-import com.system.demo.bulk.UploadTypes;
-import com.system.demo.users.MyUser;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
@@ -12,7 +11,6 @@ import org.springframework.batch.core.StepExecution;
 import org.springframework.batch.core.listener.JobExecutionListenerSupport;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.ResourceLoader;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Component;
 
 @Slf4j
@@ -24,8 +22,6 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
 
     @Autowired
     private ResourceLoader resourceLoader;
-
-
     @Override
     public void afterJob(JobExecution jobExecution) {
        try {
@@ -58,6 +54,9 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
 
            } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
                log.info("CSV file Uploading Failed");
+               userJobData.setJobStatus(BatchStatus.FAILED.toString());
+           }
+           else {
                userJobData.setJobStatus(BatchStatus.FAILED.toString());
            }
        }catch (Exception e){

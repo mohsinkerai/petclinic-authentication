@@ -2,6 +2,7 @@ package com.system.demo.bulk;
 
 import com.system.demo.bulk.vehicle.VehicleItemWriterListener;
 import com.system.demo.bulk.volunteer.job.elements.VolunteerBulkProcessor;
+import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerItemReaderListener;
 import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerItemWriterListener;
 import com.system.demo.bulk.volunteer.volunteerupadate.VolunteerUpdateProcessor;
 import com.system.demo.vehicle.Vehicle;
@@ -42,6 +43,7 @@ public class BulkJobBuilder {
   private final FlatFileItemReader<Vehicle> vehicleFlatFileItemReader;
   private final JpaItemWriter<Vehicle> vehicleJpaItemWriter;
   private final VolunteerUpdateProcessor volunteerUpdateProcessor;
+  private final VolunteerItemReaderListener volunteerItemReaderListener;
 
   public BulkJobBuilder(
       @Qualifier("volunteerUpdateItemReader")
@@ -57,7 +59,8 @@ public class BulkJobBuilder {
       VolunteerJobNotificationListener volunteerJobNotificationListener,
       FlatFileItemReader<Vehicle> vehicleFlatFileItemReader,
       JpaItemWriter<Vehicle> vehicleJpaItemWriter,
-      VolunteerUpdateProcessor volunteerUpdateProcessor) {
+      VolunteerUpdateProcessor volunteerUpdateProcessor,
+      VolunteerItemReaderListener volunteerItemReaderListener) {
     this.volunteerUpdateReader = volunteerUpdateReader;
     this.volunteerItemReader = volunteerItemReader;
     this.stepBuilderFactory = stepBuilderFactory;
@@ -70,6 +73,8 @@ public class BulkJobBuilder {
     this.vehicleFlatFileItemReader = vehicleFlatFileItemReader;
     this.vehicleJpaItemWriter = vehicleJpaItemWriter;
     this.volunteerUpdateProcessor = volunteerUpdateProcessor;
+    this.volunteerItemReaderListener = volunteerItemReaderListener;
+
   }
 
   public Job buildVolunteerUpload(String jobName) {
@@ -82,8 +87,9 @@ public class BulkJobBuilder {
             .processor(volunteerBulkProcessor)
             .writer(volunteerBulkWriter)
             .listener(itemLoggerListener)
+            .listener(volunteerItemReaderListener)
             .faultTolerant()
-            .skipPolicy(new DatabaseJobSkipPolicy())
+            .skipPolicy(new DatabaseJobSkipPolicy()).skipLimit(0)
             .build();
 
     return jobBuilderFactory
