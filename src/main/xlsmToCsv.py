@@ -1,14 +1,26 @@
 import csv
 import xlrd
 import zipfile
+import sys
+import os
 
-zip = zipfile.ZipFile(r'D:\input.zip')
-zip.extractall(r'D:\output')
+# main
+param_1= sys.argv[1] #input file location
+param_2= sys.argv[2] #input xlsm filename
+param_3= sys.argv[3] #input xlsm sheet name
+param_4= sys.argv[4] #output file location
+param_5= sys.argv[5] #output csv filename
 
-workbook = xlrd.open_workbook('D://output/input.xlsm')
+zip = zipfile.ZipFile(r''+param_1)
+zip.extractall(r''+param_4)
+
+workbook = xlrd.open_workbook(param_4+'/'+param_2)
+
+os.remove(param_4+'/'+param_5)      #removing existing csv file from output folder
+
 for sheet in workbook.sheets():
-    if sheet.name == "Data":
-        with open('D://output.csv'.format(sheet.name), 'wb') as f:
+    if sheet.name == param_3:
+        with open((param_4+'/'+param_5).format(sheet.name), 'wb') as f:
             writer = csv.writer(f)
             emptyCol = []
             for row in range(sheet.nrows):
@@ -28,3 +40,5 @@ for sheet in workbook.sheets():
                     except:
                         out.append(cell)
                 writer.writerow(out)
+
+os.remove(param_4+'/'+param_2)  #removing input xlsm file from output folder
