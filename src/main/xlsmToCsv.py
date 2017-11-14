@@ -5,22 +5,23 @@ import sys
 import os
 
 # main
-param_1= sys.argv[1] #input file location
-param_2= sys.argv[2] #input xlsm filename
-param_3= sys.argv[3] #input xlsm sheet name
-param_4= sys.argv[4] #output file location
-param_5= sys.argv[5] #output csv filename
+param_1= sys.argv[1] # input file location
+param_2= sys.argv[2] # zip extraction path
+
+xlsmFilePath = 'data.xlsm'
+csvFilePath = 'data.csv'
+sheetName = 'sheet2'
 
 zip = zipfile.ZipFile(r''+param_1)
-zip.extractall(r''+param_4)
+zip.extractall(r'' + param_2)
 
-workbook = xlrd.open_workbook(param_4+'/'+param_2)
+workbook = xlrd.open_workbook (param_2 + '/' + data.xlsm)
 
-os.remove(param_4+'/'+param_5)      #removing existing csv file from output folder
+os.remove(param_2 + '/' + csvFilePath)      #removing existing csv file from output folder
 
 for sheet in workbook.sheets():
-    if sheet.name == param_3:
-        with open((param_4+'/'+param_5).format(sheet.name), 'wb') as f:
+    if sheet.name == sheetName:
+        with open((param_2+'/'+csvFilePath).format(sheet.name), 'wb') as f:
             writer = csv.writer(f)
             emptyCol = []
             for row in range(sheet.nrows):
@@ -41,4 +42,4 @@ for sheet in workbook.sheets():
                         out.append(cell)
                 writer.writerow(out)
 
-os.remove(param_4+'/'+param_2)  #removing input xlsm file from output folder
+os.remove(param_2 +'/' + xlsmFilePath)  #removing input xlsm file from output folder

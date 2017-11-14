@@ -41,6 +41,7 @@ public class BatchController {
 
     @Value("${python.script.path}")
     String pyPath;
+
     @RequestMapping(value = "/volunteers", method = POST)
     public String uploadVolunteers(@RequestParam String path,
                                    @RequestParam String picFlag,

@@ -1,11 +1,10 @@
 package com.system.demo.bulk.volunteer.event;
 
 import com.system.demo.bulk.BulkJobBuilder;
+import com.system.demo.bulk.UploadTypes;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
-
-import com.system.demo.bulk.UploadTypes;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameter;
@@ -42,23 +41,28 @@ public class FileUploadListener {
     @Async
     @EventListener
     public void onApplicationEvent(FileUploadEvent fileUploadEvent) {
-        log.info("Received file event {}", fileUploadEvent.getFilePath().toString());
+        log.info("Received file event {}", fileUploadEvent);
 
+        long userId = fileUploadEvent.getUserId();
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
 
-        Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(UploadTypes.VolunteerUpload.toString() + fileUploadEvent.getFilePath().getFileName());
+        // TODO: Exec Python Command Here.
+        Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(
+            UploadTypes.VolunteerUpload.toString() + fileUploadEvent.getFilePath().getFileName());
 
         Map<String, JobParameter> jobParamsMap = new HashMap<>();
-
-        JobParameter filePathJobParam = new JobParameter(path);
-        jobParamsMap.put("sourceFilePath", filePathJobParam);
+        jobParamsMap.put("sourceFilePath", new JobParameter(path));
         jobParamsMap.put("timestamp",
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
+        // TODO: Fill this Params
+//        jobParamsMap.put("pictureFlag", new JobParameter(picFlag));
+//        jobParamsMap.put("imagesSource", new JobParameter(ImageSource));
+        jobParamsMap.put("userId", new JobParameter(userId));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
-
         try {
             jobLauncher.run(volunteerBulkJob, bulkJobsParameters);
-        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException | JobParametersInvalidException e) {
+        } catch (JobExecutionAlreadyRunningException | JobRestartException | JobInstanceAlreadyCompleteException |
+            JobParametersInvalidException e) {
             e.printStackTrace();
         }
     }

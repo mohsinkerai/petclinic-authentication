@@ -13,6 +13,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
 import java.util.Map;
+import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContext;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -155,9 +158,14 @@ public class VolunteerController {
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
     public String fileSave(@RequestParam("file") MultipartFile file) {
-        log.info("Received file {}", file);
+        // Expected to Receive a Zip File Here.
         Path targetPath = storageService.store(file);
-        FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath);
+        Long userId = Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getPrincipal)
+            .map(o -> ((MyUser) o).getId())
+            .orElse(-1l);
+        FileUploadEvent fileUploadEvent = new FileUploadEvent(this, targetPath, userId);
         applicationEventPublisher.publishEvent(fileUploadEvent);
         return "redirect:/volunteer?upload";
     }
