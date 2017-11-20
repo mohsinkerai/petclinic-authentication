@@ -30,7 +30,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
     @Autowired
     private FailItemService failItemService;
 
-    @Value("#{jobParameters['pictureFlag']}")
+    @Value("${picture.flag}")
     String pictureFlag;
 
     @Value("#{jobParameters['imagesSource']}")

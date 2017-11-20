@@ -85,7 +85,7 @@ public class FileUploadListener {
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
         // TODO: Fill this Params
         jobParamsMap.put("pictureFlag", new JobParameter("True"));
-        jobParamsMap.put("imagesSource", new JobParameter(zipExtractionFolder));
+        jobParamsMap.put("imagesSource", new JobParameter(zipExtractionFolder+"\\"));
         jobParamsMap.put("userId", new JobParameter(userId));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
         try {
