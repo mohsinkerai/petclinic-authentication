@@ -1,17 +1,16 @@
 package com.system.demo.volunteer;
 
 import com.opencsv.CSVWriter;
-import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.stereotype.Service;
-
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
 import java.util.stream.Collectors;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+import org.springframework.stereotype.Service;
 
 @Service
 @Slf4j
@@ -22,6 +21,14 @@ public class VolunteerService {
     @Autowired
     public VolunteerService(VolunteerRepository volunteerRepository) {
         this.volunteerRepository = volunteerRepository;
+    }
+
+    public Volunteer findOne(long id) {
+        return volunteerRepository.findOne(id);
+    }
+
+    public Volunteer save(Volunteer volunteer) {
+        return volunteerRepository.save(volunteer);
     }
 
     public Page<Volunteer> findAll(Pageable pageable) {
@@ -53,17 +60,15 @@ public class VolunteerService {
                 query.getCategory());
     }
 
-    public Volunteer findOne(Long id) {
-        return volunteerRepository.findOne(id);
-    }
-
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
 
     public void delete(Long id) {
         volunteerRepository.delete(id);
     }
 
-    public List<Volunteer> findByCnic(String nic){ return  volunteerRepository.findByVolunteerCnic(nic); }
+    public List<Volunteer> findByCnic(String nic) {
+        return volunteerRepository.findByVolunteerCnic(nic);
+    }
 
     public File exportCsv(VolunteerSearchDTO query) throws IOException {
         List<Volunteer> volunteers = this.advancedSearch(query);

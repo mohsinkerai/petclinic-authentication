@@ -84,6 +84,8 @@ public class Volunteer {
     @Column(name = "volunteer_image")
     String volunteerImage;
 
+    private boolean isEnabled;
+
     public boolean validateCnic() {
         if (this.volunteerCnic.matches("(\\d){5}-(\\d){7}-(\\d){1}") && !this.volunteerCnic
             .equals("")) {
