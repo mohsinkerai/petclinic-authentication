@@ -26,7 +26,7 @@ public class Volunteer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "volunteer_name")
@@ -134,5 +134,9 @@ public class Volunteer {
         } else {
             return false;
         }
+    }
+
+    public boolean isNew() {
+        return this.id == null;
     }
 }

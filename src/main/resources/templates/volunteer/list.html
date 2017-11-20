@@ -33,8 +33,14 @@
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.jamatKhanna}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">
+      <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
+          class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
+      <form method="post">
+        <button type="submit"><span class="glyphicon glyphicon-refresh"></span></button>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+      </form>
     </td>
   </tr>
   </tbody>
