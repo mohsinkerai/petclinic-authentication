@@ -82,7 +82,7 @@ public class BulkJobBuilder {
     Step step =
         stepBuilderFactory
             .get(jobName + " Step.")
-            .<Volunteer, Volunteer>chunk(2)
+            .<Volunteer, Volunteer>chunk(5)
             .reader(volunteerItemReader)
             .processor(volunteerBulkProcessor)
             .writer(volunteerBulkWriter)

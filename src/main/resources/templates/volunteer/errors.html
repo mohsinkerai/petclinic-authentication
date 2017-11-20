@@ -1,11 +1,14 @@
 <!DOCTYPE html>
 
 <html xmlns:th="http://www.thymeleaf.org"
-      th:replace="~{fragments/layout :: layout (~{::body},'volunteer')}">
+      th:replace="~{fragments/layout :: layout (~{::body},'errors')}">
 
 <body>
 
 <h2>File Upload Errors</h2>
+<form th:object="${query}" class="container searchForm" id="error" method="get">
+    <a th:href="@{errors/export}"><span class="btn btn-default btn-margin pull-right">Errors File Export</span></a>
+</form>
 <table id="errors" class="table table-striped">
   <thead>
     <tr>

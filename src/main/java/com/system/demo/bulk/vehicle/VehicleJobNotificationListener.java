@@ -34,6 +34,7 @@ public class VehicleJobNotificationListener extends JobExecutionListenerSupport 
 
            if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
                userJobData.setJobStatus(BatchStatus.COMPLETED.toString());
+               userJobService.save(userJobData);
 
                Integer totalWriteCount = 0;
                 Integer totalProcessItems = 0;

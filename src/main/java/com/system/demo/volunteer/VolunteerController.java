@@ -17,6 +17,8 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
+
+import com.system.demo.vehicle.VehicleSearchDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -207,4 +209,19 @@ public class VolunteerController {
         inputStream.close();
 //        return "redirect:/volunteer";
     }
+
+    @RequestMapping(path = "errors/export", method = RequestMethod.GET)
+    public void exportfailItems(@PathVariable(name ="jobId") Long jobExecutionId, HttpServletResponse response)
+        throws IOException {
+        File file = failItemService.exportCsv(jobExecutionId);
+
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
+
 }
