@@ -17,8 +17,7 @@ import java.nio.file.Path;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
-
-import com.system.demo.vehicle.VehicleSearchDTO;
+import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
@@ -32,6 +31,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.util.FileCopyUtils;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -55,6 +55,7 @@ public class VolunteerController {
     private static final String VIEW_ALL = "volunteer/list";
     private static final String SEARCH = "volunteer/search";
     private static final String VIEWS_VEHICLE_DELETE_CONFIRMATION = "volunteer/delete";
+    private static final String VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM = "volunteer/createOrUpdateVehicleForm";
 
     @Autowired
     public VolunteerController(
@@ -100,33 +101,32 @@ public class VolunteerController {
         return SEARCH;
     }
 
-//    @RequestMapping("/edit/{id}")
-//    public String edit(@PathVariable("id") Long id, Model model) {
-//        Vehicle vehicle = vehicleService.findOne(id);
-//        if (vehicle != null && vehicle.isEnabled()) {
-//            model.addAttribute("vehicle", vehicle);
-//            return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
-//        } else {
-//            throw new RuntimeException("Invalid User ID" + id);
-//        }
-//    }
-//
-//    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-//    public String editSave(@PathVariable("id") Long id, @Valid Vehicle vehicle,
-//        BindingResult bindingResult) {
-//        if (bindingResult.hasErrors()) {
-//            return VIEWS_VEHICLE_CREATE_OR_UPDATE_FORM;
-//        } else {
-//            Vehicle vehicleRepository = vehicleService.findOne(id);
-//            if (vehicleRepository == null) {
-//                throw new RuntimeException("Invalid User ID" + id);
-//            }
-//            vehicle.setId(vehicleRepository.getId());
-//            vehicle.setEnabled(vehicleRepository.isEnabled());
-//            vehicleService.save(vehicle);
-//            return "redirect:/" + BASE_URL;
-//        }
-//    }
+    @RequestMapping("/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        Volunteer volunteer = volunteerService.findOne(id);
+        if (volunteer != null && volunteer.isEnabled()) {
+            model.addAttribute("vehicle", volunteer);
+            return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
+        } else {
+            throw new RuntimeException("Invalid Voluneer ID " + id);
+        }
+    }
+
+    @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
+    public String editSave(@PathVariable("id") Long id, @Valid Volunteer volunteer,
+        BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
+        } else {
+            Volunteer repositoryVolunteer = volunteerService.findOne(id);
+            if (repositoryVolunteer == null && repositoryVolunteer.isEnabled()) {
+                throw new RuntimeException("Invalid Volunteer Id");
+            }
+            volunteer.setId(repositoryVolunteer.getId());
+            volunteerService.save(volunteer);
+            return "redirect:/" + BASE_URL;
+        }
+    }
 
     @RequestMapping(value = "/delete/{id}")
     @PreAuthorize("hasAuthority('AUTHORIZER')")
