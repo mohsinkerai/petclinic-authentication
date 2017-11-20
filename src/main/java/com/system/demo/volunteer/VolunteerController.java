@@ -209,4 +209,19 @@ public class VolunteerController {
         inputStream.close();
 //        return "redirect:/volunteer";
     }
+
+    @RequestMapping(path = "errors/export", method = RequestMethod.GET)
+    public void exportfailItems(@PathVariable(name ="jobId") Long jobExecutionId, HttpServletResponse response)
+        throws IOException {
+        File file = failItemService.exportCsv(jobExecutionId);
+
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("text/csv");
+        response.setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
+
 }

@@ -25,13 +25,12 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
     @Override
     public void afterJob(JobExecution jobExecution) {
        try {
-            UserJobData userJobData = userJobService.getUserJobDataByJobId(jobExecution.getId());
+           UserJobData userJobData = userJobService.getUserJobDataByJobId(jobExecution.getId());
            String path = jobExecution.getJobParameters().getString("sourceFilePath");
-
            if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
                userJobData.setJobStatus(BatchStatus.COMPLETED.toString());
-
-               Integer totalWriteCount = 0;
+                userJobService.save(userJobData);
+                Integer totalWriteCount = 0;
                 Integer totalProcessItems = 0;
                 Integer totalSkipProcessCount = 0;
                 Integer totalWriteSkipCount = 0;
@@ -44,20 +43,18 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
                    totalWriteSkipCount += stepExecution.getWriteSkipCount();
                }
                log.info("CSV File Upload Finished follwing Data are inserted of file " + resourceLoader.getResource(path).getFilename());
-
                log.info("Total data read from file  : " + totalProcessItems);
                log.info("Succefully Updated data : " + totalWriteCount);
-
                log.info("Number of Items Skip on read from file  : " + totalSkipProcessCount);
                log.info("Number of Items Skip on write from file  : " + totalWriteSkipCount);
-
-
            } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
                log.info("CSV file Uploading Failed");
                userJobData.setJobStatus(BatchStatus.FAILED.toString());
+               userJobService.save(userJobData);
            }
            else {
                userJobData.setJobStatus(BatchStatus.FAILED.toString());
+               userJobService.save(userJobData);
            }
        }catch (Exception e){
            log.info(e.toString());
@@ -77,8 +74,6 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
             .build();
 
        UserJobData createdUserJobData = userJobService.save(userJobData);
-
        jobExecution.getExecutionContext().put("userJobData",createdUserJobData);
     }
-
 }

@@ -5,6 +5,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
+import java.util.List;
+
 /**
  * Created by Zeeshan Damani
  */
@@ -13,4 +15,5 @@ import org.springframework.stereotype.Repository;
 public interface FailItemRepository extends JpaRepository<FailItems, Long> {
 
     Page<FailItems> findByUserJobId(long UserJobId, Pageable pageable);
+    List<FailItems>  findAllByUserJobId(long jobId);
 }

@@ -29,6 +29,10 @@ public class Volunteer {
     private Long id;
 
     @NotNull
+    @Column(name = "volunteer_form_no")
+    String volunteerFormNo;
+
+    @NotNull
     @Column(name = "volunteer_name")
     String volunteerName;
 
@@ -57,11 +61,11 @@ public class Volunteer {
 
     @NotNull
     @Column(name = "regional_council")
-    Regional regionalCouncil;
+    String regionalCouncil;
 
     @NotNull
     @Column(name = "local_council")
-    Local localCouncil;
+    String localCouncil;
 
     @Column(name = "volunteer_jamatkhanna")
     String jamatKhanna;
@@ -84,6 +88,20 @@ public class Volunteer {
     @Column(name = "volunteer_image")
     String volunteerImage;
 
+    @Column(name = "volunteer_memberof")
+    String volunteerMemberOf;
+
+    @Column(name = "volunteer_jurisdiction")
+    String volunteerJurisdction;
+
+    @Column(name = "volunteer_site")
+    String volunteerSite;
+
+    @Column(name = "volunteer_committee")
+    String volunteerCommittee;
+
+    @Column(name="volunteer_isprinted")
+    boolean volunteerIsPrinted = false;
     private boolean isEnabled;
 
     public boolean validateCnic() {

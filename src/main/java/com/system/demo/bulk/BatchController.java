@@ -2,17 +2,25 @@ package com.system.demo.bulk;
 
 import static org.springframework.web.bind.annotation.RequestMethod.POST;
 
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
+
+import com.system.demo.system.config.WebSecurityConfig;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobExecution;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
+import org.springframework.batch.core.JobParametersInvalidException;
 import org.springframework.batch.core.configuration.JobRegistry;
 import org.springframework.batch.core.explore.JobExplorer;
 import org.springframework.batch.core.launch.JobLauncher;
+import org.springframework.batch.core.repository.JobExecutionAlreadyRunningException;
+import org.springframework.batch.core.repository.JobInstanceAlreadyCompleteException;
+import org.springframework.batch.core.repository.JobRestartException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -38,6 +46,9 @@ public class BatchController {
 
     @Autowired
     private JobLauncher jobLauncher;
+
+    @Value("${file.path.zip.extract}")
+    private String zipExtractionFolder;
 
     @Value("${python.script.path}")
     String pyPath;

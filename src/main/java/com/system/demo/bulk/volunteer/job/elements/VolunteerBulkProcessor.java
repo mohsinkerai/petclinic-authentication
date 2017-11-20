@@ -95,13 +95,11 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
 
     private void recordError(String message, Volunteer v){
         log.error(message);
-
         UserJobData userJobData = (UserJobData)jobExecution.getExecutionContext().get("userJobData");
-
         FailItems failItem = FailItems.builder()
             .failureReason(message)
             .failedItems(v.getVolunteerCnic())
-            .userJobId(userJobData.getId())
+            .userJobId(userJobData.getJobId())
             .build();
         failItemService.save(failItem);
         log.info("valiadtion Error for : "+ v.toString());
