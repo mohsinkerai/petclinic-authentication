@@ -102,6 +102,9 @@ public class Volunteer {
 
     @Column(name="volunteer_isprinted")
     boolean volunteerIsPrinted = false;
+
+    private boolean isPictureAvailable = false;
+
     private boolean isEnabled;
 
     public boolean validateCnic() {
@@ -152,6 +155,18 @@ public class Volunteer {
         } else {
             return false;
         }
+    }
+
+    public boolean isValidForPrint() {
+        return isPictureAvailable
+            && volunteerName != null
+            && validateCnic()
+            && dutyDay != null
+            && dutyZone != null
+            && volunteerCommittee != null
+            && localCouncil != null
+            && volunteerSite != null;
+
     }
 
     public boolean isNew() {

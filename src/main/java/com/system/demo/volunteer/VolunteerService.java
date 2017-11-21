@@ -62,6 +62,21 @@ public class VolunteerService {
 
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
 
+    public List<Volunteer> findPrintableVolunteers() {
+        List<Volunteer> volunteers = volunteerRepository.findAll();
+        return filterForPrinting(volunteers);
+    }
+
+    public List<Volunteer> findPrintableVolunteers(VolunteerSearchDTO query) {
+        return filterForPrinting(advancedSearch(query));
+    }
+
+    private List<Volunteer> filterForPrinting(List<Volunteer> volunteers) {
+        return volunteers.stream()
+            .filter(Volunteer::isValidForPrint)
+            .collect(Collectors.toList());
+    }
+
     public void delete(Long id) {
         volunteerRepository.delete(id);
     }
