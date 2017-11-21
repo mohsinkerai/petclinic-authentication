@@ -244,9 +244,9 @@ public class CardPrinter {
 
         Image qr_image = getQRImage(EncryptMsg, writer);
         qr_image.setAbsolutePosition(
-            cardStartX + 20,
-            cardStartY + 20);
-        qr_image.scalePercent(40);
+            cardStartX + 10,
+            cardStartY + 15);
+        qr_image.scalePercent(50);
         qr_code_Example.add(qr_image);
 
         imageUrl = volunteer.getVolunteerImage();//"D://person.jpg";

@@ -149,6 +149,9 @@ public class VolunteerController {
             }
             volunteer.setId(repositoryVolunteer.getId());
             volunteer.setEnabled(repositoryVolunteer.isEnabled());
+            volunteer.setPictureAvailable(true);
+            volunteer.setVolunteerCommittee(repositoryVolunteer.getVolunteerCommittee());
+            volunteer.setVolunteerSite(repositoryVolunteer.getVolunteerSite());
             volunteerService.save(volunteer);
             return "redirect:/" + BASE_URL;
         }
