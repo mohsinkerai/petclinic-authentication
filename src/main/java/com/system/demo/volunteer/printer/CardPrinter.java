@@ -59,8 +59,8 @@ public class CardPrinter {
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
 
-        String userPassword = PDF_PW;
-        String ownerPassword = PDF_PW;
+        String userPassword = "123";
+        String ownerPassword = "123";
 
         writer.setEncryption(userPassword.getBytes(),
             ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING,

@@ -235,6 +235,11 @@ public class VolunteerController {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         String pathOfFile = cardPrinter.print(printableVolunteers);
 
+        for(int i = 0; i <printableVolunteers.size(); i++)
+        {
+            printableVolunteers.get(i).setVolunteerIsPrinted(true);
+        }
+
         File file = new File(pathOfFile);
         response.setContentLength((int) file.length());
         InputStream inputStream = new FileInputStream(file);
