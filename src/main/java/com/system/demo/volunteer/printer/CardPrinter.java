@@ -133,11 +133,11 @@ public class CardPrinter {
             return -1;
     }
 
-    public static int getCategoryForQR(String category)
+    public static int getCommitteeForQR(String committee)
     {
-        if(category.equalsIgnoreCase("Security"))
+        if(committee.equalsIgnoreCase("Security"))
             return 0;
-        else if(category.equalsIgnoreCase("Darbar"))
+        else if(committee.equalsIgnoreCase("Darbar"))
             return 1;
         else
             return -1;
@@ -200,7 +200,7 @@ public class CardPrinter {
 		2 = Garam Chashma
 		3 = Tause
 		4 = Alyabad*/
-        item.put("C", getCategoryForQR(volunteer.getVolunteerCommittee()));
+        item.put("C", getCommitteeForQR(volunteer.getVolunteerCommittee()));
 		/*0 = Security
 		1 = Darbar*/
         item.put("Z", getZoneForQR(volunteer.getDutyZone()));
