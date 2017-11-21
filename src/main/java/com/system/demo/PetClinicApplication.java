@@ -34,6 +34,9 @@ import com.system.demo.volunteer.Volunteer;
 import com.system.demo.volunteer.VolunteerCategory;
 import com.system.demo.volunteer.VolunteerRepository;
 import java.util.Date;
+import java.util.List;
+
+import com.system.demo.volunteer.printer.CardPrinter;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.RandomUtils;
 import org.apache.commons.text.RandomStringGenerator;
@@ -77,9 +80,21 @@ public class PetClinicApplication implements CommandLineRunner {
     @Override
     public void run(String... strings) throws Exception {
         try {
-         //   PopulateData();
+            //   PopulateData();
+//            aliShahTesting();
         } catch (Exception ex) {
             log.info("Exception in Populating Data", ex);
+        }
+    }
+
+    private void aliShahTesting() {
+        try {
+            List<Volunteer> volunteerList = volunteerRepository.findAll();
+            CardPrinter cardPrinter = new CardPrinter();
+            String resultFileName = cardPrinter.print(volunteerList);
+        }catch (Exception ex)
+        {
+            log.info("Exception in printing cards", ex);
         }
     }
 

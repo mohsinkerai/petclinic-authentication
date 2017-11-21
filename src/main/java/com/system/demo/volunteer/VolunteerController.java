@@ -9,11 +9,13 @@ import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.bulkprogress.jobdata.UserJobRepository;
 import com.system.demo.model.SearchDTO;
 import com.system.demo.users.MyUser;
+import com.system.demo.volunteer.printer.CardPrinter;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import javax.servlet.http.HttpServletResponse;
@@ -51,6 +53,7 @@ public class VolunteerController {
     private final StorageService storageService;
     private final FailItemService failItemService;
     private final UserJobRepository userJobRepository;
+    private final CardPrinter cardPrinter;
 
     private static final String VIEW_ALL = "volunteer/list";
     private static final String SEARCH = "volunteer/search";
@@ -63,12 +66,14 @@ public class VolunteerController {
         VolunteerService volunteerService,
         StorageService storageService,
         FailItemService failItemService,
-        UserJobRepository userJobRepository) {
+        UserJobRepository userJobRepository,
+        CardPrinter cardPrinter) {
         this.applicationEventPublisher = applicationEventPublisher;
         this.volunteerService = volunteerService;
         this.storageService = storageService;
         this.failItemService = failItemService;
         this.userJobRepository = userJobRepository;
+        this.cardPrinter = cardPrinter;
     }
 
     @RequestMapping(value = "", method = RequestMethod.GET)
@@ -224,4 +229,25 @@ public class VolunteerController {
         inputStream.close();
     }
 
+    @RequestMapping(path = "print", method = RequestMethod.POST)
+    public void man(@PathVariable(name ="jobId") Long jobExecutionId, HttpServletResponse response)
+        throws Exception {
+        List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
+        String pathOfFile = cardPrinter.print(printableVolunteers);
+
+        for(int i = 0; i <printableVolunteers.size(); i++)
+        {
+            printableVolunteers.get(i).setVolunteerIsPrinted(true);
+        }
+
+        File file = new File(pathOfFile);
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        // filename=\"" + System.currentTimeMillis() + "printable.pdf"
+        response.setHeader("Content-Disposition", "attachment; "+ "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
 }

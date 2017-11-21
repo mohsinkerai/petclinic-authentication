@@ -4,13 +4,12 @@ package com.system.demo.volunteer;
  * Created by Zeeshan Damani
  */
 
-import com.system.demo.volunteer.Council.Local;
-import com.system.demo.volunteer.Council.Regional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -26,7 +25,7 @@ public class Volunteer {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private long id;
+    private Long id;
 
     @NotNull
     @Column(name = "volunteer_form_no")
@@ -100,13 +99,18 @@ public class Volunteer {
     @Column(name = "volunteer_committee")
     String volunteerCommittee;
 
-    @Column(name="volunteer_isprinted")
+    @Column(name = "volunteer_isprinted")
     boolean volunteerIsPrinted = false;
+
+    @Transient
+    private String picture;
+
+    private boolean isPictureAvailable = false;
+
     private boolean isEnabled;
 
     public boolean validateCnic() {
-        if (this.volunteerCnic.matches("(\\d){5}-(\\d){7}-(\\d){1}") && !this.volunteerCnic
-            .equals("")) {
+        if (!this.volunteerCnic.equals("")) {
             return true;
         } else {
             return false;
@@ -152,5 +156,21 @@ public class Volunteer {
         } else {
             return false;
         }
+    }
+
+    public boolean isValidForPrint() {
+        return isPictureAvailable
+            && !volunteerIsPrinted
+            && volunteerName != null
+            && validateCnic()
+            && dutyDay != null
+            && dutyZone != null
+            && volunteerCommittee != null
+            && localCouncil != null
+            && volunteerSite != null;
+    }
+
+    public boolean isNew() {
+        return this.id == null;
     }
 }
