@@ -5,43 +5,16 @@
 
 <body>
 
-<input class="container">
+<div class="container">
   <div class="row">
     <div class="col-12 text-center">
       <img src="../static/resources/images/dj-low-01.png"
            th:src="@{/resources/images/dj-low-01.png}"
-           alt="Diamond Jubilee Mubarak"/></div>
+           alt="Diamond Jubilee Mubarak"/>
+    </div>
   </div>
 
-  <script type="text/javascript" src="resources/js/webly.js"></script>
-  <script type="text/javascript" src="resources/js/capture-video-frame.js"></script>
-  <video id="videoElement" muted="true"></video>
-  <button id="capture" onclick="hello()">Capture</button>
-  <img id="my-screenshot"/>
-  <input id="image-blob" type="hidden"/>
-  <script>
-    function webcamInit() {
-      window.webcam.init().then(function() {
-        var videoElement = document.getElementById("videoElement");
-        videoElement.src = window.webcam.videoStream;
-        videoElement.play();
-      }).catch(function(error){
-        console.log(error);
-      });
-    }
-    function hello() {
-      var frame = captureVideoFrame('videoElement', 'png');
 
-      // Show the image
-      var img = document.getElementById('my-screenshot');
-      img.setAttribute('src', frame.dataUri);
-
-      var imageBlob = document.getElementById('image-blob');
-      imageBlob.value = frame.dataUri;
-      console.log(imageBlob);
-    }
-    webcamInit();
-  </script>
 </div>
 
 </body>

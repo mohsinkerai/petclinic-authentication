@@ -41,6 +41,7 @@ public class BatchController {
 
     @Autowired
     private JobRegistry jobRegistry;
+
     @Autowired
     private JobExplorer jobExplorer;
 

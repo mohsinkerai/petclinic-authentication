@@ -32,15 +32,28 @@
         th:replace="~{fragments/inputField :: input ('Duty Shift', 'dutyShift')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Duty Zone', 'dutyZone')}"/>
+
+    <div class="row">
+      <span class="col-sm-4 col-sm-offset-2">
+        <video id="videoElement" muted="true" style="width: 320px; height: 240px;"></video>
+      </span>
+      <span class="col-sm-2">
+        <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
+      </span>
+      <span class="col-sm-4">
+        <img id="my-screenshot" style="width: 320px; height: 240px;"/>
+      </span>
+    </div>
+    <input id="image-blob" type="hidden" name="picture"/>
     <!--<div class="form-group">-->
-      <!--<label class="col-sm-2 control-label">Vehicle Category</label>-->
-      <!--<div class="col-sm-10">-->
-        <!--<select class="col-sm-12 form-control" th:field="*{category}">-->
-          <!--<option th:each="cat : ${T(com.system.demo.vehicle.VehicleType).values()}"-->
-                  <!--th:value="${cat}"-->
-                  <!--th:text="${cat.getDisplayName()}"></option>-->
-        <!--</select>-->
-      <!--</div>-->
+    <!--<label class="col-sm-2 control-label">Vehicle Category</label>-->
+    <!--<div class="col-sm-10">-->
+    <!--<select class="col-sm-12 form-control" th:field="*{category}">-->
+    <!--<option th:each="cat : ${T(com.system.demo.vehicle.VehicleType).values()}"-->
+    <!--th:value="${cat}"-->
+    <!--th:text="${cat.getDisplayName()}"></option>-->
+    <!--</select>-->
+    <!--</div>-->
     <!--</div>-->
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
   </div>
@@ -55,5 +68,33 @@
     </div>
   </div>
 </form>
+<script type="text/javascript" src="/resources/js/webly.js"></script>
+<script type="text/javascript" src="/resources/js/capture-video-frame.js"></script>
+<script type="text/javascript">
+
+    function webcamInit() {
+      window.webcam.init().then(function() {
+        var videoElement = document.getElementById("videoElement");
+        videoElement.src = window.webcam.videoStream;
+        videoElement.play();
+      }).catch(function(error){
+        console.log(error);
+      });
+    }
+    function hello() {
+      var frame = captureVideoFrame('videoElement', 'png');
+
+      // Show the image
+      var img = document.getElementById('my-screenshot');
+      img.setAttribute('src', frame.dataUri);
+
+      var imageBlob = document.getElementById('image-blob');
+      imageBlob.value = frame.dataUri;
+      console.log(imageBlob);
+    }
+
+    webcamInit();
+
+</script>
 </body>
 </html>

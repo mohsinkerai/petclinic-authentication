@@ -77,6 +77,10 @@ public class VolunteerService {
             .collect(Collectors.toList());
     }
 
+    public Volunteer createNew() {
+        return new Volunteer();
+    }
+
     public void delete(Long id) {
         volunteerRepository.delete(id);
     }

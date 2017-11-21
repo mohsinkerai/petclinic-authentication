@@ -106,6 +106,24 @@ public class VolunteerController {
         return SEARCH;
     }
 
+    @RequestMapping(value = "/new", method = RequestMethod.GET)
+    public String initCreationForm(Map<String, Object> model) {
+        Volunteer vehicle = volunteerService.createNew();
+        model.put("vehicle", vehicle);
+        return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
+    }
+
+    @RequestMapping(value = "/new", method = RequestMethod.POST)
+    public String processCreationForm(@Valid Volunteer vehicle, BindingResult result) {
+        if (result.hasErrors()) {
+            return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
+        } else {
+            vehicle.setEnabled(true);
+            volunteerService.save(vehicle);
+            return "redirect:/" + BASE_URL;
+        }
+    }
+
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         Volunteer volunteer = volunteerService.findOne(id);
@@ -216,36 +234,40 @@ public class VolunteerController {
     }
 
     @RequestMapping(path = "errors/export", method = RequestMethod.GET)
-    public void exportfailItems(@PathVariable(name ="jobId") Long jobExecutionId, HttpServletResponse response)
+    public void exportfailItems(@PathVariable(name = "jobId") Long jobExecutionId,
+        HttpServletResponse response)
         throws IOException {
         File file = failItemService.exportCsv(jobExecutionId);
 
         response.setContentLength((int) file.length());
         InputStream inputStream = new FileInputStream(file);
         response.setContentType("text/csv");
-        response.setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
+        response
+            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
         inputStream.close();
     }
 
     @RequestMapping(path = "print", method = RequestMethod.POST)
-    public void man(@PathVariable(name ="jobId") Long jobExecutionId, HttpServletResponse response)
+    public void man(@PathVariable(name = "jobId") Long jobExecutionId, HttpServletResponse response)
         throws Exception {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         String pathOfFile = cardPrinter.print(printableVolunteers);
 
-        for(int i = 0; i <printableVolunteers.size(); i++)
-        {
-            printableVolunteers.get(i).setVolunteerIsPrinted(true);
-        }
+        printableVolunteers.stream()
+            .map(volunteer -> {
+                volunteer.setVolunteerIsPrinted(true);
+                return volunteer;
+            })
+            .forEach(volunteerService::save);
 
         File file = new File(pathOfFile);
         response.setContentLength((int) file.length());
         InputStream inputStream = new FileInputStream(file);
         response.setContentType("application/pdf");
         // filename=\"" + System.currentTimeMillis() + "printable.pdf"
-        response.setHeader("Content-Disposition", "attachment; "+ "\"");
+        response.setHeader("Content-Disposition", "attachment; " + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
         inputStream.close();
