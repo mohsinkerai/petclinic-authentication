@@ -65,6 +65,7 @@ public class FileUploadListener {
             log.info("Executing python command {}", pythonCommand);
             Process exec = Runtime.getRuntime().exec(pythonCommand);
             while (exec.isAlive()) {
+                // Waiting for Control
                 Thread.sleep(100);
             }
             int exitCode = exec.exitValue();
@@ -82,6 +83,7 @@ public class FileUploadListener {
         dataHouse.mkdir();
         FileUtils.copyDirectory(new File(zipExtractionFolder),dataHouse);
         long userId = fileUploadEvent.getUserId();
+        // We should copy/backup file after running job - maybe associate its name with jobId?
         String csvPath = dataHouse.getAbsolutePath() + "\\data.csv";
         log.info("Csv Path is {}", csvPath);
         Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(

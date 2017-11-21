@@ -70,6 +70,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
                 String imagePath = ImageDirectory +"\\"+ v.getVolunteerCnic();
                 if (new File(imagePath + ".jpg").exists()) {
                     volunteerImage = true;
+                    // TODO: in following line, get VolunteerCnic Should be Removed.
                     v.setVolunteerImage(imagePath + v.getVolunteerCnic()+".jpg");
                 } else if (new File(imagePath + ".jpeg").exists()) {
                     volunteerImage = true;
@@ -85,6 +86,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             }
             List<Volunteer> vol = volunteerService.findByCnic(v.getVolunteerCnic());//v.getVolunteerCnic());
             if (vol.size() == 0) {
+                v.setEnabled(true);
                 return v;
             } else {
                 recordError(BulkErrorType.CNIC_ALREADY_RESGISTERED.toString(), v);
