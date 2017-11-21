@@ -3,11 +3,13 @@ package com.system.demo.bulk.volunteer.event;
 import com.system.demo.bulk.BulkJobBuilder;
 import com.system.demo.bulk.UploadTypes;
 import java.io.ByteArrayOutputStream;
+import java.io.File;
 import java.io.IOException;
 import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.commons.io.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -35,6 +37,9 @@ public class FileUploadListener {
     @Value("${file.path.zip.extract}")
     private String zipExtractionFolder;
 
+    @Value("${file.path.data}")
+    private String allDataFolder;
+
     @Value("${file.path.xlsm}")
     private String pythonScriptPath;
 
@@ -49,11 +54,10 @@ public class FileUploadListener {
 
     @Async
     @EventListener
-    public void onApplicationEvent(FileUploadEvent fileUploadEvent) throws InterruptedException {
+    public void onApplicationEvent(FileUploadEvent fileUploadEvent) throws InterruptedException,IOException{
+
         log.info("Received file event {}", fileUploadEvent);
-
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
-
         try {
             String pythonCommand =
                 "python " + pythonScriptPath + " \"" + path + "\"" + " \"" + zipExtractionFolder
@@ -72,20 +76,23 @@ public class FileUploadListener {
             e.printStackTrace();
         }
 
-        long userId = fileUploadEvent.getUserId();
-        String csvPath = zipExtractionFolder + "\\data.csv";
-        log.info("Csv Path is {}", csvPath);
+        String rootPath= new File(".").getCanonicalPath();
 
+        File dataHouse = new File(rootPath + "\\datahouse\\"+ System.currentTimeMillis());
+        dataHouse.mkdir();
+        FileUtils.copyDirectory(new File(zipExtractionFolder),dataHouse);
+        long userId = fileUploadEvent.getUserId();
+        String csvPath = dataHouse.getAbsolutePath() + "\\data.csv";
+        log.info("Csv Path is {}", csvPath);
         Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(
             UploadTypes.VolunteerUpload.toString() + csvPath);
-
         Map<String, JobParameter> jobParamsMap = new HashMap<>();
         jobParamsMap.put("sourceFilePath", new JobParameter(csvPath));
         jobParamsMap.put("timestamp",
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
         // TODO: Fill this Params
         jobParamsMap.put("pictureFlag", new JobParameter("True"));
-        jobParamsMap.put("imagesSource", new JobParameter(zipExtractionFolder+"\\"));
+        jobParamsMap.put("imagesSource", new JobParameter(dataHouse.getAbsolutePath()));
         jobParamsMap.put("userId", new JobParameter(userId));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
         try {

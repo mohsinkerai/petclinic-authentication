@@ -99,7 +99,7 @@ public class Volunteer {
     @Column(name = "volunteer_committee")
     String volunteerCommittee;
 
-    @Column(name = "volunteer_isprinted")
+    @Column(name="volunteer_isprinted")
     boolean volunteerIsPrinted = false;
 
     @Transient
