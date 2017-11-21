@@ -108,8 +108,7 @@ public class Volunteer {
     private boolean isEnabled;
 
     public boolean validateCnic() {
-        if (this.volunteerCnic.matches("(\\d){5}-(\\d){7}-(\\d){1}") && !this.volunteerCnic
-            .equals("")) {
+        if (!this.volunteerCnic.equals("")) {
             return true;
         } else {
             return false;
