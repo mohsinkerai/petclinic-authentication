@@ -23,6 +23,7 @@ import java.util.Random;
 import com.system.demo.volunteer.VolunteerCategory;
 import org.apache.commons.text.RandomStringGenerator;
 import org.json.JSONObject;
+import org.springframework.beans.factory.annotation.Value;
 
 public class CardPrinter {
 
@@ -38,6 +39,7 @@ public class CardPrinter {
         BaseColor.BLACK);
     public Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, titlefontSize, -1,
         BaseColor.BLACK);
+
 
     /**
      * @param volunteer volunteer record
@@ -222,6 +224,9 @@ public class CardPrinter {
 
 
 
+    @Value("${file.path.zip.extract}")
+    private String zipExtractionFolder;
+
     public void CreateCard(Document qr_code_Example, String EncryptMsg, PdfWriter writer,
         float cardStartX, float cardStartY, float ratio, Volunteer volunteer) throws Exception {
         String imageUrl = getBackgroundImage(volunteer.getDutyZone()); // "D://inner cordon.jpg";
@@ -243,7 +248,7 @@ public class CardPrinter {
         qr_image.scalePercent(40);
         qr_code_Example.add(qr_image);
 
-        imageUrl = volunteer.getVolunteerImage();//"D://person.jpg";
+        imageUrl = zipExtractionFolder + "\\" + volunteer.getVolunteerImage();//"D://person.jpg";
         jpg = Image.getInstance(imageUrl);
         jpg.scaleAbsolute(64f, 68f);
         jpg.setAbsolutePosition(cardStartX + 64, cardStartY + 90);
