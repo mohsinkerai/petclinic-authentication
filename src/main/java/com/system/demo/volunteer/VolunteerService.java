@@ -17,17 +17,37 @@ import org.springframework.stereotype.Service;
 public class VolunteerService {
 
     private final VolunteerRepository volunteerRepository;
+    private final VolunteerImageService volunteerImageService;
 
     @Autowired
-    public VolunteerService(VolunteerRepository volunteerRepository) {
+    public VolunteerService(VolunteerRepository volunteerRepository,
+        VolunteerImageService volunteerImageService) {
         this.volunteerRepository = volunteerRepository;
+        this.volunteerImageService = volunteerImageService;
     }
 
     public Volunteer findOne(long id) {
-        return volunteerRepository.findOne(id);
+        Volunteer volunteer = volunteerRepository.findOne(id);
+        try {
+            String imageBase64 = volunteerImageService.read(volunteer.getVolunteerImage());
+            volunteer.setPicture(imageBase64);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        return volunteer;
     }
 
     public Volunteer save(Volunteer volunteer) {
+        if (volunteer.getPicture() != null) {
+            String filePath = null;
+            try {
+                filePath = volunteerImageService
+                    .write(volunteer.getPicture(), volunteer.getVolunteerCnic());
+                volunteer.setVolunteerImage(filePath);
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        }
         return volunteerRepository.save(volunteer);
     }
 

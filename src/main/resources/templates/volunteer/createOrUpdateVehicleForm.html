@@ -9,17 +9,15 @@
     <input
         th:replace="~{fragments/inputField :: input ('Volunteer Name', 'volunteerName')}"/>
     <input
-        th:replace="~{fragments/inputField :: input ('Volunteer Registration Date', 'registrationDate')}"/>
-    <input
         th:replace="~{fragments/inputField :: input ('Volunteer CNIC', 'volunteerCnic')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Address', 'residentialAddress')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Email Address', 'emailAdddress')}"/>
     <input
-        th:replace="~{fragments/dateField :: input ('Home Phone', 'homePhone')}"/>
+        th:replace="~{fragments/inputField :: input ('Home Phone', 'homePhone')}"/>
     <input
-        th:replace="~{fragments/dateField :: input ('Cell Phone', 'cellPhone')}"/>
+        th:replace="~{fragments/inputField :: input ('Cell Phone', 'cellPhone')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Jamatkhana', 'jamatKhanna')}"/>
     <input
@@ -32,6 +30,8 @@
         th:replace="~{fragments/inputField :: input ('Duty Shift', 'dutyShift')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Duty Zone', 'dutyZone')}"/>
+    <input
+        th:replace="~{fragments/inputField :: input ('Duty Zone', 'localCouncil')}"/>
 
     <div class="row">
       <span class="col-sm-4 col-sm-offset-2">
@@ -41,7 +41,7 @@
         <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
       </span>
       <span class="col-sm-4">
-        <img id="my-screenshot" style="width: 320px; height: 240px;"/>
+        <img id="my-screenshot" style="width: 320px; height: 240px;" th:src="'/volunteer/images/' + *{id}"/>
       </span>
     </div>
     <input id="image-blob" type="hidden" name="picture"/>

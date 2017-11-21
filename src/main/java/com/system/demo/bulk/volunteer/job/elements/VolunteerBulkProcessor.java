@@ -71,13 +71,13 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
                 if (new File(imagePath + ".jpg").exists()) {
                     volunteerImage = true;
                     // TODO: in following line, get VolunteerCnic Should be Removed.
-                    v.setVolunteerImage(imagePath + v.getVolunteerCnic()+".jpg");
+                    v.setVolunteerImage(imagePath +".jpg");
                 } else if (new File(imagePath + ".jpeg").exists()) {
                     volunteerImage = true;
-                    v.setVolunteerImage(imagePath + v.getVolunteerCnic()+".jpeg");
+                    v.setVolunteerImage(imagePath +".jpeg");
                 } else if (new File(imagePath + ".png").exists()) {
                     volunteerImage = true;
-                    v.setVolunteerImage(imagePath + v.getVolunteerCnic()+".png");
+                    v.setVolunteerImage(imagePath +".png");
                 }
                 if (volunteerImage == false) {
                     recordError(BulkErrorType.IMAGE_NOT_FOUND.toString(), v);

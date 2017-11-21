@@ -27,7 +27,6 @@ public class Volunteer {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @NotNull
     @Column(name = "volunteer_form_no")
     String volunteerFormNo;
 
@@ -42,7 +41,6 @@ public class Volunteer {
     @Column(name = "volunteer_cnic")
     String volunteerCnic;
 
-    @NotNull
     @Column(name = "volunteer_residential_address")
     String residentialAddress;
 
@@ -58,11 +56,9 @@ public class Volunteer {
     @Column(name = "volunteer_category")
     VolunteerCategory category;
 
-    @NotNull
     @Column(name = "regional_council")
     String regionalCouncil;
 
-    @NotNull
     @Column(name = "local_council")
     String localCouncil;
 

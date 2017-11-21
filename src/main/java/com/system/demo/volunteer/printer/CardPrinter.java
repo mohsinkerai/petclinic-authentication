@@ -54,7 +54,7 @@ public class CardPrinter {
 
 
 
-        String fileName = "D:/"+PDF_PW+".pdf";
+        String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\"+PDF_PW+".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
@@ -62,9 +62,9 @@ public class CardPrinter {
         String userPassword = "123";
         String ownerPassword = "123";
 
-        writer.setEncryption(userPassword.getBytes(),
-            ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING,
-            PdfWriter.ENCRYPTION_AES_128);
+//        writer.setEncryption(userPassword.getBytes(),
+//            ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING,
+//            PdfWriter.ENCRYPTION_AES_128);
 
         // Step -3: Open document for editing
 
@@ -249,7 +249,7 @@ public class CardPrinter {
         qr_image.scalePercent(40);
         qr_code_Example.add(qr_image);
 
-        imageUrl = zipExtractionFolder + "\\" + volunteer.getVolunteerImage();//"D://person.jpg";
+        imageUrl = volunteer.getVolunteerImage();//"D://person.jpg";
         jpg = Image.getInstance(imageUrl);
         jpg.scaleAbsolute(64f, 68f);
         jpg.setAbsolutePosition(cardStartX + 64, cardStartY + 90);

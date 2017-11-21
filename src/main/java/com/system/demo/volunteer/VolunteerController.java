@@ -114,7 +114,8 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/new", method = RequestMethod.POST)
-    public String processCreationForm(@Valid Volunteer vehicle, BindingResult result) {
+    public String processCreationForm(@Valid Volunteer vehicle, BindingResult result)
+        throws IOException {
         if (result.hasErrors()) {
             return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
         } else {
@@ -136,9 +137,10 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/edit/{id}", method = RequestMethod.POST)
-    public String editSave(@PathVariable("id") Long id, @Valid Volunteer volunteer,
-        BindingResult bindingResult) {
+    public String editSave(@PathVariable("id") Long id, @Valid Volunteer volunteer, Model model,
+        BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("vehicle", volunteer);
             return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
         } else {
             Volunteer repositoryVolunteer = volunteerService.findOne(id);
@@ -146,6 +148,7 @@ public class VolunteerController {
                 throw new RuntimeException("Invalid Volunteer Id");
             }
             volunteer.setId(repositoryVolunteer.getId());
+            volunteer.setEnabled(repositoryVolunteer.isEnabled());
             volunteerService.save(volunteer);
             return "redirect:/" + BASE_URL;
         }
@@ -250,7 +253,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(path = "print", method = RequestMethod.POST)
-    public void man(@PathVariable(name = "jobId") Long jobExecutionId, HttpServletResponse response)
+    public void man(HttpServletResponse response)
         throws Exception {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         String pathOfFile = cardPrinter.print(printableVolunteers);
@@ -268,6 +271,22 @@ public class VolunteerController {
         response.setContentType("application/pdf");
         // filename=\"" + System.currentTimeMillis() + "printable.pdf"
         response.setHeader("Content-Disposition", "attachment; " + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
+
+    @RequestMapping(path = "images/{volunteerId}", method = RequestMethod.GET)
+    public void imageShow(@PathVariable(name = "volunteerId") Long volunteerId,
+        HttpServletResponse response)
+        throws IOException {
+        Volunteer one = volunteerService.findOne(volunteerId);
+        File file = new File(one.getVolunteerImage());
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("image/jpeg");
+//        response
+//            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
         inputStream.close();
