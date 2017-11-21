@@ -158,6 +158,7 @@ public class Volunteer {
 
     public boolean isValidForPrint() {
         return isPictureAvailable
+            && !volunteerIsPrinted
             && volunteerName != null
             && validateCnic()
             && dutyDay != null
