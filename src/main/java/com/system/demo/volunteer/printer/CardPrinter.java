@@ -72,7 +72,6 @@ public class CardPrinter {
         float cardStartY = pageHeight - 20;
 
         float tmpCardStartY = cardStartY;
-        // generateKeyFiles(); //--> For generating Keys
 
         AsymmetricCryptography ac = new AsymmetricCryptography();
         PrivateKey privateKey = ac.getPrivate("KeyPair/privateKey");
