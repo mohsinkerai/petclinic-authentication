@@ -81,7 +81,7 @@ public class PetClinicApplication implements CommandLineRunner {
     public void run(String... strings) throws Exception {
         try {
             //   PopulateData();
-            aliShahTesting();
+//            aliShahTesting();
         } catch (Exception ex) {
             log.info("Exception in Populating Data", ex);
         }

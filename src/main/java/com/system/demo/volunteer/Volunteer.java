@@ -4,13 +4,12 @@ package com.system.demo.volunteer;
  * Created by Zeeshan Damani
  */
 
-import com.system.demo.volunteer.Council.Local;
-import com.system.demo.volunteer.Council.Regional;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -100,8 +99,11 @@ public class Volunteer {
     @Column(name = "volunteer_committee")
     String volunteerCommittee;
 
-    @Column(name="volunteer_isprinted")
+    @Column(name = "volunteer_isprinted")
     boolean volunteerIsPrinted = false;
+
+    @Transient
+    private String picture;
 
     private boolean isPictureAvailable = false;
 
@@ -166,7 +168,6 @@ public class Volunteer {
             && volunteerCommittee != null
             && localCouncil != null
             && volunteerSite != null;
-
     }
 
     public boolean isNew() {

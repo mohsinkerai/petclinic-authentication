@@ -8,6 +8,10 @@
 <h2>Volunteers</h2>
 <p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh soon</p>
 <span class="row">
+  <form th:action="@{/volunteer/print}" method="post">
+    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+    <button class="btn btn-default pull-right" type="submit">Print All Cards</button>
+  </form>
   <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right">Search</span></a>
   <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
 </Span>

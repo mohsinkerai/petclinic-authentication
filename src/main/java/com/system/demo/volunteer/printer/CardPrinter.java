@@ -24,7 +24,9 @@ import com.system.demo.volunteer.VolunteerCategory;
 import org.apache.commons.text.RandomStringGenerator;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.stereotype.Component;
 
+@Component
 public class CardPrinter {
 
     int pageWidth = 530;
