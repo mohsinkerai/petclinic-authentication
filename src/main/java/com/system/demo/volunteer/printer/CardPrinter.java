@@ -86,7 +86,7 @@ public class CardPrinter {
         PrivateKey privateKey = ac.getPrivate("KeyPair/privateKey");
         PublicKey publicKey = ac.getPublic("KeyPair/publicKey");
 
-        for (int i = 0; i < volunteer.size(); i++) {
+        for (int i = 0; i < 1; i++) {
             if (i % 6 == 0) {
                 tmpCardStartY = cardStartY;
                 qr_code_Example.newPage();
@@ -105,7 +105,49 @@ public class CardPrinter {
                     writer,
                     cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
                     tmpCardStartY,
-                    46.5f,
+                    52,
+                    volunteer.get(i));
+
+                CreateCard(qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX + (pageWidth / 2),
+                    tmpCardStartY,
+                    52.5f,
+                    volunteer.get(i));
+                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
+
+                CreateCard(qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
+                    tmpCardStartY,
+                    53.5f,
+                    volunteer.get(i));
+
+                CreateCard(qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX + (pageWidth / 2),
+                    tmpCardStartY,
+                    54,
+                    volunteer.get(i));
+                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
+
+                CreateCard(qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
+                    tmpCardStartY,
+                    51.5f,
+                    volunteer.get(i));
+
+                CreateCard(qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX +  (pageWidth / 2),
+                    tmpCardStartY,
+                    51,
                     volunteer.get(i));
             } catch (Exception ex) {
 
