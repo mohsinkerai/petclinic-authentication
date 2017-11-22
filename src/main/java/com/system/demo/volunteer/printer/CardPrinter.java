@@ -32,14 +32,20 @@ public class CardPrinter {
     int pageWidth = 530;
     int pageHeight = 800;
     int titlefontSize = 11;
-    int smallfontSize = 9;
+    int namefontSize = 12;
+    int smallfontSize = 10;
+    int zonefontSize = 15;
     Random rand = new Random();
 
     String PDF_PW =  Integer.toString(rand.nextInt(9999) + 1000);// "1423";
 
-    public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, -1,
+    public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, Font.BOLD,
         BaseColor.BLACK);
-    public Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, titlefontSize, -1,
+    public Font namefont = new Font(Font.FontFamily.TIMES_ROMAN, namefontSize, Font.BOLD,
+        BaseColor.BLACK);
+    public Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, titlefontSize, Font.BOLD,
+        BaseColor.BLACK);
+    public Font zoneFont = new Font(Font.FontFamily.TIMES_ROMAN, zonefontSize, Font.BOLD,
         BaseColor.BLACK);
 
 
@@ -54,13 +60,14 @@ public class CardPrinter {
 
 
 
-        String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\"+PDF_PW+".pdf";
+        //String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\"+PDF_PW+".pdf";
+        String fileName = "D:\\"+PDF_PW+".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
 
-        String userPassword = "123";
-        String ownerPassword = "123";
+      //  String userPassword = "123";
+      //  String ownerPassword = "123";
 
 //        writer.setEncryption(userPassword.getBytes(),
 //            ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING,
@@ -224,11 +231,93 @@ public class CardPrinter {
     }
 
 
-
-    @Value("${file.path.zip.extract}")
-    private String zipExtractionFolder;
-
     public void CreateCard(Document qr_code_Example, String EncryptMsg, PdfWriter writer,
+        float cardStartX, float cardStartY, float ratio, Volunteer volunteer) throws Exception {
+        String imageUrl = getBackgroundImage(volunteer.getDutyZone()); // "D://inner cordon.jpg";
+        Image jpg = Image.getInstance(imageUrl);
+        jpg.scalePercent(ratio);
+        cardStartY = cardStartY - jpg.getScaledHeight();
+
+        jpg.setAbsolutePosition(cardStartX, cardStartY);
+        jpg.setBorder(Rectangle.BOX);
+        jpg.setBorderColor(BaseColor.BLACK);
+        jpg.setBorderWidth(2f);
+
+        qr_code_Example.add(jpg);
+
+        Image qr_image = getQRImage(EncryptMsg, writer);
+        qr_image.setAbsolutePosition(
+            cardStartX + 10,
+            cardStartY + 90);
+        qr_image.scalePercent(65);
+        qr_code_Example.add(qr_image);
+
+        imageUrl = volunteer.getVolunteerImage();//"D://person.jpg";
+        jpg = Image.getInstance(imageUrl);
+        jpg.scaleAbsolute(64f, 64f);
+        jpg.setAbsolutePosition(cardStartX + 104, cardStartY + 100);
+        qr_code_Example.add(jpg);
+
+        PdfContentByte cb = writer.getDirectContent();
+        ColumnText ct = new ColumnText(cb);
+        Phrase myText = new Phrase( (volunteer.getVolunteerName()!=null)?volunteer.getVolunteerName().toUpperCase() : "" , namefont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 66,
+            cardStartX + (pageWidth / 2), cardStartY + 82, 6, Element.ALIGN_CENTER);
+        ct.go();
+
+        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)?volunteer.getVolunteerCommittee() : "" , smallfont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 56,
+            cardStartX + (pageWidth / 2), cardStartY + 66, 6, Element.ALIGN_CENTER);
+        ct.go();
+
+        myText = new Phrase( (volunteer.getVolunteerCnic()!=null)?volunteer.getVolunteerCnic(): "" , smallfont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 43,
+            cardStartX + (pageWidth / 2), cardStartY + 53, 6, Element.ALIGN_CENTER);
+        ct.go();
+
+        //local council
+        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?volunteer.getLocalCouncil(): "" , smallfont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 30,
+            cardStartX + (pageWidth / 2), cardStartY + 40, 6, Element.ALIGN_CENTER);
+        ct.go();
+
+        //Zone
+        myText = new Phrase( (volunteer.getDutyZone()!=null)?volunteer.getDutyZone().toUpperCase(): "" , zoneFont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY - 10,
+            cardStartX + (pageWidth / 2), cardStartY + 22, 6, Element.ALIGN_CENTER);
+        ct.go();
+
+        //Header title
+        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?volunteer.getVolunteerSite().toUpperCase(): "" , titleFont);
+        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 162, cardStartX + (pageWidth / 2),
+            cardStartY + 175, 6, Element.ALIGN_CENTER);
+        ct.go();
+    }
+
+    public Image getQRImage(String EncryptMsg, PdfWriter writer) throws Exception {
+        BarcodeQRCode my_code = new BarcodeQRCode(EncryptMsg, 150, 150, null);
+        //Step-6: Get Image corresponding to the input string
+        Image qr_image = my_code.getImage();
+
+        qr_image = cropImage(writer, qr_image, 10, 10, 10, 10);
+
+        return qr_image;
+    }
+
+    public Image cropImage(PdfWriter writer, Image image, float leftReduction, float rightReduction,
+        float topReduction, float bottomReduction) throws DocumentException {
+        float width = image.getScaledWidth();
+        float height = image.getScaledHeight();
+        PdfTemplate template = writer.getDirectContent().createTemplate(
+            width - leftReduction - rightReduction,
+            height - topReduction - bottomReduction);
+        template.addImage(image,
+            width, 0, 0,
+            height, -leftReduction, -bottomReduction);
+        return Image.getInstance(template);
+    }
+
+    /*public void CreateCard(Document qr_code_Example, String EncryptMsg, PdfWriter writer,
         float cardStartX, float cardStartY, float ratio, Volunteer volunteer) throws Exception {
         String imageUrl = getBackgroundImage(volunteer.getDutyZone()); // "D://inner cordon.jpg";
         Image jpg = Image.getInstance(imageUrl);
@@ -286,28 +375,5 @@ public class CardPrinter {
         ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 160, cardStartX + (pageWidth / 2),
             cardStartY + 170, 6, Element.ALIGN_CENTER);
         ct.go();
-    }
-
-    public Image getQRImage(String EncryptMsg, PdfWriter writer) throws Exception {
-        BarcodeQRCode my_code = new BarcodeQRCode(EncryptMsg, 150, 150, null);
-        //Step-6: Get Image corresponding to the input string
-        Image qr_image = my_code.getImage();
-
-        qr_image = cropImage(writer, qr_image, 10, 10, 10, 10);
-
-        return qr_image;
-    }
-
-    public Image cropImage(PdfWriter writer, Image image, float leftReduction, float rightReduction,
-        float topReduction, float bottomReduction) throws DocumentException {
-        float width = image.getScaledWidth();
-        float height = image.getScaledHeight();
-        PdfTemplate template = writer.getDirectContent().createTemplate(
-            width - leftReduction - rightReduction,
-            height - topReduction - bottomReduction);
-        template.addImage(image,
-            width, 0, 0,
-            height, -leftReduction, -bottomReduction);
-        return Image.getInstance(template);
-    }
+    }*/
 }
