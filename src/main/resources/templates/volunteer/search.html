@@ -8,68 +8,80 @@
 <h2>Volunteers</h2>
 <div style="margin-top: 20px;">
 
-        <form th:object="${query}" class="container searchForm" id="Search" method="get">
-      <div class="row">
-        <div class="col-sm-4 mb-2">
-          <input
-              th:replace="~{fragments/searchField :: input ('Volunteer-Name', 'name')}"/>
-        </div>
-        <div class="col-sm-4 mb-2">
-          <input
-              th:replace="~{fragments/searchField :: input ('Volunteer CNIC', 'cnic')}"/>
-        </div>
-        <div class="col-sm-4 mb-2">
-          <input
-              th:replace="~{fragments/searchField :: input ('Regional Council', 'regionalCouncil')}"/>
-        </div>
+  <form th:object="${query}" class="container searchForm" id="Search" method="get">
+    <div class="row">
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Volunteer-Name', 'name')}"/>
       </div>
-      <div class="row">
-        <div class="col-sm-4 mb-2">
-          <input
-              th:replace="~{fragments/searchField :: input ('Jamatkhana', 'jamatkhana')}"/>
-        </div>
-        <div class="col-sm-4 mb-2">
-          <input
-              th:replace="~{fragments/searchField :: input ('Day', 'day')}"/>
-        </div>
-          <div class="col-sm-4 mb-2">
-          <label class="col-sm-2 control-label">Volunteer Category</label>
-              <div class="col-sm-10">
-                <select class="form-control" th:field="*{category}">
-                  <option th:each="cat : ${T(com.system.demo.volunteer.VolunteerCategory).values()}"
-                          th:value="${cat}"
-                          th:text="${cat.name()}"></option>
-                </select>
-              </div>
-          </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Volunteer CNIC', 'cnic')}"/>
       </div>
-    <div id="voltSearchRow" class="row">
-        <div class="col-md-4 mb-2">
-          <div class="col-sm-2">
-            <button class="btn btn-default" type="submit">Search</button>
-          </div>
-        </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Regional Council', 'regionalCouncil')}"/>
+      </div>
     </div>
-    <a th:href="@{/volunteer/search/export(name=${param.name},
+    <div class="row">
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Jamatkhana', 'jamatkhana')}"/>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Day', 'day')}"/>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Zone', 'zone')}"/>
+      </div>
+    </div>
+    <div id="voltSearchRow" class="row">
+      <div class="col-md-4 mb-2">
+        <div class="col-sm-2">
+          <button class="btn btn-default" type="submit">Search</button>
+        </div>
+      </div>
+    </div>
+  </form>
+
+  <a th:href="@{/volunteer/search/export(name=${param.name},
       cnic=${param.cnic},
       regionalCouncil=${param.regionalCouncil},
       jamatkhana=${param.jamatkhana},
       day=${param.day},
-      category=${param.category}
+      zone=${param.zone}
     )}"><span class="btn btn-default btn-margin pull-right">Volunteers File Export</span></a>
-    <a th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right">Volunteers File Upload</span></a>
+  <form th:action="@{/volunteer/search/print(name=${param.name},
+      cnic=${param.cnic},
+      regionalCouncil=${param.regionalCouncil},
+      jamatkhana=${param.jamatkhana},
+      day=${param.day},
+      zone=${param.zone}
+    )}" method="post" style="display: inline;">
+    <!--<input type="hidden" name="name" th:value="${param.name}">-->
+    <!--<input type="hidden" name="cnic" th:value="${param.cnic}">-->
+    <!--<input type="hidden" name="regionalCouncil" th:value="${param.regionalCouncil}">-->
+    <!--<input type="hidden" name="jamatkhana" th:value="${param.jamatkhana}">-->
+    <!--<input type="hidden" name="day" th:value="${param.day}">-->
+    <!--<input type="hidden" name="zone" th:value="${param.zone}">-->
+    <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
+    <button class="btn btn-default pull-right form-inline" type="submit">Print Searched Cards
+    </button>
   </form>
+  <a th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right">Volunteers File Upload</span></a>
 </div>
 <table id="volunteers" class="table table-striped">
   <thead>
-    <tr>
-      <th style="width: 50px;">Volunteer Name</th>
-      <th style="width: 200px">Volunteer CNIC</th>
-      <th style="width: 250px;">Volunteer Age</th>
-      <th style="width: 120px;">Category</a></th>
-      <th style="width: 100px">Mobile Number</th>
-      <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
-    </tr>
+  <tr>
+    <th style="width: 50px;">Volunteer Name</th>
+    <th style="width: 200px">Volunteer CNIC</th>
+    <th style="width: 250px;">Volunteer Age</th>
+    <th style="width: 120px;">Category</a></th>
+    <th style="width: 100px">Mobile Number</th>
+    <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
+  </tr>
   </thead>
   <tbody>
   <tr th:each="volunteer : ${page}">
@@ -81,6 +93,20 @@
     <td sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
+      <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline"
+            th:name="'myform' + ${volunteer.id}" method="post"
+            th:action="@{/volunteer/search/__${volunteer.id}__/unprint(name=${param.name},
+              cnic=${param.cnic},
+              regionalCouncil=${param.regionalCouncil},
+              jamatkhana=${param.jamatkhana},
+              day=${param.day},
+              zone=${param.zone}
+            )}"
+            sec:authorize="hasAuthority('ADMIN')">
+        <span th:onclick="'document.forms[\'myform'+ ${volunteer.id} +'\'].submit();'"><span
+            class="glyphicon glyphicon-refresh"></span></span>
+        <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+      </form>
     </td>
   </tr>
   </tbody>

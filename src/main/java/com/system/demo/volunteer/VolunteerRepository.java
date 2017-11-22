@@ -14,18 +14,18 @@ import java.util.List;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
-    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndCategory(
+    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String JamatKhanna,
-        VolunteerCategory category,
+        String zone,
         Pageable page);
 
-    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndCategory(
+    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String JamatKhanna,
-        VolunteerCategory category);
+        String zone);
 
     List<Volunteer> findByVolunteerCnic(String VolunteerCnic);
 
