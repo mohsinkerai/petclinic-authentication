@@ -34,13 +34,11 @@ public class FileUploadListener {
     private final JobExplorer jobExplorer;
     private final JobLauncher jobLauncher;
 
-    @Value("${file.path.zip.extract}")
     private String zipExtractionFolder;
 
     @Value("${file.path.data}")
     private String allDataFolder;
 
-    @Value("${file.path.xlsm}")
     private String pythonScriptPath;
 
     public FileUploadListener(BulkJobBuilder bulkJobBuilder,
@@ -56,11 +54,15 @@ public class FileUploadListener {
     @EventListener
     public void onApplicationEvent(FileUploadEvent fileUploadEvent) throws InterruptedException,IOException{
 
+        String rootPath= new File(".").getCanonicalPath();
+        pythonScriptPath = rootPath + "\\src\\main\\resources\\xlsmToCsv.py";
+        File dataHouse = new File(rootPath + "\\datahouse\\"+ System.currentTimeMillis());
         log.info("Received file event {}", fileUploadEvent);
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
+        dataHouse.mkdir();
         try {
             String pythonCommand =
-                "python " + pythonScriptPath + " \"" + path + "\"" + " \"" + zipExtractionFolder
+                "python " + pythonScriptPath + " \"" + path + "\"" + " \"" + dataHouse.getCanonicalPath()
                     + "\"";
             log.info("Executing python command {}", pythonCommand);
             Process exec = Runtime.getRuntime().exec(pythonCommand);
@@ -77,11 +79,6 @@ public class FileUploadListener {
             e.printStackTrace();
         }
 
-        String rootPath= new File(".").getCanonicalPath();
-
-        File dataHouse = new File(rootPath + "\\datahouse\\"+ System.currentTimeMillis());
-        dataHouse.mkdir();
-        FileUtils.copyDirectory(new File(zipExtractionFolder),dataHouse);
         long userId = fileUploadEvent.getUserId();
         // We should copy/backup file after running job - maybe associate its name with jobId?
         String csvPath = dataHouse.getAbsolutePath() + "\\data.csv";

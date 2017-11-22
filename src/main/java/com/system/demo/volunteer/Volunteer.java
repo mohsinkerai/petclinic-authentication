@@ -123,7 +123,7 @@ public class Volunteer {
     }
 
     public boolean validateMobile() {
-        if (this.cellPhone.matches("^(\\d){4}-(\\d){7}$") || this.cellPhone.equals("")) {
+        if (this.cellPhone.matches("^(\\d){4}-(\\d){7}$") || this.cellPhone.equals("") || this.cellPhone.matches("^(\\d){11}$")) {
             return true;
         } else {
             return false;

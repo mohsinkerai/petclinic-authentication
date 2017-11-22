@@ -49,19 +49,21 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
         if (!v.validateCnic()) {
             recordError(BulkErrorType.INVALID_CNIC.toString(), v);
             return null;
-        } else if (!v.valiateAge()) {
-            recordError(BulkErrorType.VALIDATION_INVALID_AGE.toString(), v);
-            return null;
-        } else if (!v.valiateHomePhone()) {
-            recordError(BulkErrorType.VALIDATION_INVALID_HOMEPHONE.toString(), v);
-            return null;
-        } else if (!v.valiateResidentialAddress()) {
-            recordError(BulkErrorType.VALIADTION_INVALID_RESIDENCE.toString(), v);
-            return null;
-        } else if (!v.validateEmail()) {
-            recordError(BulkErrorType.VALIDATION_INVALID_EMAIL.toString(), v);
-            return null;
-        } else if (!v.validateMobile()) {
+        }
+//         else if (!v.valiateAge()) {
+//            recordError(BulkErrorType.VALIDATION_INVALID_AGE.toString(), v);
+//            return null;
+//        } else if (!v.valiateHomePhone()) {
+//            recordError(BulkErrorType.VALIDATION_INVALID_HOMEPHONE.toString(), v);
+//            return null;
+//        } else if (!v.valiateResidentialAddress()) {
+//            recordError(BulkErrorType.VALIADTION_INVALID_RESIDENCE.toString(), v);
+//            return null;
+//        } else if (!v.validateEmail()) {
+//            recordError(BulkErrorType.VALIDATION_INVALID_EMAIL.toString(), v);
+//            return null;
+//        }
+            else if (!v.validateMobile()) {
             recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
             return null;
         } else {

@@ -14,6 +14,8 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.system.demo.volunteer.Volunteer;
+
+import java.io.File;
 import java.io.FileOutputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
@@ -58,7 +60,8 @@ public class CardPrinter {
         Document qr_code_Example = new Document(new Rectangle(pageWidth, pageHeight), 10, 10, 10,
             10);
 
-        String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\" + PDF_PW + ".pdf";
+        String rootPath= new File(".").getCanonicalPath();
+        String fileName = rootPath + "\\pdf"+ PDF_PW + ".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));

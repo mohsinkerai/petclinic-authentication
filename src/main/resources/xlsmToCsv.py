@@ -10,8 +10,9 @@ param_2= sys.argv[2] # extraction path
 
 xlsmFilePath = 'data.xlsm'
 csvFilePath = 'data.csv'
-sheetName = 'sheet2'
-print(param_1)
+sheetName = 'Sheet1'
+
+
 zip = zipfile.ZipFile(r''+param_1)
 zip.extractall(r'' + param_2)
 

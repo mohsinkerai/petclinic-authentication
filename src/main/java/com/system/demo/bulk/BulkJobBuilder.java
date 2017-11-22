@@ -24,24 +24,17 @@ import org.springframework.stereotype.Component;
 @EnableBatchProcessing
 public class BulkJobBuilder {
 
-  private final FlatFileItemReader<Volunteer> volunteerUpdateReader;
-
 
   private final FlatFileItemReader<Volunteer> volunteerItemReader;
-
   private final StepBuilderFactory stepBuilderFactory;
   private final JobBuilderFactory jobBuilderFactory;
   private final JpaItemWriter<Volunteer> volunteerBulkWriter;
   private final VolunteerItemWriterListener itemLoggerListener;
   private final VolunteerBulkProcessor volunteerBulkProcessor;
   private final VolunteerJobNotificationListener volunteerJobNotificationListener;
-  private final FlatFileItemReader<Vehicle> vehicleFlatFileItemReader;
-  private final JpaItemWriter<Vehicle> vehicleJpaItemWriter;
   private final VolunteerItemReaderListener volunteerItemReaderListener;
 
   public BulkJobBuilder(
-      @Qualifier("volunteerUpdateItemReader")
-      FlatFileItemReader<Volunteer> volunteerUpdateReader,
       @Qualifier("volunteerItemReader")
       FlatFileItemReader<Volunteer> volunteerItemReader,
       StepBuilderFactory stepBuilderFactory,
@@ -50,10 +43,7 @@ public class BulkJobBuilder {
       VolunteerItemWriterListener itemLoggerListener,
       VolunteerBulkProcessor volunteerBulkProcessor,
       VolunteerJobNotificationListener volunteerJobNotificationListener,
-      FlatFileItemReader<Vehicle> vehicleFlatFileItemReader,
-      JpaItemWriter<Vehicle> vehicleJpaItemWriter,
       VolunteerItemReaderListener volunteerItemReaderListener) {
-    this.volunteerUpdateReader = volunteerUpdateReader;
     this.volunteerItemReader = volunteerItemReader;
     this.stepBuilderFactory = stepBuilderFactory;
     this.jobBuilderFactory = jobBuilderFactory;
@@ -61,8 +51,6 @@ public class BulkJobBuilder {
     this.itemLoggerListener = itemLoggerListener;
     this.volunteerBulkProcessor = volunteerBulkProcessor;
     this.volunteerJobNotificationListener = volunteerJobNotificationListener;
-    this.vehicleFlatFileItemReader = vehicleFlatFileItemReader;
-    this.vehicleJpaItemWriter = vehicleJpaItemWriter;
     this.volunteerItemReaderListener = volunteerItemReaderListener;
 
   }

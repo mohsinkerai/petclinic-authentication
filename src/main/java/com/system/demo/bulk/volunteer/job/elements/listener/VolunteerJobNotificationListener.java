@@ -48,7 +48,7 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
                log.info("Number of Items Skip on read from file  : " + totalSkipProcessCount);
                log.info("Number of Items Skip on write from file  : " + totalWriteSkipCount);
            } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
-               log.info("CSV file Uploading Failed");
+               log.info("CSV file Uploading Failed of job  " + jobExecution.getJobId());
                userJobData.setJobStatus(BatchStatus.FAILED.toString());
                userJobService.save(userJobData);
            }

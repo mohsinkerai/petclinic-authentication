@@ -18,18 +18,18 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
             //volunteer.setResidentialAddress(fieldSet.readString(4));
             //volunteer.setEmailAdddress(fieldSet.readString(5));
             //volunteer.setHomePhone(fieldSet.readString(6));
-            volunteer.setCellPhone(fieldSet.readString(4));
-            volunteer.setVolunteerMemberOf(fieldSet.readString(5));
-            volunteer.setRegionalCouncil(fieldSet.readString(6));
+            volunteer.setCellPhone(fieldSet.readString(3));
+            volunteer.setVolunteerMemberOf(fieldSet.readString(4));
+            volunteer.setRegionalCouncil(fieldSet.readString(5));
             //volunteer.setVolunteerJurisdction(fieldSet.readString(10));
-            volunteer.setLocalCouncil(fieldSet.readString(7));
-            volunteer.setJamatKhanna(fieldSet.readString(8));
-            volunteer.setInstitution(fieldSet.readString(9));
-            volunteer.setDutyDay(fieldSet.readString(10) != null ? fieldSet.readString(14) : "");
+            volunteer.setLocalCouncil(fieldSet.readString(6));
+            volunteer.setJamatKhanna(fieldSet.readString(7));
+            volunteer.setInstitution(fieldSet.readString(8));
+            volunteer.setDutyDay(fieldSet.readString(9) != null ? fieldSet.readString(9) : "");
             //volunteer.setAge(fieldSet.readString(15));
-            volunteer.setDutyShift(fieldSet.readString(11) != null ? fieldSet.readString(16) : "");
-            volunteer.setDutyZone(fieldSet.readString(12) != null ? fieldSet.readString(17): "");
-            volunteer.setVolunteerSite(fieldSet.readString(13));
+            volunteer.setDutyShift(fieldSet.readString(10) != null ? fieldSet.readString(10) : "");
+            volunteer.setDutyZone(fieldSet.readString(11) != null ? fieldSet.readString(11): "");
+            volunteer.setVolunteerSite(fieldSet.readString(12));
             // volunteer.setVolunteerCommittee(fieldSet.readString(19));
 
             return volunteer;
