@@ -19,9 +19,6 @@ import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.Random;
-
-import com.system.demo.volunteer.VolunteerCategory;
-import org.apache.commons.text.RandomStringGenerator;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -35,7 +32,7 @@ public class CardPrinter {
     int smallfontSize = 9;
     Random rand = new Random();
 
-    String PDF_PW =  Integer.toString(rand.nextInt(9999) + 1000);// "1423";
+    String PDF_PW = Integer.toString(rand.nextInt(9999) + 1000);// "1423";
 
     public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, -1,
         BaseColor.BLACK);
@@ -52,9 +49,7 @@ public class CardPrinter {
         Document qr_code_Example = new Document(new Rectangle(pageWidth, pageHeight), 10, 10, 10,
             10);
 
-
-
-        String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\"+PDF_PW+".pdf";
+        String fileName = "C:\\Users\\Mohsin Kerai\\Documents\\kachra\\" + PDF_PW + ".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
@@ -79,18 +74,18 @@ public class CardPrinter {
         PrivateKey privateKey = ac.getPrivate("KeyPair/privateKey");
         PublicKey publicKey = ac.getPublic("KeyPair/publicKey");
 
-
-        for (int i=0; i< volunteer.size();i++) {
-            if(i%6 == 0)
+        for (int i = 0; i < volunteer.size(); i++) {
+            if (i % 6 == 0) {
                 tmpCardStartY = cardStartY;
-            else if(i%2 == 0)
-                tmpCardStartY = tmpCardStartY -(pageHeight / 3);
+                qr_code_Example.newPage();
+            } else if (i % 2 == 0) {
+                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
+            }
 
+            String jsonMsg = getJsonForQR(volunteer.get(i));
 
-        String jsonMsg = getJsonForQR(volunteer.get(i));
-
-        String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
-        //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
+            String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
+            //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
 
             try {
                 CreateCard(qr_code_Example,
@@ -100,8 +95,7 @@ public class CardPrinter {
                     tmpCardStartY,
                     46.5f,
                     volunteer.get(i));
-            }catch (Exception ex)
-            {
+            } catch (Exception ex) {
 
             }
         }
@@ -110,7 +104,7 @@ public class CardPrinter {
         return fileName;
     }
 
-    public void generateKeyFiles(){
+    public void generateKeyFiles() {
         GenerateKeys gk;
         try {
             gk = new GenerateKeys(1024);
@@ -122,68 +116,68 @@ public class CardPrinter {
         }
     }
 
-    public static int getSiteForQR(String site)
-    {
-        if(site.equalsIgnoreCase("Booni"))
+    public static int getSiteForQR(String site) {
+        if (site.equalsIgnoreCase("Booni")) {
             return 1;
-        else if(site.equalsIgnoreCase("Garam Chashma"))
+        } else if (site.equalsIgnoreCase("Garam Chashma")) {
             return 2;
-        else if(site.equalsIgnoreCase("Tause"))
+        } else if (site.equalsIgnoreCase("Tause")) {
             return 3;
-        else if(site.equalsIgnoreCase("Alyabad"))
+        } else if (site.equalsIgnoreCase("Alyabad")) {
             return 4;
-        else
+        } else {
             return -1;
+        }
     }
 
-    public static int getCommitteeForQR(String committee)
-    {
-        if(committee.equalsIgnoreCase("Security"))
+    public static int getCommitteeForQR(String committee) {
+        if (committee.equalsIgnoreCase("Security")) {
             return 0;
-        else if(committee.equalsIgnoreCase("Darbar"))
+        } else if (committee.equalsIgnoreCase("Darbar")) {
             return 1;
-        else
+        } else {
             return -1;
+        }
     }
 
-    public static int getZoneForQR(String zone)
-    {
-        if(zone.equalsIgnoreCase("MHI entourage"))
+    public static int getZoneForQR(String zone) {
+        if (zone.equalsIgnoreCase("MHI entourage")) {
             return 1;
-        else if(zone.equalsIgnoreCase("Pandal"))
+        } else if (zone.equalsIgnoreCase("Pandal")) {
             return 2;
-        else if(zone.equalsIgnoreCase("Main Gate"))
+        } else if (zone.equalsIgnoreCase("Main Gate")) {
             return 3;
-        else if(zone.equalsIgnoreCase("Inner Cordon"))
+        } else if (zone.equalsIgnoreCase("Inner Cordon")) {
             return 4;
-        else if(zone.equalsIgnoreCase("Outer Cordon"))
+        } else if (zone.equalsIgnoreCase("Outer Cordon")) {
             return 5;
-        else if(zone.equalsIgnoreCase("NTF/RTF Team"))
+        } else if (zone.equalsIgnoreCase("NTF/RTF Team")) {
             return 6;
-        else if(zone.equalsIgnoreCase("Sacrifice Duty"))
+        } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return 7;
-        else
+        } else {
             return -1;
+        }
     }
 
-    public String getBackgroundImage(String zone)
-    {
-        if(zone.equalsIgnoreCase("MHI entourage"))
+    public String getBackgroundImage(String zone) {
+        if (zone.equalsIgnoreCase("MHI entourage")) {
             return "cardLayouts/MHI Entourage.jpg";
-        else if(zone.equalsIgnoreCase("Pandal"))
+        } else if (zone.equalsIgnoreCase("Pandal")) {
             return "cardLayouts/Pandol.jpg";
-        else if(zone.equalsIgnoreCase("Main Gate"))
+        } else if (zone.equalsIgnoreCase("Main Gate")) {
             return "cardLayouts/Main Gate.jpg";
-        else if(zone.equalsIgnoreCase("Inner Cordon"))
+        } else if (zone.equalsIgnoreCase("Inner Cordon")) {
             return "cardLayouts/inner cordon.jpg";
-        else if(zone.equalsIgnoreCase("Outer Cordon"))
+        } else if (zone.equalsIgnoreCase("Outer Cordon")) {
             return "cardLayouts/Outer cordon.jpg";
-        else if(zone.equalsIgnoreCase("NTF/RTF Team"))
+        } else if (zone.equalsIgnoreCase("NTF/RTF Team")) {
             return "cardLayouts/RTF.jpg";
-        else if(zone.equalsIgnoreCase("Sacrifice Duty"))
+        } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return "cardLayouts/Sacrifice Duty.jpg";
-        else
+        } else {
             return "";
+        }
     }
 
     public static String getJsonForQR(Volunteer volunteer) {
@@ -199,7 +193,7 @@ public class CardPrinter {
 		N = Name*/
 
         item.put("S", getSiteForQR(volunteer.getVolunteerSite()));
-		/*1 = Booni
+        /*1 = Booni
 		2 = Garam Chashma
 		3 = Tause
 		4 = Alyabad*/
@@ -222,7 +216,6 @@ public class CardPrinter {
 
         return message;
     }
-
 
 
     @Value("${file.path.zip.extract}")
