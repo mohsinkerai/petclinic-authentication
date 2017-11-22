@@ -26,7 +26,7 @@
     <div class="row">
       <div class="col-sm-4 mb-2">
         <input
-            th:replace="~{fragments/searchField :: input ('Jamatkhana', 'jamatkhana')}"/>
+            th:replace="~{fragments/searchField :: input ('Local Council', 'localCouncil')}"/>
       </div>
       <div class="col-sm-4 mb-2">
         <input
@@ -75,11 +75,14 @@
 <table id="volunteers" class="table table-striped">
   <thead>
   <tr>
-    <th style="width: 50px;">Volunteer Name</th>
-    <th style="width: 200px">Volunteer CNIC</th>
-    <th style="width: 250px;">Volunteer Age</th>
+    <th style="width: 200px;">Volunteer Name</th>
+    <th style="width: 100px">Volunteer CNIC</th>
+    <th style="width: 100px">Local Council</th>
+    <th style="width: 100px">Volunteer Committee</th>
+    <th style="width: 100px;">Duty Zone</th>
+    <th style="width: 100px;">Volunteer Site</th>
     <th style="width: 120px;">Category</a></th>
-    <th style="width: 100px">Mobile Number</th>
+    <th style="width: 200px">Mobile Number</th>
     <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
   </tr>
   </thead>
@@ -87,7 +90,10 @@
   <tr th:each="volunteer : ${page}">
     <td th:text="${volunteer.volunteerName}"/>
     <td th:text="${volunteer.volunteerCnic}"/>
-    <td th:text="${volunteer.age}"/>
+    <td th:text="${volunteer.localCouncil}"/>
+    <td th:text="${volunteer.volunteerCommittee}"/>
+    <td th:text="${volunteer.dutyZone}"/>
+    <td th:text="${volunteer.volunteerSite}"/>
     <td th:text="${volunteer.category}"/>
     <td th:text="${volunteer.cellPhone}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">

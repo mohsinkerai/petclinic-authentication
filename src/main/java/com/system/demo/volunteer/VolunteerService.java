@@ -68,20 +68,20 @@ public class VolunteerService {
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
-                query.getJamatkhana(),
+                query.getLocalCouncil(),
                 query.getZone(),
                 pageable);
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
-                query.getJamatkhana(),
+                query.getLocalCouncil(),
                 query.getZone());
     }
 
@@ -104,6 +104,10 @@ public class VolunteerService {
 
     public Volunteer createNew() {
         return new Volunteer();
+    }
+
+    public long getUnprintedCount() {
+        return volunteerRepository.getUnprintedCount();
     }
 
     public void delete(Long id) {

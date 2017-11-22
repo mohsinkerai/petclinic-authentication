@@ -16,6 +16,7 @@ public class VolunteerSearchDTO {
     private VolunteerCategory category;
     private String regionalCouncil;
     private String jamatkhana;
+    private String localCouncil;
     private String day;
     private String shift;
     private String zone;
@@ -24,6 +25,7 @@ public class VolunteerSearchDTO {
         return isNull(name) &&
             isNull(cnic) &&
             isNull(category) &&
+            isNull(localCouncil) &&
             isNull(regionalCouncil) &&
             isNull(jamatkhana) &&
             isNull(day) &&
