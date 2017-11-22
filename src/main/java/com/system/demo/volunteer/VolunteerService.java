@@ -37,6 +37,10 @@ public class VolunteerService {
         return volunteer;
     }
 
+    public Volunteer findOneWithoutImage(long id) {
+        return volunteerRepository.findOne(id);
+    }
+
     public Volunteer save(Volunteer volunteer) {
         if (volunteer.getPicture() != null) {
             String filePath = null;

@@ -294,4 +294,13 @@ public class VolunteerController {
         response.flushBuffer();
         inputStream.close();
     }
+
+    @RequestMapping(path = "unprint/{volunteerId}", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String unprint(@PathVariable(name = "volunteerId") long volunteerId) {
+        Volunteer volunteer = volunteerService.findOneWithoutImage(volunteerId);
+        volunteer.setVolunteerIsPrinted(false);
+        volunteerService.save(volunteer);
+        return "redirect:/" + BASE_URL;
+    }
 }

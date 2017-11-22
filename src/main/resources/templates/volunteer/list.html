@@ -6,28 +6,31 @@
 <body>
 
 <h2>Volunteers</h2>
-<p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh soon</p>
+<p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh
+  soon</p>
 <span class="row">
   <form th:action="@{/volunteer/print}" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <button class="btn btn-default pull-right" type="submit">Print All Cards</button>
   </form>
   <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right">Search</span></a>
-  <a th:href="@{/volunteer/file}"><span class="btn btn-default pull-right">Volunteers File Upload</span></a>
-  <a th:href="@{/volunteer/new}"><span class="btn btn-default pull-right">Add New Volunteer</span></a>
+  <a th:href="@{/volunteer/file}"><span
+      class="btn btn-default pull-right">Volunteers File Upload</span></a>
+  <a th:href="@{/volunteer/new}"><span
+      class="btn btn-default pull-right">Add New Volunteer</span></a>
 </Span>
 <table id="volunteers" class="table table-striped">
   <thead>
-    <tr>
-      <th style="width: 50px;">Id</th>
-      <!--<th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>-->
-      <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
-        Name</a></th>
-      <!--<th style="width: 120px;">Juridsdiction</a></th>-->
-      <th style="width: 100px">Local Council</th>
-      <th style="width: 100px">Jamatkhana</th>
-      <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
-    </tr>
+  <tr>
+    <th style="width: 50px;">Id</th>
+    <!--<th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>-->
+    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
+      Name</a></th>
+    <!--<th style="width: 120px;">Juridsdiction</a></th>-->
+    <th style="width: 100px">Local Council</th>
+    <th style="width: 100px">Jamatkhana</th>
+    <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
+  </tr>
   </thead>
   <tbody>
   <tr th:each="volunteer : ${page}">
@@ -37,13 +40,16 @@
     <!--<td th:text="${volunteer.jurisdiction}"/>-->
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.jamatKhanna}"/>
-    <td sec:authorize="hasAuthority('AUTHORIZER')">
+    <td class="row" sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
-      <form method="post">
-        <button type="submit"><span class="glyphicon glyphicon-refresh"></span></button>
+      <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline" name="myform" method="post"
+            th:action="@{/volunteer/unprint/__${volunteer.id}__}"
+            sec:authorize="hasAuthority('ADMIN')">
+        <span onclick="document.forms['myform'].submit();"><span
+            class="glyphicon glyphicon-refresh"></span></span>
         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
       </form>
     </td>
