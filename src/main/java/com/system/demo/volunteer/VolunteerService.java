@@ -48,6 +48,9 @@ public class VolunteerService {
                 filePath = volunteerImageService
                     .write(volunteer.getPicture(), volunteer.getVolunteerCnic());
                 volunteer.setVolunteerImage(filePath);
+                if (filePath != null) {
+                    volunteer.setPictureAvailable(true);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
