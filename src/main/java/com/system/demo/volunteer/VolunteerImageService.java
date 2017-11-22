@@ -23,30 +23,33 @@ public class VolunteerImageService {
     //        byte[] imageBytes = Files.toByteArray(new File(filePath));
 //        return "data:image/png;base64, " + Base64.encodeBase64URLSafeString(imageBytes);
     public String read(String filePath) throws IOException {
-        BufferedImage image = ImageIO.read(new File(filePath));
-        String imageString = "helloWorld";
-        ByteArrayOutputStream bos = new ByteArrayOutputStream();
+        if (filePath != null) {
+            BufferedImage image = ImageIO.read(new File(filePath));
+            String imageString = "helloWorld";
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
 
-        try {
-            if(image != null) {
-                ImageIO.write(image, String.valueOf(image.getType()), bos);
-                byte[] imageBytes = bos.toByteArray();
+            try {
+                if (image != null) {
+                    ImageIO.write(image, String.valueOf(image.getType()), bos);
+                    byte[] imageBytes = bos.toByteArray();
 
-                BASE64Encoder encoder = new BASE64Encoder();
-                imageString = encoder.encode(imageBytes);
+                    BASE64Encoder encoder = new BASE64Encoder();
+                    imageString = encoder.encode(imageBytes);
 
-                bos.close();
+                    bos.close();
+                }
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-        } catch (IOException e) {
-            e.printStackTrace();
+            return imageString;
+        } else {
+            return "";
         }
-        return imageString;
     }
 
     public String write(String image, String cnic) throws IOException {
-        if(image != null && image != "") {
+        if (image != null && image != "") {
             image = image.substring(image.indexOf("base64") + 7).trim();
-            System.out.println(image.substring(image.indexOf("base64") + 7).trim());
             BASE64Decoder decoder = new BASE64Decoder();
             byte[] imageByte = decoder.decodeBuffer(image);
             ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
