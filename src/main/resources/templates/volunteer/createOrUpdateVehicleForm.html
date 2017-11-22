@@ -28,14 +28,42 @@
         th:replace="~{fragments/inputField :: input ('Duty Day', 'dutyDay')}"/>
     <input
         th:replace="~{fragments/inputField :: input ('Duty Shift', 'dutyShift')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Duty Zone', 'dutyZone')}"/>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Duty Zone</label>
+      <div class="col-sm-10">
+        <select class="col-sm-12 form-control" th:field="*{dutyZone}">
+          <option value="Pandal">Pandal</option>
+          <option value="Inner Cordon">Inner Cordon</option>
+          <option value="MHI Entourage/ Stage">MHI Entourage Stage</option>
+          <option value="Main Gate">Main Gate</option>
+          <option value="Outer Cordon">Outer Cordon</option>
+          <option value="Sacrifice Duty">Sacrifice Duty</option>
+          <option value="All Access">All Access</option>
+        </select>
+      </div>
+    </div>
     <input
         th:replace="~{fragments/inputField :: input ('Local Council', 'localCouncil')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Volunteer Site', 'volunteerSite')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Volunteer Committee', 'volunteerCommittee')}"/>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Volunteer Site</label>
+      <div class="col-sm-10">
+        <select class="col-sm-12 form-control" th:field="*{volunteerSite}">
+          <option value="Booni">Booni</option>
+          <option value="Tause">Tause</option>
+          <option value="Alyabad">Alyabad</option>
+          <option value="Garam Chashma">Garam Chashma</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Volunteer Committee</label>
+      <div class="col-sm-10">
+        <select class="col-sm-12 form-control" th:field="*{volunteerCommittee}">
+          <option value="Darbar">Darbar</option>
+          <option value="Security">Security</option>
+        </select>
+      </div>
+    </div>
 
     <div class="row">
       <span class="col-sm-4 col-sm-offset-2">
@@ -45,7 +73,8 @@
         <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
       </span>
       <span class="col-sm-4">
-        <img id="my-screenshot" style="width: 320px; height: 240px;" th:src="'/volunteer/images/' + *{id}"/>
+        <img id="my-screenshot" style="width: 320px; height: 240px;"
+             th:src="'/volunteer/images/' + *{id}"/>
       </span>
     </div>
     <input id="image-blob" type="hidden" name="picture"/>
@@ -98,6 +127,9 @@
     }
 
     webcamInit();
+
+
+
 
 </script>
 </body>

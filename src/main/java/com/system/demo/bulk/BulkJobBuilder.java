@@ -4,7 +4,6 @@ import com.system.demo.bulk.volunteer.job.elements.VolunteerBulkProcessor;
 import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerItemReaderListener;
 import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerItemWriterListener;
 import com.system.demo.bulk.volunteer.job.elements.listener.VolunteerJobNotificationListener;
-import com.system.demo.vehicle.Vehicle;
 import com.system.demo.volunteer.Volunteer;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.Job;
@@ -18,7 +17,9 @@ import org.springframework.batch.item.file.FlatFileItemReader;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
 
-/** Created by Zeeshan Damani */
+/**
+ * Created by Zeeshan Damani
+ */
 @Slf4j
 @Component
 @EnableBatchProcessing
@@ -53,29 +54,29 @@ public class BulkJobBuilder {
     this.volunteerJobNotificationListener = volunteerJobNotificationListener;
     this.volunteerItemReaderListener = volunteerItemReaderListener;
 
-  }
+    }
 
-  public Job buildVolunteerUpload(String jobName) {
+    public Job buildVolunteerUpload(String jobName) {
 
-    Step step =
-        stepBuilderFactory
-            .get(jobName + " Step.")
-            .<Volunteer, Volunteer>chunk(5)
-            .reader(volunteerItemReader)
-            .processor(volunteerBulkProcessor)
-            .writer(volunteerBulkWriter)
-            .listener(itemLoggerListener)
-            .listener(volunteerItemReaderListener)
-            .faultTolerant()
-            .skipPolicy(new DatabaseJobSkipPolicy()).skipLimit(0)
+        Step step =
+            stepBuilderFactory
+                .get(jobName + " Step.")
+                .<Volunteer, Volunteer>chunk(5)
+                .reader(volunteerItemReader)
+                .processor(volunteerBulkProcessor)
+                .writer(volunteerBulkWriter)
+                .listener(itemLoggerListener)
+                .listener(volunteerItemReaderListener)
+                .faultTolerant()
+                .skipPolicy(new DatabaseJobSkipPolicy()).skipLimit(0)
+                .build();
+
+        return jobBuilderFactory
+            .get(jobName)
+            .incrementer(new RunIdIncrementer())
+            .listener(volunteerJobNotificationListener)
+            .flow(step)
+            .end()
             .build();
-
-    return jobBuilderFactory
-        .get(jobName)
-        .incrementer(new RunIdIncrementer())
-        .listener(volunteerJobNotificationListener)
-        .flow(step)
-        .end()
-        .build();
-  }
+    }
 }

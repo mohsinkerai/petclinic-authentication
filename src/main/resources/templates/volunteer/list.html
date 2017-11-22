@@ -45,10 +45,11 @@
           class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
-      <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline" name="myform" method="post"
+      <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline"
+            th:name="'myform' + ${volunteer.id}" method="post"
             th:action="@{/volunteer/unprint/__${volunteer.id}__}"
             sec:authorize="hasAuthority('ADMIN')">
-        <span onclick="document.forms['myform'].submit();"><span
+        <span th:onclick="'document.forms[\'myform'+ ${volunteer.id} +'\'].submit();'"><span
             class="glyphicon glyphicon-refresh"></span></span>
         <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
       </form>

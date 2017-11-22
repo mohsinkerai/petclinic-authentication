@@ -18,6 +18,8 @@ import java.nio.file.Path;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.stream.Collectors;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 import lombok.extern.slf4j.Slf4j;
@@ -149,7 +151,7 @@ public class VolunteerController {
             }
             volunteer.setId(repositoryVolunteer.getId());
             volunteer.setEnabled(repositoryVolunteer.isEnabled());
-            volunteer.setPictureAvailable(true);
+            volunteer.setVolunteerIsPrinted(repositoryVolunteer.isVolunteerIsPrinted());
 //            volunteer.setVolunteerCommittee(repositoryVolunteer.getVolunteerCommittee());
 //            volunteer.setVolunteerSite(repositoryVolunteer.getVolunteerSite());
             volunteerService.save(volunteer);
@@ -279,6 +281,32 @@ public class VolunteerController {
         inputStream.close();
     }
 
+    @RequestMapping(path = "/search/print", method = RequestMethod.POST)
+    public void printSearchedRecords(HttpServletResponse response, VolunteerSearchDTO searchDTO)
+        throws Exception {
+        List<Volunteer> volunteers = volunteerService.advancedSearch(searchDTO);
+        List<Volunteer> printableVolunteers = volunteers.stream().filter(Volunteer::isValidForPrint)
+            .collect(Collectors.toList());
+        String pathOfFile = cardPrinter.print(printableVolunteers);
+
+        printableVolunteers.stream()
+            .map(volunteer -> {
+                volunteer.setVolunteerIsPrinted(true);
+                return volunteer;
+            })
+            .forEach(volunteerService::save);
+
+        File file = new File(pathOfFile);
+        response.setContentLength((int) file.length());
+        InputStream inputStream = new FileInputStream(file);
+        response.setContentType("application/pdf");
+        // filename=\"" + System.currentTimeMillis() + "printable.pdf"
+        response.setHeader("Content-Disposition", "attachment; " + "\"");
+        FileCopyUtils.copy(inputStream, response.getOutputStream());
+        response.flushBuffer();
+        inputStream.close();
+    }
+
     @RequestMapping(path = "images/{volunteerId}", method = RequestMethod.GET)
     public void imageShow(@PathVariable(name = "volunteerId") Long volunteerId,
         HttpServletResponse response)
@@ -302,5 +330,15 @@ public class VolunteerController {
         volunteer.setVolunteerIsPrinted(false);
         volunteerService.save(volunteer);
         return "redirect:/" + BASE_URL;
+    }
+
+    @RequestMapping(path = "search/{volunteerId}/unprint", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('ADMIN')")
+    public String unprintSearch(@PathVariable(name = "volunteerId") long volunteerId,
+        HttpServletRequest request) {
+        Volunteer volunteer = volunteerService.findOneWithoutImage(volunteerId);
+        volunteer.setVolunteerIsPrinted(false);
+        volunteerService.save(volunteer);
+        return "redirect:/" + SEARCH + "?" + request.getQueryString();
     }
 }

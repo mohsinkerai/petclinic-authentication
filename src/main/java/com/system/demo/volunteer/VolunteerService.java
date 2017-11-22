@@ -48,6 +48,9 @@ public class VolunteerService {
                 filePath = volunteerImageService
                     .write(volunteer.getPicture(), volunteer.getVolunteerCnic());
                 volunteer.setVolunteerImage(filePath);
+                if (filePath != null) {
+                    volunteer.setPictureAvailable(true);
+                }
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
@@ -64,24 +67,22 @@ public class VolunteerService {
     }
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
-        log.info("Hello World {}", query);
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndCategory(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
                 query.getJamatkhana(),
-                query.getCategory(),
+                query.getZone(),
                 pageable);
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
-        log.info("Hello World {}", query);
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndCategory(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
                 query.getJamatkhana(),
-                query.getCategory());
+                query.getZone());
     }
 
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
