@@ -27,9 +27,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * Created by Zeeshan Damani
- */
 
 @Slf4j
 @RestController
@@ -71,48 +68,6 @@ public class BatchController {
                 jobParamsMap.put("imagesSource", new JobParameter(ImageSource));
                 JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
                 JobExecution jobExecution =  jobLauncher.run(volunteerBulkJob, bulkJobsParameters);
-            } else {
-                return "unable to upload " + path + ", One upload is already running ";
-            }
-            return "Hello , I am good  :) !";
-        } catch (Exception e) {
-            log.error(e.toString());
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/vehicle", method = POST)
-    public String uploadVehicles(@RequestParam String path) {
-        try {
-            if (jobExplorer.findRunningJobExecutions(UploadTypes.VehicleUpload.toString() + path).isEmpty()) {
-                Job vehicleUpload = bulkJobBuilder.buildVehicleUpload(UploadTypes.VehicleUpload.toString() + path);
-                Map<String, JobParameter> jobParamsMap = new HashMap<>();
-                jobParamsMap.put("sourceFilePath", new JobParameter(path));
-                jobParamsMap.put("timestamp",
-                    new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
-                JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
-                JobExecution jobExecution =  jobLauncher.run(vehicleUpload, bulkJobsParameters);
-            } else {
-                return "unable to upload " + path + ", One upload is already running ";
-            }
-            return "Hello , I am good  :) !";
-        } catch (Exception e) {
-            log.error(e.toString());
-            return null;
-        }
-    }
-
-    @RequestMapping(value = "/update/vounteer", method = POST)
-    public String updateVolunteer(@RequestParam String path) {
-        try {
-            if (jobExplorer.findRunningJobExecutions(UploadTypes.VehicleUpload.toString() + path).isEmpty()) {
-                Job vehicleUpload = bulkJobBuilder.updateVolunteer(UploadTypes.VolunteerAssignedUpload + path);
-                Map<String, JobParameter> jobParamsMap = new HashMap<>();
-                jobParamsMap.put("sourceFilePath", new JobParameter(path));
-                jobParamsMap.put("timestamp",
-                    new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
-                JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
-                JobExecution jobExecution =  jobLauncher.run(vehicleUpload, bulkJobsParameters);
             } else {
                 return "unable to upload " + path + ", One upload is already running ";
             }
