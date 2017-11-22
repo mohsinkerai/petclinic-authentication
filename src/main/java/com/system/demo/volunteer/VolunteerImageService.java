@@ -44,22 +44,26 @@ public class VolunteerImageService {
     }
 
     public String write(String image, String cnic) throws IOException {
-        image = image.substring(image.indexOf("base64")+7).trim();
-        System.out.println(image.substring(image.indexOf("base64")+7).trim());
-        BASE64Decoder decoder = new BASE64Decoder();
-        byte[] imageByte = decoder.decodeBuffer(image);
-        ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
+        if(image != null && image != "") {
+            image = image.substring(image.indexOf("base64") + 7).trim();
+            System.out.println(image.substring(image.indexOf("base64") + 7).trim());
+            BASE64Decoder decoder = new BASE64Decoder();
+            byte[] imageByte = decoder.decodeBuffer(image);
+            ByteArrayInputStream bis = new ByteArrayInputStream(imageByte);
 //        bis.mark(256);
-        BufferedImage bi = ImageIO.read(bis);
-        bis.close();
+            BufferedImage bi = ImageIO.read(bis);
+            bis.close();
 
-        File outputFile = new File(path + "\\" + cnic + ".png");
-        ImageIO.write(bi, "png", outputFile);
+            File outputFile = new File(path + "\\" + cnic + ".png");
+            ImageIO.write(bi, "png", outputFile);
 //
 //        byte[] data = Base64.decodeBase64(image);
 //        try (OutputStream stream = new FileOutputStream(path + "\\" + cnic + ".jpg")) {
 //            stream.write(data);
 //        }
-        return path + "\\" + cnic + ".png";
+            return path + "\\" + cnic + ".png";
+        } else {
+            return null;
+        }
     }
 }
