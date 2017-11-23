@@ -270,3 +270,21 @@ INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `usern
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (2, b'1', b'0', b'0', '$2a$10$kw/.fZAqYqqvDPEx/0hJiOqIhs2ESZCYdSjFpooRhYZgE6Yot3bLK', 'admin');
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (3, b'1', b'0', b'0', '$2a$10$TnfNzqSKZjNwY2Kvv18PVed0K0MfIVzeR40TadOgTE8tMQcNnwnse', 'registrar');
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (4, b'1', b'0', b'0', '$2a$10$zb2C3ddNE6razm4XmqQwv.ynRnCb92uZM4VX1m7DJCMQgmpeN4.Je', 'authorizer');
+
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'ADMIN');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'CARDISSUER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'VEHICLE_REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'VEHICLE_AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'VEHICLE_CARDISSUER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'ADMIN');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'CARDISSUER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'VEHICLE_REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'VEHICLE_AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'VEHICLE_CARDISSUER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (3, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (4, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (4, 'AUTHORIZER');
