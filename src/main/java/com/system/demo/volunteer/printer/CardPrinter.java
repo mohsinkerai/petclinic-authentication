@@ -33,20 +33,20 @@ public class CardPrinter {
 
     int pageWidth = 580;
     int pageHeight = 850;
-    int titlefontSize = 11;
+    int titlefontSize = 15;
     int namefontSize = 12;
-    int smallfontSize = 10;
+    int smallfontSize = 11;
     int zonefontSize = 15;
     Random rand = new Random();
 
     String PDF_PW = Integer.toString(rand.nextInt(9999) + 1000);// "1423";
 
     public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, Font.BOLD,
-        BaseColor.BLACK);
+        new BaseColor(86,86,86));
     public Font namefont = new Font(Font.FontFamily.TIMES_ROMAN, namefontSize, Font.BOLD,
         BaseColor.BLACK);
     public Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, titlefontSize, Font.BOLD,
-        BaseColor.BLACK);
+        new BaseColor(88,88,88));
     public Font zoneFont = new Font(Font.FontFamily.TIMES_ROMAN, zonefontSize, Font.BOLD,
         BaseColor.BLACK);
 
@@ -245,51 +245,67 @@ public class CardPrinter {
 
         Image qr_image = getQRImage(EncryptMsg, writer);
         qr_image.setAbsolutePosition(
-            cardStartX + 10,
-            cardStartY + 90);
-        qr_image.scalePercent(65);
+            cardStartX + 122.2f,
+            cardStartY + 32.6f);
+        qr_image.scalePercent(73.1f);
         qr_code_Example.add(qr_image);
 
         imageUrl = volunteer.getVolunteerImage();//"D://person.jpg";
         jpg = Image.getInstance(imageUrl);
-        jpg.scaleAbsolute(64f, 64f);
-        jpg.setAbsolutePosition(cardStartX + 104, cardStartY + 100);
+        jpg.scaleAbsolute(92.8f, 98.4f);
+        jpg.setAbsolutePosition(cardStartX + 28.83f, cardStartY + 115.5f);
         qr_code_Example.add(jpg);
 
         PdfContentByte cb = writer.getDirectContent();
         ColumnText ct = new ColumnText(cb);
-        Phrase myText = new Phrase( (volunteer.getVolunteerName()!=null)?volunteer.getVolunteerName().toUpperCase() : "" , namefont);
-        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 66,
-            cardStartX + (pageWidth / 2), cardStartY + 82, 6, Element.ALIGN_CENTER);
+
+        String VolFirstName = "";
+        String VolSecondName = "";
+        if(volunteer.getVolunteerName() != null) {
+            String VolName[] = volunteer.getVolunteerName().toUpperCase().split(" ");
+            VolFirstName = VolName[0];
+            if(VolName.length > 1)
+                VolSecondName = VolName[1];
+        }
+        Phrase myText = new Phrase( VolFirstName , namefont);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 92,
+            cardStartX + (pageWidth / 2), cardStartY + 102, 6, Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)?volunteer.getVolunteerCommittee() : "" , smallfont);
-        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 56,
-            cardStartX + (pageWidth / 2), cardStartY + 66, 6, Element.ALIGN_CENTER);
+        myText = new Phrase( VolSecondName , namefont);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 78.5f,
+            cardStartX + (pageWidth / 2), cardStartY + 88.5f, 6, Element.ALIGN_LEFT);
+        ct.go();
+
+
+        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)?volunteer.getVolunteerCommittee().toUpperCase() : "" , smallfont);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 62,
+            cardStartX + (pageWidth / 2), cardStartY + 72, 6, Element.ALIGN_LEFT);
         ct.go();
 
         myText = new Phrase( (volunteer.getVolunteerCnic()!=null)?volunteer.getVolunteerCnic(): "" , smallfont);
-        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 43,
-            cardStartX + (pageWidth / 2), cardStartY + 53, 6, Element.ALIGN_CENTER);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 46.5f,
+            cardStartX + (pageWidth / 2), cardStartY + 56.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
         //local council
-        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?volunteer.getLocalCouncil(): "" , smallfont);
-        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 30,
-            cardStartX + (pageWidth / 2), cardStartY + 40, 6, Element.ALIGN_CENTER);
+        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?volunteer.getLocalCouncil().toUpperCase(): "" , smallfont);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 33,
+            cardStartX + (pageWidth / 2), cardStartY + 43, 6, Element.ALIGN_LEFT);
         ct.go();
 
-        //Zone
+       /* //Zone
         myText = new Phrase( (volunteer.getDutyZone()!=null)?volunteer.getDutyZone().toUpperCase(): "" , zoneFont);
         ct.setSimpleColumn(myText, cardStartX - 73, cardStartY - 10,
             cardStartX + (pageWidth / 2), cardStartY + 22, 6, Element.ALIGN_CENTER);
-        ct.go();
-
-        /*//Header title
-        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?volunteer.getVolunteerSite().toUpperCase(): "" , titleFont);
-        ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 162, cardStartX + (pageWidth / 2),
-            cardStartY + 175, 6, Element.ALIGN_CENTER);
         ct.go();*/
+
+        //Header title
+        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?volunteer.getVolunteerSite().toUpperCase(): "" , titleFont);
+        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 225, cardStartX + (pageWidth / 2),
+            cardStartY + 235, 6, Element.ALIGN_LEFT
+        );
+        ct.go();
     }
 
     public Image getQRImage(String EncryptMsg, PdfWriter writer) throws Exception {
@@ -297,7 +313,7 @@ public class CardPrinter {
         //Step-6: Get Image corresponding to the input string
         Image qr_image = my_code.getImage();
 
-        qr_image = cropImage(writer, qr_image, 10, 10, 10, 10);
+        qr_image = cropImage(writer, qr_image, 26, 26, 26, 26);
 
         return qr_image;
     }
