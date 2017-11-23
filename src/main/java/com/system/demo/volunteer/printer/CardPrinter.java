@@ -31,8 +31,8 @@ import org.springframework.stereotype.Component;
 @Component
 public class CardPrinter {
 
-    int pageWidth = 530;
-    int pageHeight = 800;
+    int pageWidth = 580;
+    int pageHeight = 850;
     int titlefontSize = 11;
     int namefontSize = 12;
     int smallfontSize = 10;
@@ -77,7 +77,7 @@ public class CardPrinter {
 
         qr_code_Example.open();
 
-        float cardStartX = 34;
+        float cardStartX = 20;
         float cardStartY = pageHeight - 20;
 
         float tmpCardStartY = cardStartY;
@@ -86,12 +86,12 @@ public class CardPrinter {
         PrivateKey privateKey = ac.getPrivate("KeyPair/privateKey");
         PublicKey publicKey = ac.getPublic("KeyPair/publicKey");
 
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < volunteer.size(); i++) {
             if (i % 6 == 0) {
                 tmpCardStartY = cardStartY;
                 qr_code_Example.newPage();
             } else if (i % 2 == 0) {
-                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
+                tmpCardStartY = tmpCardStartY - (pageHeight / 3) + 10;
             }
 
             String jsonMsg = getJsonForQR(volunteer.get(i));
@@ -105,49 +105,7 @@ public class CardPrinter {
                     writer,
                     cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
                     tmpCardStartY,
-                    52,
-                    volunteer.get(i));
-
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX + (pageWidth / 2),
-                    tmpCardStartY,
-                    52.5f,
-                    volunteer.get(i));
-                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
-
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
-                    tmpCardStartY,
-                    53.5f,
-                    volunteer.get(i));
-
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX + (pageWidth / 2),
-                    tmpCardStartY,
-                    54,
-                    volunteer.get(i));
-                tmpCardStartY = tmpCardStartY - (pageHeight / 3);
-
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
-                    tmpCardStartY,
-                    51.5f,
-                    volunteer.get(i));
-
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX +  (pageWidth / 2),
-                    tmpCardStartY,
-                    51,
+                    24f,
                     volunteer.get(i));
             } catch (Exception ex) {
 
@@ -205,7 +163,7 @@ public class CardPrinter {
             return 4;
         } else if (zone.equalsIgnoreCase("Outer Cordon")) {
             return 5;
-        } else if (zone.equalsIgnoreCase("NTF/RTF Team")) {
+        } else if (zone.equalsIgnoreCase("All Zone")) {
             return 6;
         } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return 7;
@@ -225,7 +183,7 @@ public class CardPrinter {
             return "cardLayouts/inner cordon.jpg";
         } else if (zone.equalsIgnoreCase("Outer Cordon")) {
             return "cardLayouts/Outer cordon.jpg";
-        } else if (zone.equalsIgnoreCase("NTF/RTF Team")) {
+        } else if (zone.equalsIgnoreCase("All Zone")) {
             return "cardLayouts/RTF.jpg";
         } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return "cardLayouts/Sacrifice Duty.jpg";
@@ -327,11 +285,11 @@ public class CardPrinter {
             cardStartX + (pageWidth / 2), cardStartY + 22, 6, Element.ALIGN_CENTER);
         ct.go();
 
-        //Header title
+        /*//Header title
         myText = new Phrase( (volunteer.getVolunteerSite()!=null)?volunteer.getVolunteerSite().toUpperCase(): "" , titleFont);
         ct.setSimpleColumn(myText, cardStartX - 73, cardStartY + 162, cardStartX + (pageWidth / 2),
             cardStartY + 175, 6, Element.ALIGN_CENTER);
-        ct.go();
+        ct.go();*/
     }
 
     public Image getQRImage(String EncryptMsg, PdfWriter writer) throws Exception {
