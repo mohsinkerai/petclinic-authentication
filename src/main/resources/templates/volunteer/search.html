@@ -40,7 +40,7 @@
     <div id="voltSearchRow" class="row">
       <div class="col-md-4 mb-2">
         <div class="col-sm-2">
-          <button class="btn btn-default" type="submit">Search</button>
+          <button class="btn btn-default" type="submit"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</button>
         </div>
       </div>
     </div>
@@ -52,7 +52,7 @@
       localCouncil=${param.localCouncil},
       day=${param.day},
       zone=${param.zone}
-    )}"><span class="btn btn-default btn-margin pull-right">Volunteers File Export</span></a>
+    )}"><span class="btn btn-default btn-margin pull-right"><span class="glyphicon glyphicon-download"></span>&nbsp;Volunteers File Export</span></a>
   <form th:action="@{/volunteer/search/print(name=${param.name},
       cnic=${param.cnic},
       regionalCouncil=${param.regionalCouncil},
@@ -67,10 +67,10 @@
     <!--<input type="hidden" name="day" th:value="${param.day}">-->
     <!--<input type="hidden" name="zone" th:value="${param.zone}">-->
     <!--<input type="hidden" name="_csrf" th:value="${_csrf.token}"/>-->
-    <button class="btn btn-default pull-right form-inline" type="submit">Print Searched Cards
+    <button class="btn btn-default pull-right form-inline" type="submit"><span class="glyphicon glyphicon-print"></span>&nbsp;Print Searched Cards
     </button>
   </form>
-  <a th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right">Volunteers File Upload</span></a>
+  <a th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right"><span class="glyphicon glyphicon-upload"></span>&nbsp;Volunteers File Upload</span></a>
 </div>
 <table id="volunteers" class="table table-striped">
   <thead>

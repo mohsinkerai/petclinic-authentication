@@ -6,18 +6,20 @@
 <body>
 
 <h2>Volunteers</h2>
+<div th:class="((*{count}>5) ? 'alert alert-danger' : 'alert alert-success')">
+  Total Cards to Print: <span th:text="*{count}"></span></div>
 <p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh
   soon</p>
 <span class="row">
   <form th:action="@{/volunteer/print}" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <button class="btn btn-default pull-right" type="submit">Print All Cards</button>
+    <button class="btn btn-default pull-right" type="submit"><span class="glyphicon glyphicon-print"></span>&nbsp;Print All Cards</button>
   </form>
-  <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right">Search</span></a>
+  <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</span></a>
   <a th:href="@{/volunteer/file}"><span
-      class="btn btn-default pull-right">Volunteers File Upload</span></a>
+      class="btn btn-default pull-right"><span class="glyphicon glyphicon-file"></span>&nbsp;Volunteers File Upload</span></a>
   <a th:href="@{/volunteer/new}"><span
-      class="btn btn-default pull-right">Add New Volunteer</span></a>
+      class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add New Volunteer</span></a>
 </Span>
 <table id="volunteers" class="table table-striped">
   <thead>
