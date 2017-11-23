@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -68,20 +69,20 @@ public class VolunteerService {
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
-                query.getJamatkhana(),
+                query.getLocalCouncil(),
                 query.getZone(),
                 pageable);
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndJamatKhannaContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 query.getName(),
                 query.getCnic(),
-                query.getJamatkhana(),
+                query.getLocalCouncil(),
                 query.getZone());
     }
 
@@ -104,6 +105,10 @@ public class VolunteerService {
 
     public Volunteer createNew() {
         return new Volunteer();
+    }
+
+    public long getUnprintedCount() {
+        return volunteerRepository.getUnprintedCount();
     }
 
     public void delete(Long id) {
@@ -136,10 +141,10 @@ public class VolunteerService {
 
     private String[] map(Volunteer volunteer) {
         return new String[]{
-            volunteer.getVolunteerName(),
-            volunteer.getJamatKhanna(),
-            volunteer.getVolunteerCnic(),
-            volunteer.getEmailAdddress()
+            Optional.ofNullable(volunteer.getVolunteerName()).orElse(""),
+            Optional.ofNullable(volunteer.getJamatKhanna()).orElse(""),
+            Optional.ofNullable(volunteer.getVolunteerCnic()).orElse(""),
+            Optional.ofNullable(volunteer.getEmailAdddress()).orElse("")
         };
     }
 }

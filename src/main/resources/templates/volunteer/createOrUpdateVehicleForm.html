@@ -4,33 +4,67 @@
 <body>
 
 <h2>Volunteer Registration Form</h2>
+<h3>Total UNPrinted: <span th:text="*{count}"></span></h3>
+<form th:action="@{/volunteer/print}" method="post">
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  <button class="btn btn-default" type="submit">Print All Cards</button>
+</form>
 <form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
   <div class="form-group has-feedback">
-    <input
-        th:replace="~{fragments/inputField :: input ('Volunteer Name', 'volunteerName')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Volunteer CNIC', 'volunteerCnic')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Address', 'residentialAddress')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Email Address', 'emailAdddress')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Home Phone', 'homePhone')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Cell Phone', 'cellPhone')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Jamatkhana', 'jamatKhanna')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Institution', 'institution')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Volunteer Age', 'age')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Duty Day', 'dutyDay')}"/>
-    <input
-        th:replace="~{fragments/inputField :: input ('Duty Shift', 'dutyShift')}"/>
     <div class="form-group">
+      <div class="col-sm-offset-2 col-sm-10">
+        <button
+            th:with="text=${vehicle['new']} ? 'Add Volunteer' : 'Update Volunteer'"
+            class="btn btn-default" type="submit" th:text="${text}">Add
+          Vehicle
+        </button>
+        <a th:href="@{/volunteer}"><span class="btn btn-primary">Cancel</span></a>
+        <button class="btn btn-danger" type="reset">Reset</button>
+      </div>
+    </div>
+    <div class="row form-group">
+      <span class="col-sm-4 col-sm-offset-2">
+        <video id="videoElement" muted="true" style="width: 320px; height: 240px;"></video>
+      </span>
+      <span class="col-sm-2">
+        <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
+      </span>
+      <span class="col-sm-4">
+        <img id="my-screenshot" style="width: 320px; height: 240px;"
+             th:src="'/volunteer/images/' + ((*{id})?*{id}:'')"/>
+      </span>
+    </div>
+
+    <input id="image-blob" type="hidden" name="picture"/>
+    <div class="form-group">
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name', 'volunteerName')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer CNIC', 'volunteerCnic')}"/>
+    </div>
+    <div class="form-group">
+      <label class="col-sm-2 control-label">Volunteer Committee</label>
+      <div class="col-sm-4">
+        <select class="col-sm-12 form-control" th:field="*{volunteerCommittee}">
+          <option value="Darbar">Darbar</option>
+          <option value="Security">Security</option>
+        </select>
+      </div>
+      <label class="col-sm-2 control-label">Volunteer Site</label>
+      <div class="col-sm-4">
+        <select class="col-sm-12 form-control" th:field="*{volunteerSite}">
+          <option value="Booni">Booni</option>
+          <option value="Tause">Tause</option>
+          <option value="Alyabad">Alyabad</option>
+          <option value="Garam Chashma">Garam Chashma</option>
+        </select>
+      </div>
+    </div>
+    <div class="form-group">
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Local Council', 'localCouncil')}"/>
       <label class="col-sm-2 control-label">Duty Zone</label>
-      <div class="col-sm-10">
+      <div class="col-sm-4">
         <select class="col-sm-12 form-control" th:field="*{dutyZone}">
           <option value="Pandal">Pandal</option>
           <option value="Inner Cordon">Inner Cordon</option>
@@ -42,42 +76,37 @@
         </select>
       </div>
     </div>
-    <input
-        th:replace="~{fragments/inputField :: input ('Local Council', 'localCouncil')}"/>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Volunteer Site</label>
-      <div class="col-sm-10">
-        <select class="col-sm-12 form-control" th:field="*{volunteerSite}">
-          <option value="Booni">Booni</option>
-          <option value="Tause">Tause</option>
-          <option value="Alyabad">Alyabad</option>
-          <option value="Garam Chashma">Garam Chashma</option>
-        </select>
-      </div>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Home Phone', 'homePhone')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Cell Phone', 'cellPhone')}"/>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Volunteer Committee</label>
-      <div class="col-sm-10">
-        <select class="col-sm-12 form-control" th:field="*{volunteerCommittee}">
-          <option value="Darbar">Darbar</option>
-          <option value="Security">Security</option>
-        </select>
-      </div>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Jamatkhana', 'jamatKhanna')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Institution', 'institution')}"/>
+    </div>
+    <div class="form-group">
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Age', 'age')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Duty Day', 'dutyDay')}"/>
     </div>
 
-    <div class="row">
-      <span class="col-sm-4 col-sm-offset-2">
-        <video id="videoElement" muted="true" style="width: 320px; height: 240px;"></video>
-      </span>
-      <span class="col-sm-2">
-        <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
-      </span>
-      <span class="col-sm-4">
-        <img id="my-screenshot" style="width: 320px; height: 240px;"
-             th:src="'/volunteer/images/' + *{id}"/>
-      </span>
+    <div class="form-group">
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Duty Shift', 'dutyShift')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Email Address', 'emailAdddress')}"/>
     </div>
-    <input id="image-blob" type="hidden" name="picture"/>
+    <div class="form-group">
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Address', 'residentialAddress')}"/>
+    </div>
+
+
     <!--<div class="form-group">-->
     <!--<label class="col-sm-2 control-label">Vehicle Category</label>-->
     <!--<div class="col-sm-10">-->
@@ -127,9 +156,6 @@
     }
 
     webcamInit();
-
-
-
 
 </script>
 </body>

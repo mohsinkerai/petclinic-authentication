@@ -85,6 +85,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
                     recordError(BulkErrorType.IMAGE_NOT_FOUND.toString(), v);
                     return null;
                 }
+                v.setPictureAvailable(true);
             }
             List<Volunteer> vol = volunteerService.findByCnic(v.getVolunteerCnic());//v.getVolunteerCnic());
             if (vol.size() == 0) {

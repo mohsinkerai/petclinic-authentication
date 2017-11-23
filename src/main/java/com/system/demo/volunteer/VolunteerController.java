@@ -111,7 +111,9 @@ public class VolunteerController {
     @RequestMapping(value = "/new", method = RequestMethod.GET)
     public String initCreationForm(Map<String, Object> model) {
         Volunteer vehicle = volunteerService.createNew();
+        long unprintedCount = volunteerService.getUnprintedCount();
         model.put("vehicle", vehicle);
+        model.put("count", unprintedCount);
         return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
     }
 
@@ -123,7 +125,7 @@ public class VolunteerController {
         } else {
             vehicle.setEnabled(true);
             volunteerService.save(vehicle);
-            return "redirect:/" + BASE_URL;
+            return "redirect:/" + BASE_URL + "/new";
         }
     }
 

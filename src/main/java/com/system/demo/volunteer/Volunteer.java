@@ -38,7 +38,7 @@ public class Volunteer {
     String registrationDate;
 
     @NotNull
-    @Column(name = "volunteer_cnic")
+    @Column(name = "volunteer_cnic", unique = true)
     String volunteerCnic;
 
     @Column(name = "volunteer_residential_address")
@@ -123,7 +123,8 @@ public class Volunteer {
     }
 
     public boolean validateMobile() {
-        if (this.cellPhone.matches("^(\\d){4}-(\\d){7}$") || this.cellPhone.equals("") || this.cellPhone.matches("^(\\d){11}$")) {
+        if (this.cellPhone.matches("^(\\d){4}-(\\d){7}$") || this.cellPhone.equals("")
+            || this.cellPhone.matches("^(\\d){11}$")) {
             return true;
         } else {
             return false;
@@ -160,7 +161,6 @@ public class Volunteer {
             && !volunteerIsPrinted
             && volunteerName != null
             && validateCnic()
-            && dutyDay != null
             && dutyZone != null
             && volunteerCommittee != null
             && localCouncil != null
