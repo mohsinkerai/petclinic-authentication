@@ -281,7 +281,7 @@ public class CardPrinter {
             Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( truncateText(VolSecondName ,12), namefont);
+        myText = new Phrase( truncateText(VolSecondName ,10), namefont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 78.5f,
             cardStartX + (pageWidth / 2), cardStartY + 88.5f, 6, Element.ALIGN_LEFT);
         ct.go();

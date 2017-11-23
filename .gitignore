@@ -10,3 +10,4 @@ _site/
 path/
 datahouse/
 *.pdf
+app.log
