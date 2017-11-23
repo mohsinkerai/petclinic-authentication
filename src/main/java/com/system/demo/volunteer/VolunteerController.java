@@ -112,8 +112,8 @@ public class VolunteerController {
     public String initCreationForm(Map<String, Object> model) {
         Volunteer vehicle = volunteerService.createNew();
         long unprintedCount = volunteerService.getUnprintedCount();
-        model.put("vehicle", vehicle);
         model.put("count", unprintedCount);
+        model.put("vehicle", vehicle);
         return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
     }
 
@@ -134,6 +134,8 @@ public class VolunteerController {
         Volunteer volunteer = volunteerService.findOne(id);
         if (volunteer != null && volunteer.isEnabled()) {
             model.addAttribute("vehicle", volunteer);
+            long unprintedCount = volunteerService.getUnprintedCount();
+            model.addAttribute("count", unprintedCount);
             return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
         } else {
             throw new RuntimeException("Invalid Voluneer ID " + id);
@@ -314,15 +316,17 @@ public class VolunteerController {
         HttpServletResponse response)
         throws IOException {
         Volunteer one = volunteerService.findOne(volunteerId);
-        File file = new File(one.getVolunteerImage());
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new FileInputStream(file);
-        response.setContentType("image/jpeg");
+        if (one != null && one.getVolunteerImage() != null) {
+            File file = new File(one.getVolunteerImage());
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new FileInputStream(file);
+            response.setContentType("image/jpeg");
 //        response
 //            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        response.flushBuffer();
-        inputStream.close();
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        }
     }
 
     @RequestMapping(path = "unprint/{volunteerId}", method = RequestMethod.POST)

@@ -161,10 +161,10 @@ public class Volunteer {
             && !volunteerIsPrinted
             && volunteerName != null
             && validateCnic()
-            && dutyZone != null
             && volunteerCommittee != null
-            && localCouncil != null
-            && volunteerSite != null;
+            && volunteerSite != null
+            && dutyZone != null
+            && localCouncil != null;
     }
 
     public boolean isNew() {
