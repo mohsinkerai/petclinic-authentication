@@ -158,6 +158,8 @@ public class VolunteerController {
             volunteer.setId(repositoryVolunteer.getId());
             volunteer.setEnabled(repositoryVolunteer.isEnabled());
             volunteer.setVolunteerIsPrinted(repositoryVolunteer.isVolunteerIsPrinted());
+            volunteer.setPictureAvailable(repositoryVolunteer.isPictureAvailable());
+            volunteer.setVolunteerImage(repositoryVolunteer.getVolunteerImage());
 //            volunteer.setVolunteerCommittee(repositoryVolunteer.getVolunteerCommittee());
 //            volunteer.setVolunteerSite(repositoryVolunteer.getVolunteerSite());
             volunteerService.save(volunteer);
