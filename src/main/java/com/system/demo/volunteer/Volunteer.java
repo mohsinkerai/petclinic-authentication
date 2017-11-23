@@ -15,12 +15,14 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 
 @Data
 @Entity(name = "volunteers")
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@Slf4j
 public class Volunteer {
 
     @Id
@@ -156,7 +158,7 @@ public class Volunteer {
     }
 
     public boolean isValidForPrint() {
-        return isPictureAvailable
+        boolean isPictureAvailable = this.isPictureAvailable
             && volunteerImage != null
             && !volunteerIsPrinted
             && volunteerName != null
@@ -165,6 +167,10 @@ public class Volunteer {
             && volunteerSite != null
             && dutyZone != null
             && localCouncil != null;
+        if (!isPictureAvailable) {
+            log.info("Record id {} is invalid for Print {}", id, this);
+        }
+        return isPictureAvailable;
     }
 
     public boolean isNew() {

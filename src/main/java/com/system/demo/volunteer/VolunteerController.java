@@ -267,6 +267,7 @@ public class VolunteerController {
     public void man(HttpServletResponse response)
         throws Exception {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
+        log.info("Total Received Printable Volunteers {}", printableVolunteers.size());
         String pathOfFile = cardPrinter.print(printableVolunteers);
 
         printableVolunteers.stream()

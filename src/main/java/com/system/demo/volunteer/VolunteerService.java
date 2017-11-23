@@ -99,6 +99,7 @@ public class VolunteerService {
 
     private List<Volunteer> filterForPrinting(List<Volunteer> volunteers) {
         return volunteers.stream()
+            .filter(volunteer -> !volunteer.isVolunteerIsPrinted())
             .filter(Volunteer::isValidForPrint)
             .collect(Collectors.toList());
     }
