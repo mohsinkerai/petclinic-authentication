@@ -49,14 +49,14 @@
   <a th:href="@{/volunteer/search/export(name=${param.name},
       cnic=${param.cnic},
       regionalCouncil=${param.regionalCouncil},
-      jamatkhana=${param.jamatkhana},
+      localCouncil=${param.localCouncil},
       day=${param.day},
       zone=${param.zone}
     )}"><span class="btn btn-default btn-margin pull-right">Volunteers File Export</span></a>
   <form th:action="@{/volunteer/search/print(name=${param.name},
       cnic=${param.cnic},
       regionalCouncil=${param.regionalCouncil},
-      jamatkhana=${param.jamatkhana},
+      localCouncil=${param.localCouncil},
       day=${param.day},
       zone=${param.zone}
     )}" method="post" style="display: inline;">
@@ -97,6 +97,8 @@
     <td th:text="${volunteer.category}"/>
     <td th:text="${volunteer.cellPhone}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">
+      <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
+          class="glyphicon glyphicon-pencil"></span></a>
       <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-remove danger"></span></a>
       <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline"

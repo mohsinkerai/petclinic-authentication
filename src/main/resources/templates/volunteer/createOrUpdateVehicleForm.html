@@ -5,6 +5,10 @@
 
 <h2>Volunteer Registration Form</h2>
 <h3>Total UNPrinted: <span th:text="*{count}"></span></h3>
+<form th:action="@{/volunteer/print}" method="post">
+  <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+  <button class="btn btn-default" type="submit">Print All Cards</button>
+</form>
 <form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
   <div class="form-group has-feedback">
     <div class="form-group">

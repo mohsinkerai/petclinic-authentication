@@ -161,7 +161,6 @@ public class Volunteer {
             && !volunteerIsPrinted
             && volunteerName != null
             && validateCnic()
-            && dutyDay != null
             && dutyZone != null
             && volunteerCommittee != null
             && localCouncil != null

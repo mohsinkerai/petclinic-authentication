@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,10 +141,10 @@ public class VolunteerService {
 
     private String[] map(Volunteer volunteer) {
         return new String[]{
-            volunteer.getVolunteerName(),
-            volunteer.getJamatKhanna(),
-            volunteer.getVolunteerCnic(),
-            volunteer.getEmailAdddress()
+            Optional.ofNullable(volunteer.getVolunteerName()).orElse(""),
+            Optional.ofNullable(volunteer.getJamatKhanna()).orElse(""),
+            Optional.ofNullable(volunteer.getVolunteerCnic()).orElse(""),
+            Optional.ofNullable(volunteer.getEmailAdddress()).orElse("")
         };
     }
 }
