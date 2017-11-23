@@ -229,6 +229,14 @@ public class CardPrinter {
         return message;
     }
 
+    public String truncateText(String inputString, int maxLength)
+    {
+        if (inputString.length() > maxLength) {
+            inputString = inputString.substring(0, maxLength);
+        }
+        return inputString;
+    }
+
     public void CreateCard(Document qr_code_Example, String EncryptMsg, PdfWriter writer,
         float cardStartX, float cardStartY, float ratio, Volunteer volunteer) throws Exception {
         String imageUrl = getBackgroundImage(volunteer.getDutyZone()); // "D://inner cordon.jpg";
@@ -267,29 +275,30 @@ public class CardPrinter {
             if(VolName.length > 1)
                 VolSecondName = VolName[1];
         }
-        Phrase myText = new Phrase( VolFirstName , namefont);
+        Phrase myText = new Phrase( truncateText(VolFirstName,10) , namefont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 92,
-            cardStartX + (pageWidth / 2), cardStartY + 102, 6, Element.ALIGN_LEFT);
+            cardStartX + (pageWidth / 2), cardStartY + 102, 6,
+            Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( VolSecondName , namefont);
+        myText = new Phrase( truncateText(VolSecondName ,12), namefont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 78.5f,
             cardStartX + (pageWidth / 2), cardStartY + 88.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
 
-        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)?volunteer.getVolunteerCommittee().toUpperCase() : "" , smallfont);
+        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 62,
             cardStartX + (pageWidth / 2), cardStartY + 72, 6, Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( (volunteer.getVolunteerCnic()!=null)?volunteer.getVolunteerCnic(): "" , smallfont);
+        myText = new Phrase( (volunteer.getVolunteerCnic()!=null)?truncateText(volunteer.getVolunteerCnic(),16): "" , smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 46.5f,
             cardStartX + (pageWidth / 2), cardStartY + 56.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
         //local council
-        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?volunteer.getLocalCouncil().toUpperCase(): "" , smallfont);
+        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?truncateText(volunteer.getLocalCouncil().toUpperCase(),12): "" , smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 33,
             cardStartX + (pageWidth / 2), cardStartY + 43, 6, Element.ALIGN_LEFT);
         ct.go();
@@ -301,7 +310,7 @@ public class CardPrinter {
         ct.go();*/
 
         //Header title
-        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?volunteer.getVolunteerSite().toUpperCase(): "" , titleFont);
+        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?truncateText(volunteer.getVolunteerSite().toUpperCase(),14): "" , titleFont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 225, cardStartX + (pageWidth / 2),
             cardStartY + 235, 6, Element.ALIGN_LEFT
         );
