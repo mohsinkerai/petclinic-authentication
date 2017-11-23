@@ -20,7 +20,7 @@
           Vehicle
         </button>
         <a th:href="@{/volunteer}"><span class="btn btn-primary">Cancel</span></a>
-        <button class="btn btn-danger" type="reset">Reset</button>
+        <button class="btn btn-danger" name="reset" type="reset">Reset</button>
       </div>
     </div>
     <div class="row form-group">
@@ -79,9 +79,9 @@
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Home Phone', 'homePhone')}"/>
-      <input
           th:replace="~{fragments/inputFieldShort :: input ('Cell Phone', 'cellPhone')}"/>
+      <input
+          th:replace="~{fragments/inputFieldShort :: input ('Home Phone', 'homePhone')}"/>
     </div>
     <div class="form-group">
       <input
