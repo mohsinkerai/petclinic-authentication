@@ -90,6 +90,8 @@ public class VolunteerController {
         }
         model.put("query", searchDTO);
         model.put("page", vehicles);
+        long unprintedCount = volunteerService.getUnprintedCount();
+        model.put("count", unprintedCount);
         return VIEW_ALL;
     }
 
