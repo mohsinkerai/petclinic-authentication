@@ -43,7 +43,7 @@ public class VolunteerService {
     }
 
     public Volunteer save(Volunteer volunteer) {
-        if (volunteer.getPicture() != null) {
+        if (volunteer.getPicture() != null && volunteer.getPicture().trim() != "") {
             String filePath = null;
             try {
                 filePath = volunteerImageService
