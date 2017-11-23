@@ -70,20 +70,20 @@ public class VolunteerService {
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         return volunteerRepository
             .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
-                query.getName(),
-                query.getCnic(),
-                query.getLocalCouncil(),
-                query.getZone(),
+                Optional.ofNullable(query.getName()).orElse(""),
+                Optional.ofNullable(query.getCnic()).orElse(""),
+                Optional.ofNullable(query.getLocalCouncil()).orElse(""),
+                Optional.ofNullable(query.getZone()).orElse(""),
                 pageable);
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
             .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
-                query.getName(),
-                query.getCnic(),
-                query.getLocalCouncil(),
-                query.getZone());
+                Optional.ofNullable(query.getName()).orElse(""),
+                Optional.ofNullable(query.getCnic()).orElse(""),
+                Optional.ofNullable(query.getLocalCouncil()).orElse(""),
+                Optional.ofNullable(query.getZone()).orElse(""));
     }
 
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}

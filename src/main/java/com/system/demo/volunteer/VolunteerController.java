@@ -263,55 +263,78 @@ public class VolunteerController {
         inputStream.close();
     }
 
+    @RequestMapping(path = "print", method = RequestMethod.GET)
+    public String redirectToList() {
+        return "redirect:/" + BASE_URL;
+    }
+
     @RequestMapping(path = "print", method = RequestMethod.POST)
-    public void man(HttpServletResponse response)
+    public void man(HttpServletResponse response, HttpServletRequest request)
         throws Exception {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         log.info("Total Received Printable Volunteers {}", printableVolunteers.size());
-        String pathOfFile = cardPrinter.print(printableVolunteers);
+        if (printableVolunteers.size() > 0) {
 
-        printableVolunteers.stream()
-            .map(volunteer -> {
-                volunteer.setVolunteerIsPrinted(true);
-                return volunteer;
-            })
-            .forEach(volunteerService::save);
+            String pathOfFile = cardPrinter.print(printableVolunteers);
 
-        File file = new File(pathOfFile);
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new FileInputStream(file);
-        response.setContentType("application/pdf");
-        // filename=\"" + System.currentTimeMillis() + "printable.pdf"
-        response.setHeader("Content-Disposition", "attachment; " + "\"");
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        response.flushBuffer();
-        inputStream.close();
+            printableVolunteers.stream()
+                .map(volunteer -> {
+                    volunteer.setVolunteerIsPrinted(true);
+                    return volunteer;
+                })
+                .forEach(volunteerService::save);
+
+            File file = new File(pathOfFile);
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new FileInputStream(file);
+            response.setContentType("application/pdf");
+            // filename=\"" + System.currentTimeMillis() + "printable.pdf"
+            response.setHeader("Content-Disposition", "attachment; " + "\"");
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } else {
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", request.getRequestURL().toString());
+        }
+    }
+
+    @RequestMapping(path = "/search/print", method = RequestMethod.GET)
+    public String redirectList() {
+        return "redirect:/" + BASE_URL;
     }
 
     @RequestMapping(path = "/search/print", method = RequestMethod.POST)
-    public void printSearchedRecords(HttpServletResponse response, VolunteerSearchDTO searchDTO)
+    public void printSearchedRecords(HttpServletRequest request, HttpServletResponse response,
+        VolunteerSearchDTO searchDTO)
         throws Exception {
         List<Volunteer> volunteers = volunteerService.advancedSearch(searchDTO);
-        List<Volunteer> printableVolunteers = volunteers.stream().filter(Volunteer::isValidForPrint)
+        List<Volunteer> printableVolunteers = volunteers.stream()
+            .filter(Volunteer::isValidForPrint)
             .collect(Collectors.toList());
-        String pathOfFile = cardPrinter.print(printableVolunteers);
+        if (printableVolunteers.size() > 0) {
+            String pathOfFile = cardPrinter.print(printableVolunteers);
 
-        printableVolunteers.stream()
-            .map(volunteer -> {
-                volunteer.setVolunteerIsPrinted(true);
-                return volunteer;
-            })
-            .forEach(volunteerService::save);
+            printableVolunteers.stream()
+                .map(volunteer -> {
+                    volunteer.setVolunteerIsPrinted(true);
+                    return volunteer;
+                })
+                .forEach(volunteerService::save);
 
-        File file = new File(pathOfFile);
-        response.setContentLength((int) file.length());
-        InputStream inputStream = new FileInputStream(file);
-        response.setContentType("application/pdf");
-        // filename=\"" + System.currentTimeMillis() + "printable.pdf"
-        response.setHeader("Content-Disposition", "attachment; " + "\"");
-        FileCopyUtils.copy(inputStream, response.getOutputStream());
-        response.flushBuffer();
-        inputStream.close();
+            File file = new File(pathOfFile);
+            response.setContentLength((int) file.length());
+            InputStream inputStream = new FileInputStream(file);
+            response.setContentType("application/pdf");
+            // filename=\"" + System.currentTimeMillis() + "printable.pdf"
+            response.setHeader("Content-Disposition", "attachment; " + "\"");
+            FileCopyUtils.copy(inputStream, response.getOutputStream());
+            response.flushBuffer();
+            inputStream.close();
+        } else {
+            response.setStatus(HttpServletResponse.SC_MOVED_PERMANENTLY);
+            response.setHeader("Location", request.getRequestURL().toString());
+        }
     }
 
     @RequestMapping(path = "images/{volunteerId}", method = RequestMethod.GET)
