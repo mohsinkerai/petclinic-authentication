@@ -269,12 +269,12 @@ public class VolunteerController {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         String pathOfFile = cardPrinter.print(printableVolunteers);
 
-       /* printableVolunteers.stream()
+        printableVolunteers.stream()
             .map(volunteer -> {
                 volunteer.setVolunteerIsPrinted(true);
                 return volunteer;
             })
-            .forEach(volunteerService::save);*/
+            .forEach(volunteerService::save);
 
         File file = new File(pathOfFile);
         response.setContentLength((int) file.length());

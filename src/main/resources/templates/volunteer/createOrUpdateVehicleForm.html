@@ -4,8 +4,8 @@
 <body>
 
 <h2>Volunteer Registration Form</h2>
-<div th:class="((*{count}>5) ? 'alert alert-danger' : 'alert alert-primary')">
-  Total UNPrinted: <span th:text="*{count}"></span></div>
+<div th:class="((*{count}>5) ? 'alert alert-danger' : 'alert alert-success')">
+  Total Cards to Print: <span th:text="*{count}"></span></div>
 <form th:action="@{/volunteer/print}" method="post">
   <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
   <button class="btn btn-default" type="submit">Print All Cards</button>

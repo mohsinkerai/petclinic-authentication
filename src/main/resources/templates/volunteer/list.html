@@ -6,7 +6,8 @@
 <body>
 
 <h2>Volunteers</h2>
-<h3>Total UNPrinted: <span th:text="*{count}"></span></h3>
+<div th:class="((*{count}>5) ? 'alert alert-danger' : 'alert alert-success')">
+  Total Cards to Print: <span th:text="*{count}"></span></div>
 <p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh
   soon</p>
 <span class="row">
