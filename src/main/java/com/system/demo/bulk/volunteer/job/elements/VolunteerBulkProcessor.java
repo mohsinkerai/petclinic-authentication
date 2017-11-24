@@ -67,14 +67,14 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
             return null;
         } else {
-            if (pictureFlag.equals("true")) {
+            if (pictureFlag.equalsIgnoreCase("true")) {
                 boolean volunteerImage = false;
                 String imagePath = ImageDirectory +"\\"+ v.getVolunteerCnic();
                 if (new File(imagePath + ".jpg").exists()) {
                     volunteerImage = true;
                     // TODO: in following line, get VolunteerCnic Should be Removed.
                     v.setVolunteerImage(imagePath +".jpg");
-                } else if (new File(imagePath + ".jpeg").exists()) {
+                } else if (new File( imagePath + ".jpeg").exists()) {
                     volunteerImage = true;
                     v.setVolunteerImage(imagePath +".jpeg");
                 } else if (new File(imagePath + ".png").exists()) {

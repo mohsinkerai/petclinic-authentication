@@ -89,7 +89,7 @@ public class FileUploadListener {
         jobParamsMap.put("timestamp",
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
         // TODO: Fill this Params
-        jobParamsMap.put("pictureFlag", new JobParameter("True"));
+        jobParamsMap.put("pictureFlag", new JobParameter(fileUploadEvent.isPictureAvailable() + ""));
         jobParamsMap.put("imagesSource", new JobParameter(dataHouse.getAbsolutePath()));
         jobParamsMap.put("userId", new JobParameter(userId));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
