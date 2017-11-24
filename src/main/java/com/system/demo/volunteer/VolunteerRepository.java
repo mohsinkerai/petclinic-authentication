@@ -30,4 +30,6 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
     @Query(value = "SELECT count(id) FROM volunteers WHERE volunteer_isprinted = 0", nativeQuery = true)
     long getUnprintedCount();
+
+    Page<Volunteer> findByVolunteerIsPrintedIsFalse(Pageable pageable);
 }

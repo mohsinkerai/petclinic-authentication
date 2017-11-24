@@ -83,7 +83,7 @@ public class VolunteerController {
         Map<String, Object> model, SearchDTO searchDTO) {
         Page<Volunteer> vehicles;
         if (searchDTO.getQuery() == null) {
-            vehicles = volunteerService.findAll(pageable);
+            vehicles = volunteerService.findAllUnPrinted(pageable);
             searchDTO = new SearchDTO();
         } else {
             vehicles = volunteerService.search(searchDTO.getQuery(), pageable);

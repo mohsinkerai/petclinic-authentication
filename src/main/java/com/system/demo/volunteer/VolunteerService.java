@@ -59,8 +59,9 @@ public class VolunteerService {
         return volunteerRepository.save(volunteer);
     }
 
-    public Page<Volunteer> findAll(Pageable pageable) {
-        return volunteerRepository.findAll(pageable);
+    public Page<Volunteer> findAllUnPrinted(Pageable pageable) {
+        return volunteerRepository.findByVolunteerIsPrintedIsFalse(pageable);
+//        return volunteerRepository.findAll(pageable);
     }
 
     public Page<Volunteer> search(String query, Pageable pageable) {

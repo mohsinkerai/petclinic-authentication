@@ -107,6 +107,10 @@ public class Volunteer {
 
     private boolean isEnabled;
 
+    public boolean isPictureAvailable() {
+        return isPictureAvailable && volunteerImage != null && volunteerImage != "";
+    }
+
     public boolean validateCnic() {
         if (!this.volunteerCnic.equals("")) {
             return true;

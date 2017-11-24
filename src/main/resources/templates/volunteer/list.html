@@ -13,9 +13,11 @@
 <span class="row">
   <form th:if="*{count}>0" th:action="@{/volunteer/print}" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <button class="btn btn-default pull-right" type="submit"><span class="glyphicon glyphicon-print"></span>&nbsp;Print All Cards</button>
+    <button class="btn btn-default pull-right" type="submit"><span
+        class="glyphicon glyphicon-print"></span>&nbsp;Print All Cards</button>
   </form>
-  <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right"><span class="glyphicon glyphicon-search"></span>&nbsp;Search</span></a>
+  <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right"><span
+      class="glyphicon glyphicon-search"></span>&nbsp;Search</span></a>
   <a th:href="@{/volunteer/file}"><span
       class="btn btn-default pull-right"><span class="glyphicon glyphicon-file"></span>&nbsp;Volunteers File Upload</span></a>
   <a th:href="@{/volunteer/new}"><span
@@ -26,7 +28,10 @@
   <tr>
     <th style="width: 50px;">Id</th>
     <!--<th style="width: 200px"><a class="sorted" sd:pagination-sort="formId">Form Id</a></th>-->
-    <th style="width: 250px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
+    <th style="width: 50px">Picture Available</th>
+    <th style="width: 150px;"><a class="sorted" sd:pagination-sort="volunteerCnic">Volunteer
+      Cnic</a></th>
+    <th style="width: 200px;"><a class="sorted" sd:pagination-sort="volunteerName">Volunteer
       Name</a></th>
     <!--<th style="width: 120px;">Juridsdiction</a></th>-->
     <th style="width: 100px">Local Council</th>
@@ -39,6 +44,12 @@
   <tbody>
   <tr th:each="volunteer : ${page}">
     <td th:text="${volunteer.id}"/>
+    <td><span class="glyphicon glyphicon-ok text-success"
+        th:if="${volunteer.isPictureAvailable()}"></span>
+      <span class="glyphicon glyphicon-remove text-danger"
+            th:unless="${volunteer.isPictureAvailable()}"></span>
+    </td>
+    <td th:text="${volunteer.volunteerCnic}"/>
     <td th:text="${volunteer.volunteerName}"/>
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.volunteerCommittee}"/>
