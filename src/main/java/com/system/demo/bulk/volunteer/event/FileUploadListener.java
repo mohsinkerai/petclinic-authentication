@@ -78,7 +78,6 @@ public class FileUploadListener {
         } catch (IOException e) {
             e.printStackTrace();
         }
-
         long userId = fileUploadEvent.getUserId();
         // We should copy/backup file after running job - maybe associate its name with jobId?
         String csvPath = dataHouse.getAbsolutePath() + "\\data.csv";

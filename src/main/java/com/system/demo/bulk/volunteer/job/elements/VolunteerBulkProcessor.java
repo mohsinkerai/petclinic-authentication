@@ -82,7 +82,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
                     v.setVolunteerImage(imagePath +".png");
                 }
                 if (volunteerImage == false) {
-                    recordError(BulkErrorType.IMAGE_NOT_FOUND.toString(), v);
+                    recordError (BulkErrorType.IMAGE_NOT_FOUND.toString(), v);
                     return null;
                 }
                 v.setPictureAvailable(true);
