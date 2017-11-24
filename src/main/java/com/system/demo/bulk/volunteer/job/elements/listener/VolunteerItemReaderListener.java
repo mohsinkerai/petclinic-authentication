@@ -1,5 +1,7 @@
 package com.system.demo.bulk.volunteer.job.elements.listener;
 
+import com.system.demo.bulkprogress.itemdata.FailItemService;
+import com.system.demo.bulkprogress.itemdata.FailItems;
 import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.bulkprogress.jobdata.UserJobService;
 import com.system.demo.volunteer.Volunteer;
@@ -27,6 +29,9 @@ public class VolunteerItemReaderListener implements ItemReadListener<Volunteer> 
     @Value("#{jobExecution}")
     private JobExecution jobExecution;
 
+    @Autowired
+    FailItemService failItemService;
+
     @Override
     public void beforeRead() {
     }
@@ -40,6 +45,12 @@ public class VolunteerItemReaderListener implements ItemReadListener<Volunteer> 
         UserJobData userJobData = userJobService.getUserJobDataByJobId(jobExecution.getId());
         userJobData.setJobStatus(BatchStatus.FAILED.toString());
         userJobService.save(userJobData);
+        FailItems failItem = FailItems.builder()
+            .failureReason("All Items are failed on Read, Check Excel file")
+            .failedItems("All")
+            .userJobId(userJobData.getId())
+            .build();
+        failItemService.save(failItem);
         jobExecution.setExitStatus(new ExitStatus("FAILED","Invalid Input File "+ ex.getMessage()));
         jobExecution.stop();
     }
