@@ -9,14 +9,22 @@
 <span class="row">
   <form class="form-horizontal" id="File Upload" method="POST"
         enctype="multipart/form-data">
-    <div class="col-sm-8 row">
+    <div class="col-sm-8">
       <input
           th:replace="~{fragments/fileField :: input ('File to Upload', 'file')}"/>
-    </div>
-    <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
-    <button class="btn btn-default" type="submit">Upload</button>
-  </form>
-</Span>
+        <label>
+          <input type="radio" class="form-check-input" value="TRUE" name="picture" checked>
+          Picture Available
+        </label>
+        <label>
+          <input type="radio" class="form-check-input" value="FALSE" name="picture">
+          Picture Not Available
+        </label>
+      </div>
+      <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
+      <button class="btn btn-default" type="submit">Upload</button>
+    </form>
+  </Span>
 
 <table id="volunteers" class="table table-striped">
   <thead>
