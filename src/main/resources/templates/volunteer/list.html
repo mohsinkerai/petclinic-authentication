@@ -59,7 +59,7 @@
     <td class="row" sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-pencil"></span></a>
-      <a th:href="@{/volunteer/delete/__${volunteer.id}__}"><span
+      <a th:href="@{/volunteer/delete/__${volunteer.id}__}" sec:authorize="hasAuthority('ADMIN')"><span
           class="glyphicon glyphicon-remove danger"></span></a>
       <form id="unprint-form" th:if="${volunteer.volunteerIsPrinted}" class="form-inline"
             th:name="'myform' + ${volunteer.id}" method="post"

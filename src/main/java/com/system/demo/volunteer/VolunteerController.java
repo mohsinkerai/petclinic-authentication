@@ -108,6 +108,7 @@ public class VolunteerController {
         } else {
             volunteers = volunteerService.advancedSearch(searchDTO, pageable);
         }
+        model.put("total", volunteers.getTotalElements());
         model.put("query", searchDTO);
         model.put("page", volunteers);
         return SEARCH;
@@ -177,7 +178,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/delete/{id}")
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String delete(@PathVariable("id") Long id, Model model) {
         Volunteer repositoryUser = volunteerService.findOne(id);
         if (repositoryUser != null) {
@@ -189,7 +190,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/delete/{id}", method = RequestMethod.POST)
-    @PreAuthorize("hasAuthority('AUTHORIZER')")
+    @PreAuthorize("hasAuthority('ADMIN')")
     public String disable(@PathVariable("id") Long id) {
         Volunteer vehicle = volunteerService.findOne(id);
         if (vehicle != null) {
