@@ -6,8 +6,9 @@
 <body>
 
 <h2>Volunteers</h2>
-<div th:class="((*{count}>5) ? 'alert alert-danger' : 'alert alert-success')">
-  Total Cards to Print: <span th:text="*{count}"></span></div>
+<div th:class="((*{printableCount}>5) ? 'alert alert-danger' : 'alert alert-success')">
+  Ready To Print: <span th:text="*{printableCount}"></span> AND Record with Validation Error:
+  <span th:text="*{errorCount}"></span></div>
 <p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh
   soon</p>
 <span class="row">
@@ -45,7 +46,7 @@
   <tr th:each="volunteer : ${page}">
     <td th:text="${volunteer.id}"/>
     <td><span class="glyphicon glyphicon-ok text-success"
-        th:if="${volunteer.isPictureAvailable()}"></span>
+              th:if="${volunteer.isPictureAvailable()}"></span>
       <span class="glyphicon glyphicon-remove text-danger"
             th:unless="${volunteer.isPictureAvailable()}"></span>
     </td>

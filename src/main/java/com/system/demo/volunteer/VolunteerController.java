@@ -91,6 +91,9 @@ public class VolunteerController {
         model.put("query", searchDTO);
         model.put("page", vehicles);
         long unprintedCount = volunteerService.getUnprintedCount();
+        long toBePrinted = volunteerService.getToBePrintedCount();
+        model.put("printableCount", toBePrinted);
+        model.put("errorCount", unprintedCount - toBePrinted);
         model.put("count", unprintedCount);
         return VIEW_ALL;
     }
@@ -114,6 +117,9 @@ public class VolunteerController {
     public String initCreationForm(Map<String, Object> model) {
         Volunteer vehicle = volunteerService.createNew();
         long unprintedCount = volunteerService.getUnprintedCount();
+        long toBePrinted = volunteerService.getToBePrintedCount();
+        model.put("printableCount", toBePrinted);
+        model.put("errorCount", unprintedCount - toBePrinted);
         model.put("count", unprintedCount);
         model.put("vehicle", vehicle);
         return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
@@ -137,6 +143,9 @@ public class VolunteerController {
         if (volunteer != null && volunteer.isEnabled()) {
             model.addAttribute("vehicle", volunteer);
             long unprintedCount = volunteerService.getUnprintedCount();
+            long toBePrinted = volunteerService.getToBePrintedCount();
+            model.addAttribute("printableCount", toBePrinted);
+            model.addAttribute("errorCount", unprintedCount - toBePrinted);
             model.addAttribute("count", unprintedCount);
             return VIEWS_VOLUNTEER_CREATE_OR_UPDATE_FORM;
         } else {

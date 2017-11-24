@@ -69,13 +69,14 @@ public class VolunteerService {
     }
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
-        return volunteerRepository
+        Page<Volunteer> searched = volunteerRepository
             .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
                 Optional.ofNullable(query.getLocalCouncil()).orElse(""),
                 Optional.ofNullable(query.getZone()).orElse(""),
                 pageable);
+        return searched;
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
@@ -111,6 +112,10 @@ public class VolunteerService {
 
     public long getUnprintedCount() {
         return volunteerRepository.getUnprintedCount();
+    }
+
+    public long getToBePrintedCount() {
+        return volunteerRepository.getUnprintedClearCount();
     }
 
     public void delete(Long id) {
