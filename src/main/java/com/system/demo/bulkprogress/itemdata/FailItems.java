@@ -30,8 +30,11 @@ public class FailItems {
     @Column(name = "user_job_id")
     Long userJobId;
 
-    @Column(name = "failed_item")
-    String failedItems;
+    @Column(name = "failed_item_CNIC")
+    String failedItemsCnic;
+
+    @Column(name = "failed_item_formNo")
+    String failedItemsFromNo;
 
     @Column(name = "failure_reason")
     String failureReason;

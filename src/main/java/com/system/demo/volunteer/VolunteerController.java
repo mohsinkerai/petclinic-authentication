@@ -239,7 +239,7 @@ public class VolunteerController {
             .map(MyUser::getId)
             .orElse(-2l);
         if (userJobdata != null && userJobdata.getUserId() == userId) {
-            Page<FailItems> failItems = failItemService.findByJobId(jobId, pageable);
+            Page<FailItems> failItems = failItemService.findByJobId(userJobdata.getId(), pageable);
             model.put("page", failItems);
             return "volunteer/errors";
         }
@@ -271,7 +271,7 @@ public class VolunteerController {
         InputStream inputStream = new FileInputStream(file);
         response.setContentType("text/csv");
         response
-            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
+            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItemsCnic.csv" + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
         inputStream.close();
@@ -362,7 +362,7 @@ public class VolunteerController {
             InputStream inputStream = new FileInputStream(file);
             response.setContentType("image/jpeg");
 //        response
-//            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItems.csv" + "\"");
+//            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItemsCnic.csv" + "\"");
             FileCopyUtils.copy(inputStream, response.getOutputStream());
             response.flushBuffer();
             inputStream.close();

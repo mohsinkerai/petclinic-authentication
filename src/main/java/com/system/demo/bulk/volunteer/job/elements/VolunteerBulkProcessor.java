@@ -30,7 +30,6 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
     @Autowired
     private FailItemService failItemService;
 
-    @Value("${picture.flag}")
     String pictureFlag;
 
     @Value("#{jobParameters['imagesSource']}")
@@ -67,7 +66,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
             return null;
         } else {
-            if (pictureFlag.equalsIgnoreCase("true")) {
+            if (jobExecution.getJobParameters().getString("pictureFlag").equalsIgnoreCase("true")) {
                 boolean volunteerImage = false;
                 String imagePath = ImageDirectory +"\\"+ v.getVolunteerCnic();
                 if (new File(imagePath + ".jpg").exists()) {
@@ -98,15 +97,16 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
         }
     }
 
-    private void recordError(String message, Volunteer v){
+    private void recordError(String message, Volunteer volunteer){
         log.error(message);
         UserJobData userJobData = (UserJobData)jobExecution.getExecutionContext().get("userJobData");
         FailItems failItem = FailItems.builder()
             .failureReason(message)
-            .failedItems(v.getVolunteerCnic())
-            .userJobId(userJobData.getJobId())
+            .failedItemsCnic(volunteer.getVolunteerCnic().equals("") ? "Empty" : volunteer.getVolunteerCnic())
+            .failedItemsFromNo(volunteer.getVolunteerFormNo().equals("") ? "Empty" : volunteer.getVolunteerFormNo())
+            .userJobId(userJobData.getId())
             .build();
         failItemService.save(failItem);
-        log.info("valiadtion Error for : "+ v.toString());
+        log.info("valiadtion Error for : "+ volunteer.toString());
     }
 }

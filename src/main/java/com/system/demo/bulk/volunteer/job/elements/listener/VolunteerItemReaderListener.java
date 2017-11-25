@@ -47,7 +47,8 @@ public class VolunteerItemReaderListener implements ItemReadListener<Volunteer> 
         userJobService.save(userJobData);
         FailItems failItem = FailItems.builder()
             .failureReason("All Items are failed on Read, Check Excel file")
-            .failedItems("All")
+            .failedItemsCnic("All")
+            .failedItemsFromNo("AlL")
             .userJobId(userJobData.getId())
             .build();
         failItemService.save(failItem);

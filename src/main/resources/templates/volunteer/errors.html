@@ -12,13 +12,15 @@
 <table id="errors" class="table table-striped">
   <thead>
     <tr>
-      <th style="width: 50px;">Failed Items</th>
+      <th style="width: 50px;">Failed Item Form No</th>
+      <th style="width: 50px;">Failed Item CNIC</th>
       <th style="width: 200px">Reason</th>
     </tr>
   </thead>
   <tbody>
   <tr th:each="volunteer : ${page}">
-    <td th:text="${volunteer.failedItems}"/>
+    <td th:text="${volunteer.failedItemsFromNo}"/>
+    <td th:text="${volunteer.failedItemsCnic}"/>
     <td th:text="${volunteer.failureReason}"/>
   </tr>
   </tbody>

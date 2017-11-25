@@ -139,8 +139,9 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
 -- Data exporting was unselected.
 -- Dumping structure for table darbarmanagement.job_failure_items
 CREATE TABLE IF NOT EXISTS `job_failure_items` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `failed_item` varchar(255) DEFAULT NULL,
+  `id` bigint(20) NOT NULL,
+  `failed_item_formNo` varchar(50) NOT NULL,
+  `failed_item_CNIC` varchar(255) DEFAULT NULL,
   `failure_reason` varchar(255) DEFAULT NULL,
   `user_job_id` bigint(20) DEFAULT NULL,
   PRIMARY KEY (`id`),

@@ -12,10 +12,9 @@ xlsmFilePath = 'data.xlsm'
 csvFilePath = 'data.csv'
 sheetName = 'Sheet1'
 
-
 zip = zipfile.ZipFile(r''+param_1)
 zip.extractall(r'' + param_2)
 
-workbook = xlrd.open_workbook (param_2 + '\\' + xlsmFilePath)
-print(workbook)
-# os.remove(param_2 + '\\' + csvFilePath)      #removing existing csv file from output folder
+xlsmFilePath = 'data.xlsm'
+csvFilePath = 'data.csv'
+sheetName = 'Sheet1'

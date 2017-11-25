@@ -54,7 +54,7 @@ public class FailItemService {
 
     private String[] map(FailItems failItems) {
         return new String[]{
-            failItems.getFailedItems(),
+            failItems.getFailedItemsCnic(),
             failItems.getFailureReason()
         };
 
