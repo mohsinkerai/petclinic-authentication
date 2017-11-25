@@ -22,35 +22,45 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
 
     @Autowired
     private ResourceLoader resourceLoader;
+
     @Override
     public void afterJob(JobExecution jobExecution) {
        try {
+           Integer totalWriteCount = 0;
+           Integer totalProcessItems = 0;
+           Integer totalSkipProcessCount = 0;
+           Integer totalWriteSkipCount = 0;
            UserJobData userJobData = userJobService.getUserJobDataByJobId(jobExecution.getId());
+           for(StepExecution stepExecution : jobExecution.getStepExecutions())
+           {
+               totalProcessItems += stepExecution.getReadCount();
+               totalWriteCount += stepExecution.getWriteCount();
+               totalSkipProcessCount += stepExecution.getProcessSkipCount();
+               totalWriteSkipCount += stepExecution.getWriteSkipCount();
+           }
            String path = jobExecution.getJobParameters().getString("sourceFilePath");
            if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
                userJobData.setJobStatus(BatchStatus.COMPLETED.toString());
                 userJobService.save(userJobData);
-                Integer totalWriteCount = 0;
-                Integer totalProcessItems = 0;
-                Integer totalSkipProcessCount = 0;
-                Integer totalWriteSkipCount = 0;
-
-               for(StepExecution stepExecution : jobExecution.getStepExecutions())
-               {
-                   totalProcessItems += stepExecution.getReadCount();
-                   totalWriteCount += stepExecution.getWriteCount();
-                   totalSkipProcessCount += stepExecution.getProcessSkipCount();
-                   totalWriteSkipCount += stepExecution.getWriteSkipCount();
-               }
                log.info("CSV File Upload Finished follwing Data are inserted of file " + resourceLoader.getResource(path).getFilename());
                log.info("Total data read from file  : " + totalProcessItems);
                log.info("Succefully Updated data : " + totalWriteCount);
                log.info("Number of Items Skip on read from file  : " + totalSkipProcessCount);
                log.info("Number of Items Skip on write from file  : " + totalWriteSkipCount);
+
+               userJobData.setJobTotalItems(totalProcessItems);
+               userJobData.setJobFailureItems(totalProcessItems - totalWriteCount);
+               userJobData.setJobSucessItems(totalWriteCount);
+               userJobService.save(userJobData);
+
            } else if (jobExecution.getStatus() == BatchStatus.FAILED) {
                log.info("CSV file Uploading Failed of job  " + jobExecution.getJobId());
-               userJobData.setJobStatus(BatchStatus.FAILED.toString());
+
+               userJobData.setJobTotalItems(totalProcessItems);
+               userJobData.setJobFailureItems(totalSkipProcessCount);
+               userJobData.setJobSucessItems(totalWriteCount);
                userJobService.save(userJobData);
+               userJobData.setJobStatus(BatchStatus.FAILED.toString());
            }
            else {
                userJobData.setJobStatus(BatchStatus.FAILED.toString());

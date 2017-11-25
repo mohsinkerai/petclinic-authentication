@@ -42,4 +42,13 @@ public class UserJobData {
 
     @Column(name = "job_status")
     String jobStatus;
+
+    @Column(name = "job_total_items")
+    Integer jobTotalItems;
+
+    @Column(name = "job_total_failure_items")
+    Integer jobFailureItems;
+
+    @Column(name = "job_total_success_items")
+    Integer jobSucessItems;
 }

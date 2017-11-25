@@ -144,6 +144,9 @@ CREATE TABLE IF NOT EXISTS `job_failure_items` (
   `failed_item_CNIC` varchar(255) DEFAULT NULL,
   `failure_reason` varchar(255) DEFAULT NULL,
   `user_job_id` bigint(20) DEFAULT NULL,
+  `job_total_items` varchar(55) DEFAULT NULL,
+  `job_total_failure_items` varchar(55) DEFAULT NULL,
+  `job_total_success_items` varchar(55) DEFAULT NULL,
   PRIMARY KEY (`id`),
   KEY `user_job_id` (`user_job_id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
@@ -250,7 +253,7 @@ CREATE TABLE IF NOT EXISTS `volunteers` (
   `volunteer_jurisdiction` varchar(255) DEFAULT NULL,
   `volunteer_memberof` varchar(255) DEFAULT NULL,
   `volunteer_site` varchar(255) DEFAULT NULL,
-  `volunteer_isprinteddate` datetime NOT NULL,
+  `volunteer_isprinteddate` timestamp NULL DEFAULT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `volunteer_cnic` (`volunteer_cnic`),
   KEY `volunteer_isprinted` (`volunteer_isprinted`),

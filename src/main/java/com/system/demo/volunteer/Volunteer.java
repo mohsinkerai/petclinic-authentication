@@ -18,6 +18,7 @@ import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
+import java.sql.Timestamp;
 
 @Data
 @Entity(name = "volunteers")
@@ -103,7 +104,7 @@ public class Volunteer {
     boolean volunteerIsPrinted = false;
 
     @Column(name="volunteer_isprinteddate")
-    Date volunteerIsPrintedDate;
+    Timestamp volunteerIsPrintedDate;
 
     @Transient
     private String picture;
