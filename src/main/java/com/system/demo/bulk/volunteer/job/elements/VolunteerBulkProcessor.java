@@ -67,24 +67,21 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             return null;
         } else {
             if (jobExecution.getJobParameters().getString("pictureFlag").equalsIgnoreCase("true")) {
-                boolean volunteerImage = false;
-                String imagePath = ImageDirectory +"\\"+ v.getVolunteerCnic();
-                if (new File(imagePath + ".jpg").exists()) {
-                    volunteerImage = true;
-                    // TODO: in following line, get VolunteerCnic Should be Removed.
-                    v.setVolunteerImage(imagePath +".jpg");
-                } else if (new File( imagePath + ".jpeg").exists()) {
-                    volunteerImage = true;
-                    v.setVolunteerImage(imagePath +".jpeg");
-                } else if (new File(imagePath + ".png").exists()) {
-                    volunteerImage = true;
-                    v.setVolunteerImage(imagePath +".png");
-                }
-                if (volunteerImage == false) {
+                String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
+                if(volunteerImage.equals("")) {
                     recordError (BulkErrorType.IMAGE_NOT_FOUND.toString(), v);
                     return null;
-                }
+                 }
+                v.setVolunteerImage(volunteerImage);
                 v.setPictureAvailable(true);
+            } else {
+                String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
+                if(volunteerImage.equals("")) {
+                    v.setPictureAvailable(false);
+                } else {
+                    v.setVolunteerImage(volunteerImage);
+                    v.setPictureAvailable(true);
+                }
             }
             List<Volunteer> vol = volunteerService.findByCnic(v.getVolunteerCnic());//v.getVolunteerCnic());
             if (vol.size() == 0) {
@@ -96,7 +93,24 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             }
         }
     }
+    private String getImageForVolunteer(String volunteerCnic){
 
+        boolean volunteerImage = false;
+        String imagePath = ImageDirectory +"\\"+ volunteerCnic;
+        if (new File(imagePath + ".jpg").exists()) {
+            volunteerImage = true;
+            // TODO: in following line, get VolunteerCnic Should be Removed.
+            return imagePath +".jpg";
+        } else if (new File( imagePath + ".jpeg").exists()) {
+            volunteerImage = true;
+            return  imagePath +".jpeg";
+        } else if (new File(imagePath + ".png").exists()) {
+            volunteerImage = true;
+            return imagePath +".png";
+        } else {
+            return "";
+        }
+    }
     private void recordError(String message, Volunteer volunteer){
         log.error(message);
         UserJobData userJobData = (UserJobData)jobExecution.getExecutionContext().get("userJobData");
