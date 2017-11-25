@@ -250,6 +250,7 @@ CREATE TABLE IF NOT EXISTS `volunteers` (
   `volunteer_jurisdiction` varchar(255) DEFAULT NULL,
   `volunteer_memberof` varchar(255) DEFAULT NULL,
   `volunteer_site` varchar(255) DEFAULT NULL,
+  `volunteer_isprinteddate` datetime NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `volunteer_cnic` (`volunteer_cnic`),
   KEY `volunteer_isprinted` (`volunteer_isprinted`),

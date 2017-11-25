@@ -17,6 +17,8 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
+import java.sql.Date;
+
 @Data
 @Entity(name = "volunteers")
 @NoArgsConstructor
@@ -99,6 +101,9 @@ public class Volunteer {
 
     @Column(name = "volunteer_isprinted")
     boolean volunteerIsPrinted = false;
+
+    @Column(name="volunteer_isprinteddate")
+    Date volunteerIsPrintedDate;
 
     @Transient
     private String picture;
