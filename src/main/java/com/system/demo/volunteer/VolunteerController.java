@@ -240,7 +240,7 @@ public class VolunteerController {
             .orElse(-2l);
         if (userJobdata != null && userJobdata.getUserId() == userId) {
             Page<FailItems> failItems = failItemService
-                .findByJobId(userJobdata.getJobId(), pageable);
+                .findByJobId(userJobdata.getId(), pageable);
             model.put("page", failItems);
             return "volunteer/errors";
         }
