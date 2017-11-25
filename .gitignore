@@ -12,3 +12,4 @@ datahouse/
 *.pdf
 app.log
 my-tomcat/
+*.csv
