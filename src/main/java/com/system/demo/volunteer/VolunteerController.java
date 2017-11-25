@@ -142,7 +142,7 @@ public class VolunteerController {
     @RequestMapping("/edit/{id}")
     public String edit(@PathVariable("id") Long id, Model model) {
         Volunteer volunteer = volunteerService.findOne(id);
-        if (volunteer != null && volunteer.isEnabled()) {
+        if (volunteer != null && volunteer.isEnabled() && !volunteer.isVolunteerIsPrinted()) {
             model.addAttribute("vehicle", volunteer);
             long unprintedCount = volunteerService.getUnprintedCount();
             long toBePrinted = volunteerService.getToBePrintedCount();

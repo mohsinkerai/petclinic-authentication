@@ -106,7 +106,8 @@
     <td th:text="${volunteer.category}"/>
     <td th:text="${volunteer.cellPhone}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">
-      <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
+      <a th:unless="${volunteer.volunteerIsPrinted}"
+         th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-pencil"></span></a>
       <a th:unless="${volunteer.volunteerIsPrinted}"
          th:href="@{/volunteer/delete/__${volunteer.id}__}"
