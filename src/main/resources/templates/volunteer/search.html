@@ -48,8 +48,9 @@
     </div>
   </form>
 
-  <br />
-  <div class="alert alert-info" role="alert"><span th:text="'Total ' + ${total} + ' Records Found'"></span></div>
+  <br/>
+  <div class="alert alert-info" role="alert"><span
+      th:text="'Total ' + ${total} + ' Records Found'"></span></div>
 
   <a th:href="@{/volunteer/search/export(name=${param.name},
       cnic=${param.cnic},
@@ -141,6 +142,7 @@
       </ul>
     </nav>
   </div>
+  <div class="col-sm-1 dropup pull-right" sd:page-size-selector="dropdown"></div>
 </div>
 
 </body>

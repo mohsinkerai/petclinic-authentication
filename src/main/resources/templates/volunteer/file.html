@@ -44,7 +44,7 @@
     <td th:text="${job.jobStatus}"/>
     <td th:text="${job.jobType}"/>
     <td th:text="${job.jobName}"/>
-    <td><a th:href="@{/volunteer/file/__${job.jobId}__/errors}">
+    <td><a th:href="@{/volunteer/file/__${job.id}__/errors}">
       <button class="btn btn-primary">View Errors</button>
     </a></td>
   </tr>
@@ -62,6 +62,7 @@
       </ul>
     </nav>
   </div>
+  <div class="col-sm-1 dropup pull-right" sd:page-size-selector="dropdown"></div>
 </div>
 <!--<span class="row">-->
 <!--<form th:object="${query}" class="form-horizontal" id="Search" method="get">-->
