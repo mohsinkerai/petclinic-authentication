@@ -6,9 +6,7 @@
 <body>
 
 <h2>File Upload Errors</h2>
-<form th:object="${query}" class="container searchForm" id="error" method="get">
-    <a th:href="@{errors/export}"><span class="btn btn-default btn-margin pull-right">Errors File Export</span></a>
-</form>
+<a th:href="@{errors/export}"><span class="btn btn-default btn-margin pull-right">Errors File Export</span></a>
 <table id="errors" class="table table-striped">
   <thead>
     <tr>
@@ -19,9 +17,9 @@
   </thead>
   <tbody>
   <tr th:each="volunteer : ${page}">
-    <td th:text="${volunteer.failedItemsFromNo}"/>
-    <td th:text="${volunteer.failedItemsCnic}"/>
-    <td th:text="${volunteer.failureReason}"/>
+    <td th:text="*{volunteer.failedItemsFromNo}"/>
+    <td th:text="*{volunteer.failedItemsCnic}"/>
+    <td th:text="*{volunteer.failureReason}"/>
   </tr>
   </tbody>
 </table>
@@ -37,6 +35,7 @@
       </ul>
     </nav>
   </div>
+  <div class="col-sm-1 dropup pull-right" sd:page-size-selector="dropdown"></div>
 </div>
 
 </body>

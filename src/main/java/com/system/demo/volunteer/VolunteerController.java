@@ -239,7 +239,8 @@ public class VolunteerController {
             .map(MyUser::getId)
             .orElse(-2l);
         if (userJobdata != null && userJobdata.getUserId() == userId) {
-            Page<FailItems> failItems = failItemService.findByJobId(userJobdata.getId(), pageable);
+            Page<FailItems> failItems = failItemService
+                .findByJobId(userJobdata.getJobId(), pageable);
             model.put("page", failItems);
             return "volunteer/errors";
         }
@@ -261,7 +262,7 @@ public class VolunteerController {
 //        return "redirect:/volunteer";
     }
 
-    @RequestMapping(path = "errors/export", method = RequestMethod.GET)
+    @RequestMapping(path = "file/{jobId}/errors/export", method = RequestMethod.GET)
     public void exportfailItems(@PathVariable(name = "jobId") Long jobExecutionId,
         HttpServletResponse response)
         throws IOException {
@@ -271,7 +272,8 @@ public class VolunteerController {
         InputStream inputStream = new FileInputStream(file);
         response.setContentType("text/csv");
         response
-            .setHeader("Content-Disposition", "attachment; filename=\"" + "failedItemsCnic.csv" + "\"");
+            .setHeader("Content-Disposition",
+                "attachment; filename=\"" + "failedItemsCnic.csv" + "\"");
         FileCopyUtils.copy(inputStream, response.getOutputStream());
         response.flushBuffer();
         inputStream.close();
