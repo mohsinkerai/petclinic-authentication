@@ -44,7 +44,7 @@
     <td th:text="${job.jobStatus}"/>
     <td th:text="${job.jobType}"/>
     <td th:text="${job.jobName}"/>
-    <td><a th:href="@{/volunteer/file/__${job.jobId}__/errors}">
+    <td><a th:href="@{/volunteer/file/__${job.id}__/errors}">
       <button class="btn btn-primary">View Errors</button>
     </a></td>
   </tr>

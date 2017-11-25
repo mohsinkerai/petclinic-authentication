@@ -9,6 +9,7 @@ import com.system.demo.bulkprogress.jobdata.UserJobData;
 import com.system.demo.bulkprogress.jobdata.UserJobRepository;
 import com.system.demo.model.SearchDTO;
 import com.system.demo.users.MyUser;
+import com.system.demo.users.UserAuthority;
 import com.system.demo.volunteer.printer.CardPrinter;
 import java.io.File;
 import java.io.FileInputStream;
@@ -231,14 +232,15 @@ public class VolunteerController {
     @RequestMapping(value = "/file/{jobId}/errors", method = RequestMethod.GET)
     public String fileError(Pageable pageable, Map<String, Object> model,
         @PathVariable("jobId") long jobId) {
-        UserJobData userJobdata = userJobRepository.getUserJobDataByJobId(jobId);
-        Long userId = Optional.ofNullable(SecurityContextHolder.getContext())
+        UserJobData userJobdata = userJobRepository.findOne(jobId);
+        MyUser user = Optional.ofNullable(SecurityContextHolder.getContext())
             .map(SecurityContext::getAuthentication)
             .map(Authentication::getPrincipal)
             .map(o -> (MyUser) o)
-            .map(MyUser::getId)
-            .orElse(-2l);
-        if (userJobdata != null && userJobdata.getUserId() == userId) {
+            .get();
+        // There should be data and viewer should be admin or user
+        if (userJobdata != null && (userJobdata.getUserId().equals(user.getId()) || user
+            .getAuthorities().contains(UserAuthority.ADMIN))) {
             Page<FailItems> failItems = failItemService
                 .findByJobId(userJobdata.getId(), pageable);
             model.put("page", failItems);
@@ -266,6 +268,20 @@ public class VolunteerController {
     public void exportfailItems(@PathVariable(name = "jobId") Long jobExecutionId,
         HttpServletResponse response)
         throws IOException {
+
+        UserJobData userJobdata = userJobRepository.findOne(jobExecutionId);
+        MyUser user = Optional.ofNullable(SecurityContextHolder.getContext())
+            .map(SecurityContext::getAuthentication)
+            .map(Authentication::getPrincipal)
+            .map(o -> (MyUser) o)
+            .get();
+
+        // There should be data and viewer should be admin or user
+        if (!(userJobdata != null && (userJobdata.getUserId().equals(user.getId()) || user
+            .getAuthorities().contains(UserAuthority.ADMIN)))) {
+            throw new RuntimeException("Invalid JobId w.r.t user");
+        }
+
         File file = failItemService.exportCsv(jobExecutionId);
 
         response.setContentLength((int) file.length());
