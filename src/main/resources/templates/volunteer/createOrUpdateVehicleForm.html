@@ -40,36 +40,36 @@
     <input id="image-blob" type="hidden" name="picture"/>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name', 'volunteerName')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name *', 'volunteerName')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Volunteer CNIC', 'volunteerCnic')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer CNIC *', 'volunteerCnic')}"/>
     </div>
     <div class="form-group">
-      <label class="col-sm-2 control-label">Volunteer Committee</label>
+      <label class="col-sm-2 control-label">Volunteer Committee *</label>
       <div class="col-sm-4">
         <select class="col-sm-12 form-control" th:field="*{volunteerCommittee}">
           <option value="Darbar">Darbar</option>
           <option value="Security">Security</option>
         </select>
       </div>
-      <label class="col-sm-2 control-label">Volunteer Site</label>
+      <label class="col-sm-2 control-label">Volunteer Site *</label>
       <div class="col-sm-4">
         <select class="col-sm-12 form-control" th:field="*{volunteerSite}">
           <option value="Booni">Booni</option>
           <option value="Tause">Tause</option>
-          <option value="Aliabad">Aliabad</option>
+          <option value="Aliabad" selected>Aliabad</option>
           <option value="Garam Chashma">Garam Chashma</option>
         </select>
       </div>
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Local Council', 'localCouncil')}"/>
-      <label class="col-sm-2 control-label">Duty Zone</label>
+          th:replace="~{fragments/inputFieldShort :: input ('Local Council *', 'localCouncil')}"/>
+      <label class="col-sm-2 control-label">Duty Zone *</label>
       <div class="col-sm-4">
         <select class="col-sm-12 form-control" th:field="*{dutyZone}">
           <option value="Pandal">Pandal</option>
-          <option value="Inner Cordon">Inner Cordon</option>
+          <option value="Inner Cordon" selected>Inner Cordon</option>
           <option value="MHI entourage">MHI Entourage Stage</option>
           <option value="Main Gate">Main Gate</option>
           <option value="Outer Cordon">Outer Cordon</option>
