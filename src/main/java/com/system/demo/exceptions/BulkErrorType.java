@@ -1,8 +1,5 @@
 package com.system.demo.exceptions;
 
-/**
- * Created by Zeeshan Damani
- */
 public enum BulkErrorType {
     CNIC_ALREADY_RESGISTERED(1,"Volunteer with this NIC already registered"),
     VOLUNTEER_VALIDATION_ERROR(2,"INVALID TYPE, ValidationError"),
@@ -14,7 +11,8 @@ public enum BulkErrorType {
     VALIDATION_INVALID_HOMEPHONE(10,"Invalid Home Phone Number"),
     VALIDATION_INVALID_EMAIL(10,"Invalid Email Addres"),
     IMAGE_NOT_FOUND(11,"Image not found for this Volunteer"),
-    INVALID_FILE_FORMAT(12,"Invalid File found,Need csv in ZIP");
+    INVALID_FILE_FORMAT(12,"Invalid File found,Need csv in ZIP"),
+    VALIDATION_INVALID_NAME(13,"Empty Name");
 
 
     private int code;

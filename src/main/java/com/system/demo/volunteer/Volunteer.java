@@ -125,6 +125,14 @@ public class Volunteer {
         }
     }
 
+    public boolean validateName() {
+        if (!this.volunteerName.equals("")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean validateEmail() {
         if (this.emailAdddress.matches("^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$")
             || this.emailAdddress.equals("")) {

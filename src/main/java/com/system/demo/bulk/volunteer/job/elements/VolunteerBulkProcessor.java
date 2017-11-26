@@ -49,6 +49,10 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             recordError(BulkErrorType.INVALID_CNIC.toString(), v);
             return null;
         }
+        if(!v.validateName()){
+            recordError(BulkErrorType.VALIDATION_INVALID_NAME.toString(), v);
+            return null;
+        }
 //         else if (!v.valiateAge()) {
 //            recordError(BulkErrorType.VALIDATION_INVALID_AGE.toString(), v);
 //            return null;

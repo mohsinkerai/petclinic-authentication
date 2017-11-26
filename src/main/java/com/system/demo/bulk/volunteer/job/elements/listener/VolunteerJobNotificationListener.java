@@ -59,8 +59,8 @@ public class VolunteerJobNotificationListener extends JobExecutionListenerSuppor
                userJobData.setJobTotalItems(totalProcessItems);
                userJobData.setJobFailureItems(totalSkipProcessCount);
                userJobData.setJobSucessItems(totalWriteCount);
-               userJobService.save(userJobData);
                userJobData.setJobStatus(BatchStatus.FAILED.toString());
+               userJobService.save(userJobData);
            }
            else {
                userJobData.setJobStatus(BatchStatus.FAILED.toString());

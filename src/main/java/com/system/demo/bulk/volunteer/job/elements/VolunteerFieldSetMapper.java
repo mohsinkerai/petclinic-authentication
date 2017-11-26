@@ -33,7 +33,7 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
             // volunteer.setVolunteerCommittee(fieldSet.readString(19));
             return volunteer;
         } catch (Exception ex) {
-            volunteer.setDutyDay((""));
+            volunteer.setDutyDay("");
             volunteer.setDutyShift("");
             volunteer.setDutyZone( "");
             volunteer.setVolunteerSite("");
