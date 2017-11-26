@@ -34,6 +34,8 @@
     <th style="width: 120px;">Job Status</a></th>
     <th style="width: 100px">Job Type</th>
     <th style="width: 250px;"><a class="sorted" sd:pagination-sort="jobName">Job Name</a></th>
+    <th style="width: 250px;"><a class="sorted">Job Success Items</a></th>
+    <th style="width: 250px;"><a class="sorted">Job Failure Items</a></th>
     <th style="width: 100px;">Actions</th>
   </tr>
   </thead>
@@ -44,6 +46,8 @@
     <td th:text="${job.jobStatus}"/>
     <td th:text="${job.jobType}"/>
     <td th:text="${job.jobName}"/>
+    <td th:text="${job.jobSucessItems}"/>
+    <td th:text="${job.jobFailureItems}"/>
     <td><a th:href="@{/volunteer/file/__${job.id}__/errors}">
       <button class="btn btn-primary">View Errors</button>
     </a></td>

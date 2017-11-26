@@ -48,6 +48,7 @@ public class FailItemService {
 
     private String[] headers() {
         return new String[]{
+            "Form No",
             "CNIC",
             "Error Message"
         };
@@ -55,6 +56,7 @@ public class FailItemService {
 
     private String[] map(FailItems failItems) {
         return new String[]{
+            failItems.getFailedItemsFromNo(),
             failItems.getFailedItemsCnic(),
             failItems.getFailureReason()
         };

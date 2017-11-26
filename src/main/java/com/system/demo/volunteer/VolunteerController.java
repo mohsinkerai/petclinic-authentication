@@ -242,6 +242,7 @@ public class VolunteerController {
             Page<FailItems> failItems = failItemService
                 .findByJobId(userJobdata.getId(), pageable);
             model.put("page", failItems);
+            model.put("total", failItems.getTotalElements());
             return "volunteer/errors";
         }
         throw new RuntimeException("Invalid JobId w.r.t user");
