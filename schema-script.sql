@@ -136,7 +136,6 @@ CREATE TABLE IF NOT EXISTS `hibernate_sequence` (
   `next_val` bigint(20) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
--- Data exporting was unselected.
 -- Dumping structure for table darbarmanagement.job_failure_items
 CREATE TABLE IF NOT EXISTS `job_failure_items` (
   `id` bigint(20) NOT NULL,
