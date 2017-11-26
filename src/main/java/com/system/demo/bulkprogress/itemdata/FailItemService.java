@@ -36,7 +36,7 @@ public class FailItemService {
     public File exportCsv(Long jobId) throws IOException {
         long currentMillis = System.currentTimeMillis();
         List<FailItems> failItems = failItemRepository.findAllByUserJobId((jobId));
-        CSVWriter writer = new CSVWriter(new FileWriter(String.valueOf(currentMillis) + "-volunterFaild-export.csv"));
+            CSVWriter writer = new CSVWriter(new FileWriter(String.valueOf(currentMillis) + "-volunterFaild-export.csv"));
         writer.writeNext(headers());
         List<String[]> listOfFailItems = failItems.stream().map(this::map)
             .collect(Collectors.toList());
