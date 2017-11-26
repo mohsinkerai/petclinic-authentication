@@ -1,11 +1,11 @@
 <html>
 <body>
   <form>
-    <th:block th:fragment="input (label, name)">
+    <th:block th:fragment="input (label, name, required, pattern)">
         <label class="col-sm-2 control-label" th:text="${label}">Label</label>
         <div class="col-sm-4">
           <input class="form-control" type="text"
-            th:field="*{__${name}__}"  maxlength="30" />
+            th:field="*{__${name}__}" th:required="${required}" th:pattern="${pattern}" maxlength="30" />
         </div>
     </th:block>
   </form>

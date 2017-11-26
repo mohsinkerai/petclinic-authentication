@@ -171,8 +171,6 @@ public class VolunteerController {
             volunteer.setVolunteerIsPrinted(repositoryVolunteer.isVolunteerIsPrinted());
             volunteer.setPictureAvailable(repositoryVolunteer.isPictureAvailable());
             volunteer.setVolunteerImage(repositoryVolunteer.getVolunteerImage());
-//            volunteer.setVolunteerCommittee(repositoryVolunteer.getVolunteerCommittee());
-//            volunteer.setVolunteerSite(repositoryVolunteer.getVolunteerSite());
             volunteerService.save(volunteer);
             return "redirect:/" + BASE_URL;
         }

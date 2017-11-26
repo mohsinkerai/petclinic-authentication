@@ -40,9 +40,9 @@
     <input id="image-blob" type="hidden" name="picture"/>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name *', 'volunteerName')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name *', 'volunteerName', 'true', '*')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Volunteer CNIC *', 'volunteerCnic')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer CNIC *', 'volunteerCnic', 'true', '.{3,20}')}"/>
     </div>
     <div class="form-group">
       <label class="col-sm-2 control-label">Volunteer Committee *</label>
@@ -64,7 +64,7 @@
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Local Council *', 'localCouncil')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Local Council *', 'localCouncil', 'true', '*')}"/>
       <label class="col-sm-2 control-label">Duty Zone *</label>
       <div class="col-sm-4">
         <select class="col-sm-12 form-control" th:field="*{dutyZone}">
@@ -80,32 +80,32 @@
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Cell Phone', 'cellPhone')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Cell Phone', 'cellPhone', 'false', '[0-9-]*')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Home Phone', 'homePhone')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Home Phone', 'homePhone', 'false', '[0-9-]*+')}"/>
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Jamatkhana', 'jamatKhanna')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Jamatkhana', 'jamatKhanna', 'false', '*')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Institution', 'institution')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Institution', 'institution', 'false', '*')}"/>
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Age', 'age')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Volunteer Age', 'age', 'false', '*')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Duty Day', 'dutyDay')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Duty Day', 'dutyDay', 'false', '*')}"/>
     </div>
 
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Duty Shift', 'dutyShift')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Duty Shift', 'dutyShift', false, '*')}"/>
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Email Address', 'emailAdddress')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Email Address', 'emailAdddress', false, '*')}"/>
     </div>
     <div class="form-group">
       <input
-          th:replace="~{fragments/inputFieldShort :: input ('Address', 'residentialAddress')}"/>
+          th:replace="~{fragments/inputFieldShort :: input ('Address', 'residentialAddress', false, '*')}"/>
     </div>
 
 
