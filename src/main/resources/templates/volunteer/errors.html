@@ -6,7 +6,8 @@
 <body>
 
 <h2>File Upload Errors</h2>
-<span class="alert alert-info" th:text="'Total Cards ' + *{total}"></span>
+<hr />
+<span class="alert alert-info" th:text="'Total Errors ' + *{total}"></span>
 <a th:href="@{errors/export}"><span class="btn btn-default btn-margin pull-right">Errors File Export</span></a>
 <table id="errors" class="table table-striped">
   <thead>
