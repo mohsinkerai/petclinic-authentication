@@ -2,7 +2,8 @@
 SQLyog Community
 MySQL - 5.7.14 : Database - darbarmanagement
 *********************************************************************
-*/
+*/
+
 
 /*!40101 SET NAMES utf8 */;
 
@@ -216,37 +217,68 @@ CREATE TABLE `vehicle` (
 /*Table structure for table `volunteers` */
 
 CREATE TABLE `volunteers` (
-  `id` bigint(20) NOT NULL AUTO_INCREMENT,
-  `volunteer_age` varchar(255) DEFAULT NULL,
-  `volunteer_category` int(11) DEFAULT NULL,
-  `volunteer_cell_phone` varchar(255) DEFAULT NULL,
-  `volunteer_designation` varchar(255) DEFAULT NULL,
-  `volunteer_duty_day` varchar(255) DEFAULT NULL,
-  `volunteer_duty_shift` varchar(255) DEFAULT NULL,
-  `volunteer_duty_zone` varchar(255) DEFAULT NULL,
-  `volunteer_email` varchar(255) DEFAULT NULL,
-  `volunteer_home_phone` varchar(255) DEFAULT NULL,
-  `volunteer_institution` varchar(255) DEFAULT NULL,
-  `volunteer_jamatkhanna` varchar(255) DEFAULT NULL,
-  `local_council` varchar(3000) DEFAULT NULL,
-  `regional_council` varchar(3000) DEFAULT NULL,
-  `volunteer_registration_date` datetime DEFAULT CURRENT_TIMESTAMP,
-  `volunteer_reports_to` varchar(255) DEFAULT NULL,
-  `volunteer_residential_address` varchar(255) DEFAULT NULL,
-  `volunteer_cnic` varchar(255) DEFAULT NULL,
-  `volunteer_image` varchar(255) DEFAULT NULL,
-  `volunteer_name` varchar(255) DEFAULT NULL,
-  `isEnabled` bit(1) DEFAULT b'1',
-  `isPictureAvailable` bit(1) DEFAULT NULL,
-  `volunteer_committee` varchar(255) DEFAULT NULL,
-  `volunteer_form_no` varchar(255) DEFAULT NULL,
-  `volunteer_isprinted` bit(1) DEFAULT NULL,
-  `volunteer_jurisdiction` varchar(255) DEFAULT NULL,
-  `volunteer_memberof` varchar(255) DEFAULT NULL,
-  `volunteer_site` varchar(255) DEFAULT NULL,
-  `volunteer_isprinteddate` timestamp NULL DEFAULT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=3812 DEFAULT CHARSET=latin1;
+	`id` BIGINT(20) NOT NULL AUTO_INCREMENT,
+	`volunteer_age` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_category` INT(11) NULL DEFAULT NULL,
+	`volunteer_cell_phone` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_designation` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_duty_day` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_duty_shift` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_duty_zone` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_email` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_home_phone` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_institution` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_jamatkhanna` VARCHAR(255) NULL DEFAULT NULL,
+	`local_council` VARCHAR(3000) NULL DEFAULT NULL,
+	`regional_council` VARCHAR(3000) NULL DEFAULT NULL,
+	`volunteer_registration_date` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_reports_to` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_residential_address` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_cnic` VARCHAR(255) NOT NULL,
+	`volunteer_image` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_name` VARCHAR(255) NULL DEFAULT NULL,
+	`isEnabled` BIT(1) NULL DEFAULT b'1',
+	`isPictureAvailable` BIT(1) NULL DEFAULT NULL,
+	`volunteer_committee` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_form_no` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_isprinted` BIT(1) NULL DEFAULT NULL,
+	`volunteer_jurisdiction` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_memberof` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_site` VARCHAR(255) NULL DEFAULT NULL,
+	`volunteer_isprinteddate` DATE NULL DEFAULT NULL,
+	PRIMARY KEY (`id`),
+	UNIQUE INDEX `volunteer_cnic` (`volunteer_cnic`),
+	INDEX `volunteer_isprinted` (`volunteer_isprinted`),
+	INDEX `isPictureAvailable` (`isPictureAvailable`),
+	INDEX `isEnabled` (`isEnabled`),
+	INDEX `volunteer_duty_zone` (`volunteer_duty_zone`),
+	FULLTEXT INDEX `regional_council` (`regional_council`),
+	FULLTEXT INDEX `volunteer_jamatkhanna` (`volunteer_jamatkhanna`),
+	FULLTEXT INDEX `local_council` (`local_council`),
+	FULLTEXT INDEX `volunteer_duty_zone_full_text` (`volunteer_duty_zone`)
+)
+COLLATE='latin1_swedish_ci'
+ENGINE=InnoDB
+AUTO_INCREMENT=1
+;
+
+INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (1, b'1', b'0', b'0', '$2a$10$irvXlKRH0UjSf3.okoAuB.vuHqgSF4iX2zi0uhWuswt5m8mjL1reC', 'foo');
+INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (2, b'1', b'0', b'0', '$2a$10$kw/.fZAqYqqvDPEx/0hJiOqIhs2ESZCYdSjFpooRhYZgE6Yot3bLK', 'admin');
+INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (3, b'1', b'0', b'0', '$2a$10$TnfNzqSKZjNwY2Kvv18PVed0K0MfIVzeR40TadOgTE8tMQcNnwnse', 'registrar');
+INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (4, b'1', b'0', b'0', '$2a$10$zb2C3ddNE6razm4XmqQwv.ynRnCb92uZM4VX1m7DJCMQgmpeN4.Je', 'authorizer');
+
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (3, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (4, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (4, 'AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'ADMIN');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (1, 'CARDISSUER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'ADMIN');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'REGISTRAR');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'AUTHORIZER');
+INSERT INTO `user_authority` (`user_id`, `authority`) VALUES (2, 'CARDISSUER');
+
 
 /*!40101 SET SQL_MODE=@OLD_SQL_MODE */;
 /*!40014 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS */;
