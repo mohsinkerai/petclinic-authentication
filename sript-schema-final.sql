@@ -267,6 +267,8 @@ CREATE TABLE IF NOT EXISTS `volunteers` (
   FULLTEXT KEY `volunteer_duty_zone_full_text` (`volunteer_duty_zone`)
 ) ENGINE=InnoDB AUTO_INCREMENT=1 DEFAULT CHARSET=latin1;
 
+INSERT INTO `hibernate_sequence` (`next_val`) VALUES (32);
+
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (1, b'1', b'0', b'0', '$2a$10$irvXlKRH0UjSf3.okoAuB.vuHqgSF4iX2zi0uhWuswt5m8mjL1reC', 'foo');
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (2, b'1', b'0', b'0', '$2a$10$kw/.fZAqYqqvDPEx/0hJiOqIhs2ESZCYdSjFpooRhYZgE6Yot3bLK', 'admin');
 INSERT INTO `user` (`id`, `enabled`, `isExpired`, `isLocked`, `password`, `username`) VALUES (3, b'1', b'0', b'0', '$2a$10$TnfNzqSKZjNwY2Kvv18PVed0K0MfIVzeR40TadOgTE8tMQcNnwnse', 'registrar');
