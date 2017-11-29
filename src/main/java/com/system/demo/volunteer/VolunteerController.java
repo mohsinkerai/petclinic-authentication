@@ -16,6 +16,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.file.Path;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -169,6 +170,7 @@ public class VolunteerController {
             volunteer.setId(repositoryVolunteer.getId());
             volunteer.setEnabled(repositoryVolunteer.isEnabled());
             volunteer.setVolunteerIsPrinted(repositoryVolunteer.isVolunteerIsPrinted());
+            volunteer.setVolunteerIsPrintedDate(repositoryVolunteer.getVolunteerIsPrintedDate());
             volunteer.setPictureAvailable(repositoryVolunteer.isPictureAvailable());
             volunteer.setVolunteerImage(repositoryVolunteer.getVolunteerImage());
             volunteerService.save(volunteer);
@@ -311,6 +313,7 @@ public class VolunteerController {
             printableVolunteers.stream()
                 .map(volunteer -> {
                     volunteer.setVolunteerIsPrinted(true);
+                    volunteer.setVolunteerIsPrintedDate(new Timestamp(System.currentTimeMillis()));
                     return volunteer;
                 })
                 .forEach(volunteerService::save);
@@ -349,6 +352,7 @@ public class VolunteerController {
             printableVolunteers.stream()
                 .map(volunteer -> {
                     volunteer.setVolunteerIsPrinted(true);
+                    volunteer.setVolunteerIsPrintedDate(new Timestamp(System.currentTimeMillis()));
                     return volunteer;
                 })
                 .forEach(volunteerService::save);
