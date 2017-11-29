@@ -11,8 +11,11 @@
   <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
   <button class="btn btn-default" type="submit">Print All Cards</button>
 </form>
+<!--Volunteer Form-->
 <form th:object="${vehicle}" class="form-horizontal" id="add-owner-form" method="post">
   <div class="form-group has-feedback">
+
+    <!--Top Button Bar-->
     <div class="form-group">
       <div class="col-sm-offset-2 col-sm-10">
         <button
@@ -24,6 +27,8 @@
         <button class="btn btn-danger" name="reset" type="reset">Reset</button>
       </div>
     </div>
+
+    <!--Live Image Capture-->
     <div class="row form-group">
       <span class="col-sm-4 col-sm-offset-2">
         <video id="videoElement" muted="true" style="width: 320px; height: 240px;"></video>
@@ -31,13 +36,15 @@
       <span class="col-sm-2">
         <span id="capture" class="btn btn-primary" onclick="hello()">Capture</span>
       </span>
-      <span class="col-sm-4">
+      <div id="my-drop-zone" class="col-sm-4">
         <img id="my-screenshot" style="width: 320px; height: 240px;"
              th:src="'/volunteer/images/' + ((*{id})?*{id}:'')"/>
-      </span>
+      </div>
     </div>
 
     <input id="image-blob" type="hidden" name="picture"/>
+
+    <!--Actual Form-->
     <div class="form-group">
       <input
           th:replace="~{fragments/inputFieldShort :: input ('Volunteer Name *', 'volunteerName', 'true', '*')}"/>
@@ -134,8 +141,11 @@
 </form>
 <script type="text/javascript" src="/resources/js/webly.js"></script>
 <script type="text/javascript" src="/resources/js/capture-video-frame.js"></script>
+<script th:src="@{/webjars/dropzone/min/dropzone.min.js}"></script>
+<script type="text/javascript" src="/resources/js/my-dropzone.js"></script>
 <script type="text/javascript">
 
+    /*Turns on Live Webcam*/
     function webcamInit() {
       window.webcam.init().then(function() {
         var videoElement = document.getElementById("videoElement");
@@ -145,6 +155,7 @@
         console.log(error);
       });
     }
+
     function hello() {
       var frame = captureVideoFrame('videoElement', 'png');
 
@@ -158,8 +169,6 @@
     }
 
     webcamInit();
-
-
 </script>
 </body>
 </html>
