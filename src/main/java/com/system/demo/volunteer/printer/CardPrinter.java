@@ -228,8 +228,10 @@ public class CardPrinter {
         item.put("L", volunteer.getLocalCouncil());
         item.put("N", volunteer.getVolunteerName());
 
-        item.put("H", volunteer.getDutyShift());
-        item.put("U",volunteer.getDutyDay());
+        if(volunteer.getDutyShift() != null)
+            item.put("H", Integer.parseInt(volunteer.getDutyShift()));
+        if(volunteer.getDutyDay() != null)
+            item.put("U",Integer.parseInt(volunteer.getDutyDay()));
         message = item.toString();
 
         return message;
