@@ -137,6 +137,10 @@ public class CardPrinter {
             return 3;
         } else if (site.equalsIgnoreCase("Alyabad")) {
             return 4;
+        } else if (site.equalsIgnoreCase("Central")) {
+            return 5;
+        } else if (site.equalsIgnoreCase("Southern")) {
+            return 6;
         } else {
             return -1;
         }
@@ -224,6 +228,8 @@ public class CardPrinter {
         item.put("L", volunteer.getLocalCouncil());
         item.put("N", volunteer.getVolunteerName());
 
+        item.put("H", volunteer.getDutyShift());
+        item.put("U",volunteer.getDutyDay());
         message = item.toString();
 
         return message;
@@ -287,7 +293,10 @@ public class CardPrinter {
         ct.go();
 
 
-        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
+        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern")))
+            myText = new Phrase( (volunteer.getDutyDay()!=null && volunteer.getDutyShift()!=null)? "Day-"+volunteer.getDutyDay()+" Shift-"+volunteer.getDutyShift() : "" , smallfont);
+        else
+            myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 62,
             cardStartX + (pageWidth / 2), cardStartY + 72, 6, Element.ALIGN_LEFT);
         ct.go();
