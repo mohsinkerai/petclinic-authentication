@@ -186,9 +186,9 @@ public class Volunteer {
                 && dutyZone != null
                 && localCouncil != null;
 
-        if (!((volunteerSite.equalsIgnoreCase("Central") || volunteerSite
-            .equalsIgnoreCase("Southern")) && (isValid &&
-            !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay)))) {
+        if ((volunteerSite.equalsIgnoreCase("Central") || volunteerSite
+            .equalsIgnoreCase("Southern")) && !(isValid &&
+            !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay))) {
             isValid = false;
         }
 
