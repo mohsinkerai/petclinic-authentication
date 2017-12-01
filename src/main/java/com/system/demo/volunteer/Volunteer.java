@@ -176,7 +176,8 @@ public class Volunteer {
     }
 
     public boolean isValidForPrint() {
-        boolean isPictureAvailable = this.isPictureAvailable
+        boolean isPictureAvailable =
+            this.isPictureAvailable
             && volunteerImage != null
             && !volunteerIsPrinted
             && volunteerName != null
@@ -185,6 +186,10 @@ public class Volunteer {
             && volunteerSite != null
             && dutyZone != null
             && localCouncil != null;
+        if(!(isPictureAvailable && (volunteerSite.equalsIgnoreCase("Central") || volunteerSite.equalsIgnoreCase("Southern")) &&
+            dutyShift != null && dutyDay != null)) {
+            isPictureAvailable = false;
+        }
         if (!isPictureAvailable) {
             log.info("Record id {} is invalid for Print {}", id, this);
         }
