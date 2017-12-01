@@ -13,3 +13,4 @@ datahouse/
 app.log
 my-tomcat/
 *.csv
+app.log.1

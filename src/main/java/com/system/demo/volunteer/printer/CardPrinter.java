@@ -14,18 +14,13 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.system.demo.volunteer.Volunteer;
-
 import java.io.File;
 import java.io.FileOutputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.Random;
-
-import com.system.demo.volunteer.VolunteerCategory;
-import org.apache.commons.text.RandomStringGenerator;
 import org.json.JSONObject;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
 @Component
@@ -209,8 +204,8 @@ public class CardPrinter {
 		I = Cnic
 		L = Local Council
 		N = Name*/
-
         item.put("S", getSiteForQR(volunteer.getVolunteerSite()));
+
         /*1 = Booni
         2 = Garam Chashma
 		3 = Tause
@@ -219,9 +214,11 @@ public class CardPrinter {
 		6 = Southern
 		*/
         item.put("C", getCommitteeForQR(volunteer.getVolunteerCommittee()));
-		/*0 = Security
+
+        /*0 = Security
 		1 = Darbar*/
         item.put("Z", getZoneForQR(volunteer.getDutyZone()));
+
 		/*1 = MHI entourage
 		2 = Pandal
 		3 = Main Gate
@@ -229,18 +226,28 @@ public class CardPrinter {
 		5 = Outer Cordon
 		6 = NTF/RTF Team
 		7 = Sacrifice Duty*/
-        item.put("I", volunteer.getVolunteerCnic());
-        item.put("L", volunteer.getLocalCouncil());
-        item.put("N", volunteer.getVolunteerName());
+        item.put("I", getTrimedData(volunteer.getVolunteerCnic()));
+        item.put("L", getTrimedData(volunteer.getLocalCouncil()));
+        item.put("N", getTrimedData(volunteer.getVolunteerName()));
 
         if (volunteer.getDutyShift() != null) {
             item.put("H", volunteer.getDutyShift());
         }
+
         if (volunteer.getDutyDay() != null) {
             item.put("U", volunteer.getDutyDay());
         }
+
         message = item.toString();
         return message;
+    }
+
+    private static String getTrimedData(String data) {
+        if (data.length() > 29) {
+            return data.substring(0, 29);
+        } else {
+            return data;
+        }
     }
 
     public String truncateText(String inputString, int maxLength) {

@@ -4,6 +4,7 @@ package com.system.demo.volunteer;
  * Created by Zeeshan Damani
  */
 
+import java.sql.Timestamp;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -16,9 +17,6 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-
-import java.sql.Date;
-import java.sql.Timestamp;
 import org.springframework.util.StringUtils;
 
 @Data
@@ -104,7 +102,7 @@ public class Volunteer {
     @Column(name = "volunteer_isprinted")
     boolean volunteerIsPrinted = false;
 
-    @Column(name="volunteer_isprinteddate")
+    @Column(name = "volunteer_isprinteddate")
     Timestamp volunteerIsPrintedDate;
 
     @Transient
@@ -119,7 +117,7 @@ public class Volunteer {
     }
 
     public boolean validateCnic() {
-        if (!this.volunteerCnic.equals("")) {
+        if (StringUtils.hasLength(volunteerCnic)) {
             return true;
         } else {
             return false;
@@ -179,24 +177,25 @@ public class Volunteer {
     public boolean isValidForPrint() {
         boolean isValid =
             this.isPictureAvailable
-            && volunteerImage != null
-            && !volunteerIsPrinted
-            && volunteerName != null
-            && validateCnic()
-            && volunteerCommittee != null
-            && volunteerSite != null
-            && dutyZone != null
-            && localCouncil != null;
+                && volunteerImage != null
+                && !volunteerIsPrinted
+                && volunteerName != null
+                && validateCnic()
+                && volunteerCommittee != null
+                && volunteerSite != null
+                && dutyZone != null
+                && localCouncil != null;
 
-        if((volunteerSite.equalsIgnoreCase("Central") || volunteerSite
+        if (!((volunteerSite.equalsIgnoreCase("Central") || volunteerSite
             .equalsIgnoreCase("Southern")) && (isValid &&
-            !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay))) {
+            !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay)))) {
             isValid = false;
         }
 
         if (!isValid) {
             log.info("Record id {} is invalid for Print {}", id, this);
         }
+
         return isValid;
     }
 
