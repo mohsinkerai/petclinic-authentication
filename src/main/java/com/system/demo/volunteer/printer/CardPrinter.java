@@ -296,10 +296,10 @@ public class CardPrinter {
         ct.go();
 
 
-        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern")))
-            myText = new Phrase( (volunteer.getDutyDay()!=null && volunteer.getDutyShift()!=null)? "Day-"+volunteer.getDutyDay()+" Shift-"+volunteer.getDutyShift() : "" , smallfont);
-        else
-            myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
+//        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern")))
+//            myText = new Phrase( (volunteer.getDutyDay()!=null && volunteer.getDutyShift()!=null)? "Day-"+volunteer.getDutyDay()+" Shift-"+volunteer.getDutyShift() : "" , smallfont);
+//        else
+        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 62,
             cardStartX + (pageWidth / 2), cardStartY + 72, 6, Element.ALIGN_LEFT);
         ct.go();
@@ -327,6 +327,26 @@ public class CardPrinter {
             cardStartY + 235, 6, Element.ALIGN_LEFT
         );
         ct.go();
+
+
+        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern"))) {
+            myText = new Phrase(
+                (volunteer.getDutyDay() != null) ? "Day-"
+                    + volunteer.getDutyDay() : "",
+                smallfont);
+            ct.setSimpleColumn(myText, cardStartX + 150, cardStartY + 120, cardStartX + (pageWidth / 2),
+                cardStartY + 130, 6, Element.ALIGN_LEFT
+            );
+            ct.go();
+
+            myText = new Phrase(
+                (volunteer.getDutyShift() != null) ? "Shift-" + volunteer.getDutyShift() : "",
+                smallfont);
+            ct.setSimpleColumn(myText, cardStartX + 147, cardStartY + 134, cardStartX + (pageWidth / 2),
+                cardStartY + 144, 6, Element.ALIGN_LEFT
+            );
+            ct.go();
+        }
     }
 
     public Image getQRImage(String EncryptMsg, PdfWriter writer) throws Exception {
