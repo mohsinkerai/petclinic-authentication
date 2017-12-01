@@ -212,7 +212,10 @@ public class CardPrinter {
         /*1 = Booni
 		2 = Garam Chashma
 		3 = Tause
-		4 = Alyabad*/
+		4 = Alyabad
+		5 = Central
+		6 = Southern
+		*/
         item.put("C", getCommitteeForQR(volunteer.getVolunteerCommittee()));
 		/*0 = Security
 		1 = Darbar*/
@@ -348,5 +351,4 @@ public class CardPrinter {
             height, -leftReduction, -bottomReduction);
         return Image.getInstance(template);
     }
-
 }

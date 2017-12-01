@@ -39,6 +39,8 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
             .and()
             .httpBasic()
             //todo: Remove before comit
+            .and()
+            .csrf().ignoringAntMatchers("login")
            //.and().csrf().disable()
             .and()
             .logout()
