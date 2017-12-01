@@ -109,12 +109,14 @@
   <thead>
   <tr>
     <th style="width: 200px;">Volunteer Name</th>
+    <th style="width: 50px">Picture Available</th>
     <th style="width: 100px">Volunteer CNIC</th>
     <th style="width: 100px">Local Council</th>
     <th style="width: 100px">Volunteer Committee</th>
     <th style="width: 100px;">Duty Zone</th>
     <th style="width: 100px;">Volunteer Site</th>
     <th style="width: 120px;">Category</a></th>
+    <th style="width: 100px">Duty Site</th>
     <th style="width: 200px">Mobile Number</th>
     <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
   </tr>
@@ -122,12 +124,18 @@
   <tbody>
   <tr th:each="volunteer : ${page}">
     <td th:text="${volunteer.volunteerName}"/>
+    <td><span class="glyphicon glyphicon-ok text-success"
+              th:if="${volunteer.isPictureAvailable()}"></span>
+      <span class="glyphicon glyphicon-remove text-danger"
+            th:unless="${volunteer.isPictureAvailable()}"></span>
+    </td>
     <td th:text="${volunteer.volunteerCnic}"/>
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.volunteerCommittee}"/>
     <td th:text="${volunteer.dutyZone}"/>
     <td th:text="${volunteer.volunteerSite}"/>
     <td th:text="${volunteer.category}"/>
+    <td th:text="${volunteer.volunteerSite}"/>
     <td th:text="${volunteer.cellPhone}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:unless="${volunteer.volunteerIsPrinted}"
