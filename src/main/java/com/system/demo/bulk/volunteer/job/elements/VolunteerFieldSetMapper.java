@@ -30,13 +30,14 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
             volunteer.setDutyShift(fieldSet.readString(10) != null ? fieldSet.readString(10) : "");
             volunteer.setDutyZone(fieldSet.readString(11) != null ? fieldSet.readString(11): "");
             volunteer.setVolunteerSite(fieldSet.readString(12));
-            // volunteer.setVolunteerCommittee(fieldSet.readString(19));
+            volunteer.setVolunteerCommittee(fieldSet.readString(13));
             return volunteer;
         } catch (Exception ex) {
             volunteer.setDutyDay("");
             volunteer.setDutyShift("");
             volunteer.setDutyZone( "");
             volunteer.setVolunteerSite("");
+            volunteer.setVolunteerCommittee("");
             return volunteer;
 
         }
