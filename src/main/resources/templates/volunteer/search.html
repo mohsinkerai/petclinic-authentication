@@ -36,6 +36,22 @@
         <input
             th:replace="~{fragments/searchField :: input ('Zone', 'zone')}"/>
       </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Institution', 'institution')}"/>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Mobile Phone', 'mobile')}"/>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Jamatkhana', 'jamatkhana')}"/>
+      </div>
+      <div class="col-sm-4 mb-2">
+        <input
+            th:replace="~{fragments/searchField :: input ('Shift', 'shift')}"/>
+      </div>
     </div>
     <div id="voltSearchRow" class="row">
       <div class="col-md-4 mb-2">
@@ -57,7 +73,11 @@
       regionalCouncil=${param.regionalCouncil},
       localCouncil=${param.localCouncil},
       day=${param.day},
-      zone=${param.zone}
+      zone=${param.zone},
+      institution=${param.institution},
+      mobile=${param.mobile},
+      jamatkhana=${param.jamatkhana},
+      shift=${param.shift}
     )}"><span class="btn btn-default btn-margin pull-right"><span
       class="glyphicon glyphicon-download"></span>&nbsp;Volunteers File Export</span></a>
   <form th:action="@{/volunteer/search/print(name=${param.name},
@@ -65,7 +85,11 @@
       regionalCouncil=${param.regionalCouncil},
       localCouncil=${param.localCouncil},
       day=${param.day},
-      zone=${param.zone}
+      zone=${param.zone},
+      institution=${param.institution},
+      mobile=${param.mobile},
+      jamatkhana=${param.jamatkhana},
+      shift=${param.shift}
     )}" method="post" style="display: inline;">
     <!--<input type="hidden" name="name" th:value="${param.name}">-->
     <!--<input type="hidden" name="cnic" th:value="${param.cnic}">-->

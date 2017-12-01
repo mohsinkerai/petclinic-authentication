@@ -13,18 +13,24 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
-    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String LocalCouncil,
         String zone,
+        String CellPhone,
+        String DutyDay,
+        String DutyShift,
         Pageable page);
 
-    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String LocalCouncil,
-        String zone);
+        String zone,
+        String CellPhone,
+        String DutyDay,
+        String DutyShift);
 
     List<Volunteer> findByVolunteerCnic(String VolunteerCnic);
 
@@ -36,7 +42,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         + " volunteer_committee is not null AND"
         + " volunteer_site is not null AND"
         + " local_council is not null AND"
-        + " volunteer_duty_zone is not null", nativeQuery = true)
+        + " volunteer_duty_zone is not null AND "
+        + " ( (LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
+        + " volunteer_duty_day is not null AND volunteer_duty_shift is not null "
+        + " )", nativeQuery = true)
     long getUnprintedClearCount();
 
     Page<Volunteer> findByVolunteerIsPrintedIsFalse(Pageable pageable);

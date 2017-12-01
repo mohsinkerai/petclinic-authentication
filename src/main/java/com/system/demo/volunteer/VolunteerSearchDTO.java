@@ -20,6 +20,8 @@ public class VolunteerSearchDTO {
     private String day;
     private String shift;
     private String zone;
+    private String mobile;
+    private String institution;
 
     public boolean isEmpty() {
         return isNull(name) &&

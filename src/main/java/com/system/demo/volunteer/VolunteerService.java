@@ -71,22 +71,28 @@ public class VolunteerService {
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         Page<Volunteer> searched = volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
                 Optional.ofNullable(query.getLocalCouncil()).orElse(""),
                 Optional.ofNullable(query.getZone()).orElse(""),
+                Optional.ofNullable(query.getMobile()).orElse(""),
+                Optional.ofNullable(query.getDay()).orElse(""),
+                Optional.ofNullable(query.getShift()).orElse(""),
                 pageable);
         return searched;
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCase(
+            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
                 Optional.ofNullable(query.getLocalCouncil()).orElse(""),
-                Optional.ofNullable(query.getZone()).orElse(""));
+                Optional.ofNullable(query.getZone()).orElse(""),
+                Optional.ofNullable(query.getMobile()).orElse(""),
+                Optional.ofNullable(query.getDay()).orElse(""),
+                Optional.ofNullable(query.getShift()).orElse(""));
     }
 
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
@@ -130,13 +136,13 @@ public class VolunteerService {
     public File exportCsv(VolunteerSearchDTO query) throws IOException {
         String currentMillis = String.valueOf(System.currentTimeMillis());
         List<Volunteer> volunteers = this.advancedSearch(query);
-        CSVWriter writer = new CSVWriter(new FileWriter(currentMillis+"hello.csv"));
+        CSVWriter writer = new CSVWriter(new FileWriter(currentMillis + "hello.csv"));
         writer.writeNext(headers());
         List<String[]> listOfVolunteer = volunteers.stream().map(this::map)
             .collect(Collectors.toList());
         writer.writeAll(listOfVolunteer);
         writer.close();
-        return new File(currentMillis+"hello.csv");
+        return new File(currentMillis + "hello.csv");
     }
 
     private String[] headers() {
