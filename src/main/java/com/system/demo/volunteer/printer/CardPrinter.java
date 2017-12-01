@@ -351,7 +351,7 @@ public class CardPrinter {
                 (volunteer.getDutyDay() != null) ? "Day-"
                     + volunteer.getDutyDay() : "",
                 smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 150, cardStartY + 120,
+            ct.setSimpleColumn(myText, cardStartX + 145, cardStartY + 120,
                 cardStartX + (pageWidth / 2),
                 cardStartY + 130, 6, Element.ALIGN_LEFT
             );
@@ -360,7 +360,7 @@ public class CardPrinter {
             myText = new Phrase(
                 (volunteer.getDutyShift() != null) ? "Shift-" + volunteer.getDutyShift() : "",
                 smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 147, cardStartY + 134,
+            ct.setSimpleColumn(myText, cardStartX + 142, cardStartY + 134,
                 cardStartX + (pageWidth / 2),
                 cardStartY + 144, 6, Element.ALIGN_LEFT
             );
