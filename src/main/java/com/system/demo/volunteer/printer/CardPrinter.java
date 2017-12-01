@@ -42,11 +42,11 @@ public class CardPrinter {
     String PDF_PW = Integer.toString(rand.nextInt(9999) + 1000);// "1423";
 
     public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, Font.BOLD,
-        new BaseColor(86,86,86));
+        new BaseColor(86, 86, 86));
     public Font namefont = new Font(Font.FontFamily.TIMES_ROMAN, namefontSize, Font.BOLD,
         BaseColor.BLACK);
     public Font titleFont = new Font(Font.FontFamily.TIMES_ROMAN, titlefontSize, Font.BOLD,
-        new BaseColor(88,88,88));
+        new BaseColor(88, 88, 88));
     public Font zoneFont = new Font(Font.FontFamily.TIMES_ROMAN, zonefontSize, Font.BOLD,
         BaseColor.BLACK);
 
@@ -60,14 +60,14 @@ public class CardPrinter {
         Document qr_code_Example = new Document(new Rectangle(pageWidth, pageHeight), 10, 10, 10,
             10);
 
-        String rootPath= new File(".").getCanonicalPath();
-        String fileName = rootPath + "\\pdf"+ PDF_PW + ".pdf";
+        String rootPath = new File(".").getCanonicalPath();
+        String fileName = rootPath + "\\pdf" + PDF_PW + ".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
 
-      //  String userPassword = "123";
-      //  String ownerPassword = "123";
+        //  String userPassword = "123";
+        //  String ownerPassword = "123";
 
 //        writer.setEncryption(userPassword.getBytes(),
 //            ownerPassword.getBytes(), PdfWriter.ALLOW_PRINTING,
@@ -141,6 +141,8 @@ public class CardPrinter {
             return 5;
         } else if (site.equalsIgnoreCase("Southern")) {
             return 6;
+        } else if (site.equalsIgnoreCase("All Pakistan")) {
+            return 7;
         } else {
             return -1;
         }
@@ -210,7 +212,7 @@ public class CardPrinter {
 
         item.put("S", getSiteForQR(volunteer.getVolunteerSite()));
         /*1 = Booni
-		2 = Garam Chashma
+        2 = Garam Chashma
 		3 = Tause
 		4 = Alyabad
 		5 = Central
@@ -231,17 +233,17 @@ public class CardPrinter {
         item.put("L", volunteer.getLocalCouncil());
         item.put("N", volunteer.getVolunteerName());
 
-        if(volunteer.getDutyShift() != null)
-            item.put("H", Integer.parseInt(volunteer.getDutyShift()));
-        if(volunteer.getDutyDay() != null)
-            item.put("U",Integer.parseInt(volunteer.getDutyDay()));
+        if (volunteer.getDutyShift() != null) {
+            item.put("H", volunteer.getDutyShift());
+        }
+        if (volunteer.getDutyDay() != null) {
+            item.put("U", volunteer.getDutyDay());
+        }
         message = item.toString();
-
         return message;
     }
 
-    public String truncateText(String inputString, int maxLength)
-    {
+    public String truncateText(String inputString, int maxLength) {
         if (inputString.length() > maxLength) {
             inputString = inputString.substring(0, maxLength);
         }
@@ -280,39 +282,43 @@ public class CardPrinter {
 
         String VolFirstName = "";
         String VolSecondName = "";
-        if(volunteer.getVolunteerName() != null) {
+        if (volunteer.getVolunteerName() != null) {
             String VolName[] = volunteer.getVolunteerName().toUpperCase().split(" ");
             VolFirstName = VolName[0];
-            if(VolName.length > 1)
+            if (VolName.length > 1) {
                 VolSecondName = VolName[1];
+            }
         }
-        Phrase myText = new Phrase( truncateText(VolFirstName,10) , namefont);
+        Phrase myText = new Phrase(truncateText(VolFirstName, 10), namefont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 92,
             cardStartX + (pageWidth / 2), cardStartY + 102, 6,
             Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( truncateText(VolSecondName ,10), namefont);
+        myText = new Phrase(truncateText(VolSecondName, 10), namefont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 78.5f,
             cardStartX + (pageWidth / 2), cardStartY + 88.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
-
 //        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern")))
 //            myText = new Phrase( (volunteer.getDutyDay()!=null && volunteer.getDutyShift()!=null)? "Day-"+volunteer.getDutyDay()+" Shift-"+volunteer.getDutyShift() : "" , smallfont);
 //        else
-        myText = new Phrase( (volunteer.getVolunteerCommittee()!=null)? truncateText(volunteer.getVolunteerCommittee().toUpperCase(),12) : "" , smallfont);
+        myText = new Phrase((volunteer.getVolunteerCommittee() != null) ? truncateText(
+            volunteer.getVolunteerCommittee().toUpperCase(), 12) : "", smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 62,
             cardStartX + (pageWidth / 2), cardStartY + 72, 6, Element.ALIGN_LEFT);
         ct.go();
 
-        myText = new Phrase( (volunteer.getVolunteerCnic()!=null)?truncateText(volunteer.getVolunteerCnic(),16): "" , smallfont);
+        myText = new Phrase(
+            (volunteer.getVolunteerCnic() != null) ? truncateText(volunteer.getVolunteerCnic(), 16)
+                : "", smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 46.5f,
             cardStartX + (pageWidth / 2), cardStartY + 56.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
         //local council
-        myText = new Phrase( (volunteer.getLocalCouncil()!=null)?truncateText(volunteer.getLocalCouncil().toUpperCase(),12): "" , smallfont);
+        myText = new Phrase((volunteer.getLocalCouncil() != null) ? truncateText(
+            volunteer.getLocalCouncil().toUpperCase(), 12) : "", smallfont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 33,
             cardStartX + (pageWidth / 2), cardStartY + 43, 6, Element.ALIGN_LEFT);
         ct.go();
@@ -324,19 +330,22 @@ public class CardPrinter {
         ct.go();*/
 
         //Header title
-        myText = new Phrase( (volunteer.getVolunteerSite()!=null)?truncateText(volunteer.getVolunteerSite().toUpperCase(),14): "" , titleFont);
+        myText = new Phrase((volunteer.getVolunteerSite() != null) ? truncateText(
+            volunteer.getVolunteerSite().toUpperCase(), 14) : "", titleFont);
         ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 225, cardStartX + (pageWidth / 2),
             cardStartY + 235, 6, Element.ALIGN_LEFT
         );
         ct.go();
 
-
-        if((volunteer.getVolunteerSite()!=null) && ((volunteer.getVolunteerSite().equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite().equalsIgnoreCase("Southern"))) {
+        if ((volunteer.getVolunteerSite() != null) && ((volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Southern"))) {
             myText = new Phrase(
                 (volunteer.getDutyDay() != null) ? "Day-"
                     + volunteer.getDutyDay() : "",
                 smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 150, cardStartY + 120, cardStartX + (pageWidth / 2),
+            ct.setSimpleColumn(myText, cardStartX + 150, cardStartY + 120,
+                cardStartX + (pageWidth / 2),
                 cardStartY + 130, 6, Element.ALIGN_LEFT
             );
             ct.go();
@@ -344,7 +353,8 @@ public class CardPrinter {
             myText = new Phrase(
                 (volunteer.getDutyShift() != null) ? "Shift-" + volunteer.getDutyShift() : "",
                 smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 147, cardStartY + 134, cardStartX + (pageWidth / 2),
+            ct.setSimpleColumn(myText, cardStartX + 147, cardStartY + 134,
+                cardStartX + (pageWidth / 2),
                 cardStartY + 144, 6, Element.ALIGN_LEFT
             );
             ct.go();

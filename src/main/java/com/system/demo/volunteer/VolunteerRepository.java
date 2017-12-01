@@ -43,9 +43,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         + " volunteer_site is not null AND"
         + " local_council is not null AND"
         + " volunteer_duty_zone is not null AND "
-        + " ( (LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
+        + " ( !(LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') OR"
+        + " ((LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
         + " volunteer_duty_day is not null AND volunteer_duty_shift is not null "
-        + " )", nativeQuery = true)
+        + " ))", nativeQuery = true)
     long getUnprintedClearCount();
 
     Page<Volunteer> findByVolunteerIsPrintedIsFalse(Pageable pageable);
