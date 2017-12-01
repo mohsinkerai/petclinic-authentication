@@ -19,6 +19,7 @@ import lombok.extern.slf4j.Slf4j;
 
 import java.sql.Date;
 import java.sql.Timestamp;
+import org.springframework.util.StringUtils;
 
 @Data
 @Entity(name = "volunteers")
@@ -188,7 +189,8 @@ public class Volunteer {
             && localCouncil != null;
 
         if((volunteerSite.equalsIgnoreCase("Central") || volunteerSite
-            .equalsIgnoreCase("Southern")) && (isValid && dutyShift != null && dutyDay != null)) {
+            .equalsIgnoreCase("Southern")) && (isValid &&
+            !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay))) {
             isValid = false;
         }
 

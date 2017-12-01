@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
-    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String LocalCouncil,
@@ -23,7 +23,7 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         String DutyShift,
         Pageable page);
 
-    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
         String VolunteerName,
         String VolunteerCnic,
         String LocalCouncil,
@@ -45,7 +45,8 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         + " volunteer_duty_zone is not null AND "
         + " ( !(LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') OR"
         + " ((LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
-        + " volunteer_duty_day is not null AND volunteer_duty_shift is not null "
+        + " volunteer_duty_day is not null AND volunteer_duty_day != '' AND "
+        + " volunteer_duty_shift is not null AND volunteer_duty_shift != '' "
         + " ))", nativeQuery = true)
     long getUnprintedClearCount();
 
