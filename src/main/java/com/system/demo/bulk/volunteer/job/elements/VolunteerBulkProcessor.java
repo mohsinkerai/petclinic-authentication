@@ -100,7 +100,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
     private String getImageForVolunteer(String volunteerCnic){
 
         boolean volunteerImage = false;
-        String imagePath = ImageDirectory +"\\"+ volunteerCnic;
+        String imagePath = ImageDirectory + File.separator + volunteerCnic;
         if (new File(imagePath + ".jpg").exists()) {
             volunteerImage = true;
             // TODO: in following line, get VolunteerCnic Should be Removed.

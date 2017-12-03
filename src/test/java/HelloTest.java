@@ -24,4 +24,9 @@ public class HelloTest {
         File outputFile = new File("foobar123.png");
         ImageIO.write(bi, "png", outputFile);
     }
+
+    @Test
+    public void fooBar() throws Exception {
+        System.out.println(File.separator);
+    }
 }

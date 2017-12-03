@@ -56,7 +56,7 @@ public class CardPrinter {
             10);
 
         String rootPath = new File(".").getCanonicalPath();
-        String fileName = rootPath + "\\pdf" + PDF_PW + ".pdf";
+        String fileName = rootPath + File.separator +"pdf" + PDF_PW + ".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));

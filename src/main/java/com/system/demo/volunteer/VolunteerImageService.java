@@ -17,7 +17,7 @@ public class VolunteerImageService {
     private String path;
 
     public VolunteerImageService() throws IOException {
-        path = new File(".").getCanonicalPath() + "\\datahouse" + "\\uploadedImages";
+        path = new File(".").getCanonicalPath() + File.separator + "datahouse" + File.separator + "uploadedImages";
     }
 
     //        byte[] imageBytes = Files.toByteArray(new File(filePath));
@@ -57,14 +57,14 @@ public class VolunteerImageService {
             BufferedImage bi = ImageIO.read(bis);
             bis.close();
 
-            File outputFile = new File(path + "\\" + cnic + ".png");
+            File outputFile = new File(path + File.separator + cnic + ".png");
             ImageIO.write(bi, "png", outputFile);
 //
 //        byte[] data = Base64.decodeBase64(image);
 //        try (OutputStream stream = new FileOutputStream(path + "\\" + cnic + ".jpg")) {
 //            stream.write(data);
 //        }
-            return path + "\\" + cnic + ".png";
+            return path + File.separator + cnic + ".png";
         } else {
             return null;
         }

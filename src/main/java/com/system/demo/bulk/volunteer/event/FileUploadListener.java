@@ -9,7 +9,6 @@ import java.sql.Timestamp;
 import java.util.HashMap;
 import java.util.Map;
 import lombok.extern.slf4j.Slf4j;
-import org.apache.commons.io.FileUtils;
 import org.springframework.batch.core.Job;
 import org.springframework.batch.core.JobParameter;
 import org.springframework.batch.core.JobParameters;
@@ -52,17 +51,30 @@ public class FileUploadListener {
 
     @Async
     @EventListener
-    public void onApplicationEvent(FileUploadEvent fileUploadEvent) throws InterruptedException,IOException{
+    public void onApplicationEvent(FileUploadEvent fileUploadEvent)
+        throws InterruptedException, IOException {
 
-        String rootPath= new File(".").getCanonicalPath();
-        pythonScriptPath = rootPath + "\\src\\main\\resources\\xlsmToCsv.py";
-        File dataHouse = new File(rootPath + "\\datahouse\\"+ System.currentTimeMillis());
+        String rootPath = new File(".").getCanonicalPath();
+//        pythonScriptPath = rootPath + "\\src\\main\\resources\\xlsmToCsv.py";
+        pythonScriptPath = new StringBuilder(rootPath)
+            .append(File.separator)
+            .append("src")
+            .append(File.separator)
+            .append("main")
+            .append(File.separator)
+            .append("resources")
+            .append(File.separator)
+            .append("xlsmToCsv.py")
+            .toString();
+        File dataHouse = new File(
+            rootPath + File.separator + "datahouse" + File.separator + System.currentTimeMillis());
         log.info("Received file event {}", fileUploadEvent);
         String path = fileUploadEvent.getFilePath().toFile().getAbsolutePath();
         dataHouse.mkdir();
         try {
             String pythonCommand =
-                "python " + pythonScriptPath + " \"" + path + "\"" + " \"" + dataHouse.getCanonicalPath()
+                "python " + pythonScriptPath + " \"" + path + "\"" + " \"" + dataHouse
+                    .getCanonicalPath()
                     + "\"";
             log.info("Executing python command {}", pythonCommand);
             Process exec = Runtime.getRuntime().exec(pythonCommand);
@@ -80,7 +92,7 @@ public class FileUploadListener {
         }
         long userId = fileUploadEvent.getUserId();
         // We should copy/backup file after running job - maybe associate its name with jobId?
-        String csvPath = dataHouse.getAbsolutePath() + "\\data.csv";
+        String csvPath = dataHouse.getAbsolutePath() + File.separator + "data.csv";
         log.info("Csv Path is {}", csvPath);
         Job volunteerBulkJob = bulkJobBuilder.buildVolunteerUpload(
             UploadTypes.VolunteerUpload.toString() + csvPath);
@@ -89,7 +101,8 @@ public class FileUploadListener {
         jobParamsMap.put("timestamp",
             new JobParameter(new Timestamp(System.currentTimeMillis()).getTime()));
         // TODO: Fill this Params
-        jobParamsMap.put("pictureFlag", new JobParameter(fileUploadEvent.isPictureAvailable() + ""));
+        jobParamsMap
+            .put("pictureFlag", new JobParameter(fileUploadEvent.isPictureAvailable() + ""));
         jobParamsMap.put("imagesSource", new JobParameter(dataHouse.getAbsolutePath()));
         jobParamsMap.put("userId", new JobParameter(userId));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
