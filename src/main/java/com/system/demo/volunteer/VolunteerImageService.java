@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.IOException;
 import javax.imageio.ImageIO;
+
+import org.apache.commons.io.FileUtils;
 import org.springframework.stereotype.Component;
 import sun.misc.BASE64Decoder;
 import sun.misc.BASE64Encoder;
@@ -58,8 +60,11 @@ public class VolunteerImageService {
             bis.close();
 
             File outputFile = new File(path + File.separator + cnic + ".png");
+            if(!outputFile.exists()) {
+                FileUtils.touch(outputFile);
+            }
             ImageIO.write(bi, "png", outputFile);
-//
+
 //        byte[] data = Base64.decodeBase64(image);
 //        try (OutputStream stream = new FileOutputStream(path + "\\" + cnic + ".jpg")) {
 //            stream.write(data);
