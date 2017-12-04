@@ -12,14 +12,14 @@
 <p th:if="${param.upload}" class="alert alert-primary">Your File is being processed, please refresh
   soon</p>
 <span class="row">
-  <form th:if="*{count}>0" th:action="@{/volunteer/print}" method="post">
+  <form sec:authorize="hasAuthority('CARDISSUER')" th:if="*{count}>0" th:action="@{/volunteer/print}" method="post">
     <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
     <button class="btn btn-default pull-right" type="submit"><span
         class="glyphicon glyphicon-print"></span>&nbsp;Print All Cards</button>
   </form>
   <a th:href="@{/volunteer/search}"><span class="btn btn-default pull-right"><span
       class="glyphicon glyphicon-search"></span>&nbsp;Search</span></a>
-  <a th:href="@{/volunteer/file}"><span
+  <a sec:authorize="hasAuthority('FILE_UPLOAD')" th:href="@{/volunteer/file}"><span
       class="btn btn-default pull-right"><span class="glyphicon glyphicon-file"></span>&nbsp;Volunteers File Upload</span></a>
   <a th:href="@{/volunteer/new}"><span
       class="btn btn-default pull-right"><span class="glyphicon glyphicon-plus"></span>&nbsp;Add New Volunteer</span></a>
@@ -55,7 +55,7 @@
     <td th:text="${volunteer.localCouncil}"/>
     <td th:text="${volunteer.volunteerCommittee}"/>
     <td th:text="${volunteer.dutyZone}"/>
-    <td th:text="${volunteer.volunteerSite}"/>
+      <td th:text="${volunteer.volunteerSite}"/>
     <td class="row" sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:href="@{/volunteer/edit/__${volunteer.id}__}"><span
           class="glyphicon glyphicon-pencil"></span></a>

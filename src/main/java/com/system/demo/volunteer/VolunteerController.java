@@ -203,6 +203,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/file")
+    @PreAuthorize("hasAuthority('FILE_UPLOAD')")
     public String file(Pageable pageable, Map<String, Object> model) {
         MyUser user = (MyUser) SecurityContextHolder.getContext().getAuthentication()
             .getPrincipal();
@@ -214,6 +215,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/file", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('FILE_UPLOAD')")
     public String fileSave(@RequestParam("file") MultipartFile file,
         @RequestParam("picture") boolean isPictureAvailable) {
         // Expected to Receive a Zip File Here.
@@ -230,6 +232,7 @@ public class VolunteerController {
     }
 
     @RequestMapping(value = "/file/{jobId}/errors", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('FILE_UPLOAD')")
     public String fileError(Pageable pageable, Map<String, Object> model,
         @PathVariable("jobId") long jobId) {
         UserJobData userJobdata = userJobRepository.findOne(jobId);
@@ -297,12 +300,14 @@ public class VolunteerController {
     }
 
     @RequestMapping(path = "print", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('CARDISSUER')")
     public String redirectToList() {
         return "redirect:/" + BASE_URL;
     }
 
     @RequestMapping(path = "print", method = RequestMethod.POST)
-    public void man(HttpServletResponse response, HttpServletRequest request)
+    @PreAuthorize("hasAuthority('CARDISSUER')")
+    public void printCards(HttpServletResponse response, HttpServletRequest request)
         throws Exception {
         List<Volunteer> printableVolunteers = volunteerService.findPrintableVolunteers();
         log.info("Total Received Printable Volunteers {}", printableVolunteers.size());
@@ -334,11 +339,13 @@ public class VolunteerController {
     }
 
     @RequestMapping(path = "/search/print", method = RequestMethod.GET)
+    @PreAuthorize("hasAuthority('CARDISSUER')")
     public String redirectList() {
         return "redirect:/" + BASE_URL;
     }
 
     @RequestMapping(path = "/search/print", method = RequestMethod.POST)
+    @PreAuthorize("hasAuthority('CARDISSUER')")
     public void printSearchedRecords(HttpServletRequest request, HttpServletResponse response,
         VolunteerSearchDTO searchDTO)
         throws Exception {

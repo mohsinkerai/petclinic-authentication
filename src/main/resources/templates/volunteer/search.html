@@ -80,7 +80,7 @@
       shift=${param.shift}
     )}"><span class="btn btn-default btn-margin pull-right"><span
       class="glyphicon glyphicon-download"></span>&nbsp;Volunteers File Export</span></a>
-  <form th:action="@{/volunteer/search/print(name=${param.name},
+  <form sec:authorize="hasAuthority('CARDISSUER')" th:action="@{/volunteer/search/print(name=${param.name},
       cnic=${param.cnic},
       regionalCouncil=${param.regionalCouncil},
       localCouncil=${param.localCouncil},
@@ -102,7 +102,7 @@
         class="glyphicon glyphicon-print"></span>&nbsp;Print Searched Cards
     </button>
   </form>
-  <a th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right"><span
+  <a sec:authorize="hasAuthority('FILE_UPLOAD')" th:href="@{/volunteer/file}"><span class="btn btn-default btn-margin pull-right"><span
       class="glyphicon glyphicon-upload"></span>&nbsp;Volunteers File Upload</span></a>
 </div>
 <table id="volunteers" class="table table-striped">
