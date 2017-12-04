@@ -91,7 +91,7 @@ public class PetClinicApplication implements CommandLineRunner {
         try {
             List<Volunteer> volunteerList = volunteerRepository.findAll();
             CardPrinter cardPrinter = new CardPrinter();
-            String resultFileName = cardPrinter.print(volunteerList);
+            String resultFileName = cardPrinter.print(volunteerList).getFileName();
         }catch (Exception ex)
         {
             log.info("Exception in printing cards", ex);

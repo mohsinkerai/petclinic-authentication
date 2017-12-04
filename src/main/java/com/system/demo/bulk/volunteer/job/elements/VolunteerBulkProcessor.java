@@ -66,36 +66,54 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
 //            recordError(BulkErrorType.VALIDATION_INVALID_EMAIL.toString(), v);
 //            return null;
 //        }
-            else if (!v.validateMobile()) {
-            recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
-            return null;
-        } else {
+//            else if (!v.validateMobile()) {
+//            recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
+//            return null;
+//        }
+            String checkCnic = v.getVolunteerCnic();
+            List<Volunteer> vol;
+            if(checkCnic.contains("-")){
+                vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic());
+                if(vol.size() == 0){
+                    checkCnic = checkCnic.replaceAll("\"","");
+                    vol = volunteerService.findByCnic(checkCnic);
+                }
+            } else{
+                vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic());
+                if(vol.size() == 0){
+                    //add - then check
+                    //checkCnic = checkCnic.;
+                    checkCnic = checkCnic.substring(0,4) + "-"+ checkCnic.substring(5,11) + "-" +  checkCnic.substring(11,12);
+                    vol = volunteerService.findByCnic(checkCnic);
+                }
+            }
+            if (vol.size() == 0) {
+                v.setEnabled(true);
+            } else {
+                recordError(BulkErrorType.CNIC_ALREADY_RESGISTERED.toString(), v);
+                return null;
+            }
             if (jobExecution.getJobParameters().getString("pictureFlag").equalsIgnoreCase("true")) {
                 String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
                 if(volunteerImage.equals("")) {
                     recordError (BulkErrorType.IMAGE_NOT_FOUND.toString(), v);
                     return null;
-                 }
+                }
                 v.setVolunteerImage(volunteerImage);
                 v.setPictureAvailable(true);
+                return v;
             } else {
                 String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
                 if(volunteerImage.equals("")) {
                     v.setPictureAvailable(false);
+                   return v;
                 } else {
                     v.setVolunteerImage(volunteerImage);
                     v.setPictureAvailable(true);
+                    return v;
                 }
             }
-            List<Volunteer> vol = volunteerService.findByCnic(v.getVolunteerCnic());//v.getVolunteerCnic());
-            if (vol.size() == 0) {
-                v.setEnabled(true);
-                return v;
-            } else {
-                recordError(BulkErrorType.CNIC_ALREADY_RESGISTERED.toString(), v);
-                return null;
-            }
-        }
+
     }
     private String getImageForVolunteer(String volunteerCnic){
 

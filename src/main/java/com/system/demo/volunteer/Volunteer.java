@@ -143,7 +143,8 @@ public class Volunteer {
 
     public boolean validateMobile() {
         if (this.cellPhone.matches("^(\\d){4}-(\\d){7}$") || this.cellPhone.equals("")
-            || this.cellPhone.matches("^(\\d){11}$") || this.cellPhone.matches("^(\\d){10}$")) {
+            || this.cellPhone.matches("^(\\d){11}$") || this.cellPhone.matches("^(\\d){10}$") ||
+            this.cellPhone.matches("^(\\d){3}(\\s){1}(\\d){7}$")  ) {
             return true;
         } else {
             return false;

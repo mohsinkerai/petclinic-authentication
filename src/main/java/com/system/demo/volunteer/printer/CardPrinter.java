@@ -1,5 +1,6 @@
 package com.system.demo.volunteer.printer;
 
+import com.google.common.collect.Lists;
 import com.itextpdf.text.BaseColor;
 import com.itextpdf.text.Document;
 import com.itextpdf.text.DocumentException;
@@ -14,16 +15,20 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.system.demo.volunteer.Volunteer;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
+import org.springframework.stereotype.Component;
+
+import javax.crypto.IllegalBlockSizeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.Random;
-import org.json.JSONObject;
-import org.springframework.stereotype.Component;
 
 @Component
+@Slf4j
 public class CardPrinter {
 
     int pageWidth = 580;
@@ -89,39 +94,57 @@ public class CardPrinter {
                 tmpCardStartY = tmpCardStartY - (pageHeight / 3) + 10;
             }
 
-            String jsonMsg = getJsonForQR(volunteer.get(i));
+      try {
+        String jsonMsg = getJsonForQR(volunteer.get(i));
 
-            String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
-            //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
+        String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
+        //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
 
-            try {
-                CreateCard(qr_code_Example,
-                    EncryptMsg,
-                    writer,
-                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
-                    tmpCardStartY,
-                    24f,
-                    volunteer.get(i));
-            } catch (Exception ex) {
-
-            }
-        }
-
-        qr_code_Example.close();
-        return fileName;
+        CreateCard(
+            qr_code_Example,
+            EncryptMsg,
+            writer,
+            cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
+            tmpCardStartY,
+            24f,
+            volunteer.get(i));
+        printedVolunteers.add(volunteer.get(i));
+      } catch (IllegalBlockSizeException exception) {
+        log.info("QR Code Failed for record {}", volunteer);
+        exception.printStackTrace();
+        throw exception;
+      } catch (Exception ex) {
+        ex.printStackTrace();
+        log.error("An Error has been occoured while printing card");
+      }
     }
 
-    public void generateKeyFiles() {
-        GenerateKeys gk;
-        try {
-            gk = new GenerateKeys(1024);
-            gk.createKeys();
-            gk.writeToFile("KeyPair/publicKey", gk.getPublicKey().getEncoded());
-            gk.writeToFile("KeyPair/privateKey", gk.getPrivateKey().getEncoded());
-        } catch (Exception e) {
-            System.err.println(e.getMessage());
-        }
+    try {
+      qr_code_Example.close();
+    } catch (Exception ex) {
+      ex.printStackTrace();
+      throw new RuntimeException(
+          "Card not printed, requested card to print were "
+              + volunteer
+              + ", Individual card exception is available in logs",
+          ex);
     }
+
+    return PrintingResult.builder().fileName(fileName).printedVolunteers(printedVolunteers).build();
+    //        return fileName;
+  }
+
+  public void generateKeyFiles() {
+    GenerateKeys gk;
+    try {
+      gk = new GenerateKeys(1024);
+      gk.createKeys();
+      gk.writeToFile("KeyPair/publicKey", gk.getPublicKey().getEncoded());
+      gk.writeToFile("KeyPair/privateKey", gk.getPrivateKey().getEncoded());
+    } catch (Exception e) {
+      System.err.println(e.getMessage());
+    }
+  }
 
     public static int getSiteForQR(String site) {
         if (site.equalsIgnoreCase("Booni")) {
@@ -323,12 +346,22 @@ public class CardPrinter {
             cardStartX + (pageWidth / 2), cardStartY + 56.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
-        //local council
-        myText = new Phrase((volunteer.getLocalCouncil() != null) ? truncateText(
-            volunteer.getLocalCouncil().toUpperCase(), 12) : "", smallfont);
-        ct.setSimpleColumn(myText, cardStartX + 29, cardStartY + 33,
-            cardStartX + (pageWidth / 2), cardStartY + 43, 6, Element.ALIGN_LEFT);
-        ct.go();
+    //local council
+    myText =
+        new Phrase(
+            (volunteer.getLocalCouncil() != null)
+                ? truncateText(volunteer.getLocalCouncil().toUpperCase(), 12)
+                : "",
+            smallfont);
+    ct.setSimpleColumn(
+        myText,
+        cardStartX + 29,
+        cardStartY + 33,
+        cardStartX + (pageWidth / 2),
+        cardStartY + 43,
+        6,
+        Element.ALIGN_LEFT);
+    ct.go();
 
        /* //Zone
         myText = new Phrase( (volunteer.getDutyZone()!=null)?volunteer.getDutyZone().toUpperCase(): "" , zoneFont);
