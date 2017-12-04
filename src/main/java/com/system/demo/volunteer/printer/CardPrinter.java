@@ -55,7 +55,9 @@ public class CardPrinter {
      * @param volunteer volunteer record
      * @return Location of PDF File
      */
-    public String print(List<Volunteer> volunteer) throws Exception {
+    public PrintingResult print(List<Volunteer> volunteer) throws Exception {
+        List<Volunteer> printedVolunteers = Lists.newArrayList();
+
         //Step - 1 :Create Document object that will hold the code
         Document qr_code_Example = new Document(new Rectangle(pageWidth, pageHeight), 10, 10, 10,
             10);
