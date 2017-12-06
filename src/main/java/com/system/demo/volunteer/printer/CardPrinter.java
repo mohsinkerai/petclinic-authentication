@@ -15,17 +15,16 @@ import com.itextpdf.text.pdf.PdfContentByte;
 import com.itextpdf.text.pdf.PdfTemplate;
 import com.itextpdf.text.pdf.PdfWriter;
 import com.system.demo.volunteer.Volunteer;
-import lombok.extern.slf4j.Slf4j;
-import org.json.JSONObject;
-import org.springframework.stereotype.Component;
-
-import javax.crypto.IllegalBlockSizeException;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.security.PrivateKey;
 import java.security.PublicKey;
 import java.util.List;
 import java.util.Random;
+import javax.crypto.IllegalBlockSizeException;
+import lombok.extern.slf4j.Slf4j;
+import org.json.JSONObject;
+import org.springframework.stereotype.Component;
 
 @Component
 @Slf4j
@@ -63,7 +62,7 @@ public class CardPrinter {
             10);
 
         String rootPath = new File(".").getCanonicalPath();
-        String fileName = rootPath + File.separator +"pdf" + PDF_PW + ".pdf";
+        String fileName = rootPath + File.separator + "pdf" + PDF_PW + ".pdf";
         // Step-2: Create PdfWriter object for the document
         PdfWriter writer = PdfWriter
             .getInstance(qr_code_Example, new FileOutputStream(fileName));
@@ -96,57 +95,58 @@ public class CardPrinter {
                 tmpCardStartY = tmpCardStartY - (pageHeight / 3) + 10;
             }
 
-      try {
-        String jsonMsg = getJsonForQR(volunteer.get(i));
+            try {
+                String jsonMsg = getJsonForQR(volunteer.get(i));
 
-        String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
-        //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
+                String EncryptMsg = ac.encryptText(jsonMsg, privateKey);
+                //String DycryptMsg = ac.decryptText(EncryptMsg, publicKey);
 
-        CreateCard(
-            qr_code_Example,
-            EncryptMsg,
-            writer,
-            cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
-            tmpCardStartY,
-            24f,
-            volunteer.get(i));
-        printedVolunteers.add(volunteer.get(i));
-      } catch (IllegalBlockSizeException exception) {
-        log.info("QR Code Failed for record {}", volunteer);
-        exception.printStackTrace();
-        throw exception;
-      } catch (Exception ex) {
-        ex.printStackTrace();
-        log.error("An Error has been occoured while printing card");
-      }
+                CreateCard(
+                    qr_code_Example,
+                    EncryptMsg,
+                    writer,
+                    cardStartX + ((i % 2 == 0) ? 0 : (pageWidth / 2)),
+                    tmpCardStartY,
+                    24f,
+                    volunteer.get(i));
+                printedVolunteers.add(volunteer.get(i));
+            } catch (IllegalBlockSizeException exception) {
+                log.info("QR Code Failed for record {}", volunteer);
+                exception.printStackTrace();
+                throw exception;
+            } catch (Exception ex) {
+                ex.printStackTrace();
+                log.error("An Error has been occoured while printing card");
+            }
+        }
+
+        try {
+            qr_code_Example.close();
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(
+                "Card not printed, requested card to print were "
+                    + volunteer
+                    + ", Individual card exception is available in logs",
+                ex);
+        }
+
+        return PrintingResult.builder().fileName(fileName).printedVolunteers(printedVolunteers)
+            .build();
+        //        return fileName;
     }
 
-    try {
-      qr_code_Example.close();
-    } catch (Exception ex) {
-      ex.printStackTrace();
-      throw new RuntimeException(
-          "Card not printed, requested card to print were "
-              + volunteer
-              + ", Individual card exception is available in logs",
-          ex);
+    public void generateKeyFiles() {
+        GenerateKeys gk;
+        try {
+            gk = new GenerateKeys(1024);
+            gk.createKeys();
+            gk.writeToFile("KeyPair/publicKey", gk.getPublicKey().getEncoded());
+            gk.writeToFile("KeyPair/privateKey", gk.getPrivateKey().getEncoded());
+        } catch (Exception e) {
+            System.err.println(e.getMessage());
+        }
     }
-
-    return PrintingResult.builder().fileName(fileName).printedVolunteers(printedVolunteers).build();
-    //        return fileName;
-  }
-
-  public void generateKeyFiles() {
-    GenerateKeys gk;
-    try {
-      gk = new GenerateKeys(1024);
-      gk.createKeys();
-      gk.writeToFile("KeyPair/publicKey", gk.getPublicKey().getEncoded());
-      gk.writeToFile("KeyPair/privateKey", gk.getPrivateKey().getEncoded());
-    } catch (Exception e) {
-      System.err.println(e.getMessage());
-    }
-  }
 
     public static int getSiteForQR(String site) {
         if (site.equalsIgnoreCase("Booni")) {
@@ -159,10 +159,14 @@ public class CardPrinter {
             return 4;
         } else if (site.equalsIgnoreCase("Central")) {
             return 5;
-        } else if (site.equalsIgnoreCase("Southern")) {
+        } else if (site.equalsIgnoreCase("Karachi")) {
             return 6;
         } else if (site.equalsIgnoreCase("All Pakistan")) {
             return 7;
+        } else if (site.equalsIgnoreCase("Darkhana")) {
+            return 8;
+        } else if (site.equalsIgnoreCase("Clifton")) {
+            return 9;
         } else {
             return -1;
         }
@@ -193,6 +197,8 @@ public class CardPrinter {
             return 6;
         } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return 7;
+        } else if (zone.equalsIgnoreCase("Imamat Zone")) {
+            return 8;
         } else {
             return -1;
         }
@@ -213,6 +219,8 @@ public class CardPrinter {
             return "cardLayouts/RTF.jpg";
         } else if (zone.equalsIgnoreCase("Sacrifice Duty")) {
             return "cardLayouts/Sacrifice Duty.jpg";
+        } else if (zone.equalsIgnoreCase("Imamat Zone")) {
+            return "cardLayouts/Imamat Zone.jpg";
         } else {
             return "";
         }
@@ -241,11 +249,11 @@ public class CardPrinter {
         item.put("C", getCommitteeForQR(volunteer.getVolunteerCommittee()));
 
         /*0 = Security
-		1 = Darbar*/
+        1 = Darbar*/
         item.put("Z", getZoneForQR(volunteer.getDutyZone()));
 
 		/*1 = MHI entourage
-		2 = Pandal
+        2 = Pandal
 		3 = Main Gate
 		4 = Inner Cordon
 		5 = Outer Cordon
@@ -348,22 +356,22 @@ public class CardPrinter {
             cardStartX + (pageWidth / 2), cardStartY + 56.5f, 6, Element.ALIGN_LEFT);
         ct.go();
 
-    //local council
-    myText =
-        new Phrase(
-            (volunteer.getLocalCouncil() != null)
-                ? truncateText(volunteer.getLocalCouncil().toUpperCase(), 12)
-                : "",
-            smallfont);
-    ct.setSimpleColumn(
-        myText,
-        cardStartX + 29,
-        cardStartY + 33,
-        cardStartX + (pageWidth / 2),
-        cardStartY + 43,
-        6,
-        Element.ALIGN_LEFT);
-    ct.go();
+        //local council
+        myText =
+            new Phrase(
+                (volunteer.getLocalCouncil() != null)
+                    ? truncateText(volunteer.getLocalCouncil().toUpperCase(), 12)
+                    : "",
+                smallfont);
+        ct.setSimpleColumn(
+            myText,
+            cardStartX + 29,
+            cardStartY + 33,
+            cardStartX + (pageWidth / 2),
+            cardStartY + 43,
+            6,
+            Element.ALIGN_LEFT);
+        ct.go();
 
        /* //Zone
         myText = new Phrase( (volunteer.getDutyZone()!=null)?volunteer.getDutyZone().toUpperCase(): "" , zoneFont);
@@ -379,9 +387,11 @@ public class CardPrinter {
         );
         ct.go();
 
-        if ((volunteer.getVolunteerSite() != null) && ((volunteer.getVolunteerSite()
-            .equalsIgnoreCase("Central"))) || (volunteer.getVolunteerSite()
-            .equalsIgnoreCase("Southern"))) {
+        if ((volunteer.getVolunteerSite() != null) && (volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Central")) || (volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Karachi")) || (volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Darkhana")) || (volunteer.getVolunteerSite()
+            .equalsIgnoreCase("Clifton"))) {
             myText = new Phrase(
                 (volunteer.getDutyDay() != null) ? "Day-"
                     + volunteer.getDutyDay() : "",
