@@ -34,6 +34,8 @@ public class CardPrinter {
     int pageHeight = 850;
     int titlefontSize = 15;
     int namefontSize = 12;
+    int smallerfontSizeHeading = 11;
+    int smallerfontSize = 8;
     int smallfontSize = 11;
     int zonefontSize = 15;
     Random rand = new Random();
@@ -41,6 +43,11 @@ public class CardPrinter {
     String PDF_PW = Integer.toString(rand.nextInt(9999) + 1000);// "1423";
 
     public Font smallfont = new Font(Font.FontFamily.TIMES_ROMAN, smallfontSize, Font.BOLD,
+        new BaseColor(86, 86, 86));
+    public Font smallerfont = new Font(Font.FontFamily.TIMES_ROMAN, smallerfontSize, Font.BOLD,
+        new BaseColor(86, 86, 86));
+    public Font smallerfontheading = new Font(Font.FontFamily.TIMES_ROMAN, smallerfontSizeHeading,
+        Font.BOLD,
         new BaseColor(86, 86, 86));
     public Font namefont = new Font(Font.FontFamily.TIMES_ROMAN, namefontSize, Font.BOLD,
         BaseColor.BLACK);
@@ -387,27 +394,50 @@ public class CardPrinter {
         );
         ct.go();
 
-        if ((volunteer.getVolunteerSite() != null) && (volunteer.getVolunteerSite()
+        if ((volunteer.getVolunteerSite() != null) && ((volunteer.getVolunteerSite()
             .equalsIgnoreCase("Central")) || (volunteer.getVolunteerSite()
             .equalsIgnoreCase("Karachi")) || (volunteer.getVolunteerSite()
             .equalsIgnoreCase("Darkhana")) || (volunteer.getVolunteerSite()
-            .equalsIgnoreCase("Clifton"))) {
+            .equalsIgnoreCase("Clifton")))) {
+
+            int diff = 124;
+            int pad = 34;
+
             myText = new Phrase(
-                (volunteer.getDutyDay() != null) ? "Day-"
-                    + volunteer.getDutyDay() : "",
-                smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 145, cardStartY + 120,
-                cardStartX + (pageWidth / 2),
-                cardStartY + 130, 6, Element.ALIGN_LEFT
+                (volunteer.getDutyDay() != null) ? "DAY" : "",
+                smallerfont);
+            ct.setSimpleColumn(myText, cardStartX + diff, cardStartY + 145,
+                cardStartX - diff + (pageWidth / 2) + pad,
+                cardStartY + 155, 6, Element.ALIGN_CENTER
             );
             ct.go();
 
             myText = new Phrase(
-                (volunteer.getDutyShift() != null) ? "Shift-" + volunteer.getDutyShift() : "",
-                smallfont);
-            ct.setSimpleColumn(myText, cardStartX + 142, cardStartY + 134,
-                cardStartX + (pageWidth / 2),
-                cardStartY + 144, 6, Element.ALIGN_LEFT
+                (volunteer.getDutyDay() != null) ? volunteer.getDutyDay() : "",
+                smallerfontheading);
+            ct.setSimpleColumn(myText, cardStartX + diff,
+                cardStartY + 134,
+                cardStartX - diff + (pageWidth / 2) + pad,
+                cardStartY + 144, 6, Element.ALIGN_CENTER
+            );
+            ct.go();
+
+            myText = new Phrase(
+                (volunteer.getDutyShift() != null) ? "SHIFT" : "",
+                smallerfont);
+            ct.setSimpleColumn(myText, cardStartX + diff, cardStartY + 120,
+                cardStartX - diff + (pageWidth / 2) + pad,
+                cardStartY + 130, 6, Element.ALIGN_CENTER
+            );
+            ct.go();
+
+            myText = new Phrase(
+                (volunteer.getDutyShift() != null) ? volunteer.getDutyShift() : "",
+                smallerfontheading);
+            ct.setSimpleColumn(myText, cardStartX + diff,
+                cardStartY + 110,
+                cardStartX - diff + (pageWidth / 2) + pad,
+                cardStartY + 120, 6, Element.ALIGN_CENTER
             );
             ct.go();
         }
