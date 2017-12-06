@@ -22,6 +22,7 @@ public class VolunteerSearchDTO {
     private String zone;
     private String mobile;
     private String institution;
+    private String site;
 
     public boolean isEmpty() {
         return isNull(name) &&
@@ -32,6 +33,7 @@ public class VolunteerSearchDTO {
             isNull(jamatkhana) &&
             isNull(day) &&
             isNull(shift) &&
+            isNull(site) &&
             isNull(zone);
     }
 

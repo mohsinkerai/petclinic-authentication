@@ -71,7 +71,8 @@ public class VolunteerService {
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         Page<Volunteer> searched = volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+                Optional.ofNullable(query.getSite()).orElse(""),
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
                 Optional.ofNullable(query.getLocalCouncil()).orElse(""),
@@ -85,7 +86,8 @@ public class VolunteerService {
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
-            .findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+                Optional.ofNullable(query.getSite()).orElse(""),
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
                 Optional.ofNullable(query.getLocalCouncil()).orElse(""),

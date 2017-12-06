@@ -13,41 +13,48 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
-    Page<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
-        String VolunteerName,
-        String VolunteerCnic,
-        String LocalCouncil,
-        String zone,
+    Page<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+        String volunteerSite,
+        String volunteerName,
+        String volunteerCnic,
+        String localCouncil,
+        String dutyZone,
         String CellPhone,
         String DutyDay,
         String DutyShift,
         Pageable page);
 
-    List<Volunteer> findByVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
-        String VolunteerName,
-        String VolunteerCnic,
-        String LocalCouncil,
-        String zone,
+    List<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+        String volunteerSite,
+        String volunteerName,
+        String volunteerCnic,
+        String localCouncil,
+        String dutyZone,
         String CellPhone,
         String DutyDay,
         String DutyShift);
+
+    List<Volunteer> findByVolunteerSiteContainingIgnoreCase(
+        String VolunteerSite
+    );
 
     List<Volunteer> findByVolunteerCnic(String VolunteerCnic);
 
     @Query(value = "SELECT count(id) FROM volunteers WHERE volunteer_isprinted = 0", nativeQuery = true)
     long getUnprintedCount();
 
-    @Query(value = "SELECT count(id) FROM volunteers WHERE volunteer_isprinted = 0 AND isPictureAvailable = 1 AND volunteer_image is not null AND "
-        + " volunteer_name is not null AND"
-        + " volunteer_committee is not null AND"
-        + " volunteer_site is not null AND"
-        + " local_council is not null AND"
-        + " volunteer_duty_zone is not null AND "
-        + " ( !(LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') OR"
-        + " ((LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
-        + " volunteer_duty_day is not null AND volunteer_duty_day != '' AND "
-        + " volunteer_duty_shift is not null AND volunteer_duty_shift != '' "
-        + " ))", nativeQuery = true)
+    @Query(value =
+        "SELECT count(id) FROM volunteers WHERE volunteer_isprinted = 0 AND isPictureAvailable = 1 AND volunteer_image is not null AND "
+            + " volunteer_name is not null AND"
+            + " volunteer_committee is not null AND"
+            + " volunteer_site is not null AND"
+            + " local_council is not null AND"
+            + " volunteer_duty_zone is not null AND "
+            + " ( !(LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') OR"
+            + " ((LOWER(volunteer_site) = 'central' OR LOWER(volunteer_site) = 'southern') AND "
+            + " volunteer_duty_day is not null AND volunteer_duty_day != '' AND "
+            + " volunteer_duty_shift is not null AND volunteer_duty_shift != '' "
+            + " ))", nativeQuery = true)
     long getUnprintedClearCount();
 
     Page<Volunteer> findByVolunteerIsPrintedIsFalse(Pageable pageable);
