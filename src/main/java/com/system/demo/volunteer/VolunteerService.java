@@ -174,7 +174,8 @@ public class VolunteerService {
             Optional.ofNullable(volunteer.getDutyZone()).orElse(""),
             Optional.ofNullable(volunteer.getDutyShift()).orElse(""),
             Optional.ofNullable(volunteer.getDutyDay()).orElse(""),
-            Optional.ofNullable(volunteer.getCategory().toString()).orElse(""),
+            Optional.ofNullable(volunteer.getCategory()).map(VolunteerCategory::toString)
+                .orElse(""),
             Optional.ofNullable(volunteer.getInstitution()).orElse(""),
             Optional.ofNullable(volunteer.getLocalCouncil()).orElse(""),
             Optional
