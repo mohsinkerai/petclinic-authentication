@@ -160,9 +160,9 @@ public class CardPrinter {
             return 1;
         } else if (site.equalsIgnoreCase("Garam Chashma")) {
             return 2;
-        } else if (site.equalsIgnoreCase("Tause")) {
+        } else if (site.equalsIgnoreCase("Taus")) {
             return 3;
-        } else if (site.equalsIgnoreCase("Alyabad")) {
+        } else if (site.equalsIgnoreCase("Aliabad")) {
             return 4;
         } else if (site.equalsIgnoreCase("Central")) {
             return 5;
