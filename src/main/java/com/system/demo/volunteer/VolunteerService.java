@@ -161,7 +161,8 @@ public class VolunteerService {
             "Institution",
             "Local-Council",
             "Printed-Date",
-            "EmailAddress"
+            "EmailAddress",
+            "Site"
         };
     }
 
@@ -181,7 +182,8 @@ public class VolunteerService {
             Optional
                 .ofNullable(volunteer.getVolunteerIsPrintedDate()).map(Timestamp::getTime)
                 .map(String::valueOf).orElse(""),
-            Optional.ofNullable(volunteer.getEmailAdddress()).orElse("")
+            Optional.ofNullable(volunteer.getEmailAdddress()).orElse(""),
+            Optional.ofNullable(volunteer.getVolunteerSite()).orElse("")
         };
     }
 }
