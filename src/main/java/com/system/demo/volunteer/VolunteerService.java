@@ -4,6 +4,7 @@ import com.opencsv.CSVWriter;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -152,7 +153,19 @@ public class VolunteerService {
             "Name",
             "Jamatkhana",
             "CNIC",
-            "EmailAddress"
+            "Cell-Phone",
+            "Duty-Zone",
+            "Shift",
+            "Day",
+            "Category",
+            "Institution",
+            "Local-Council",
+            "Printed-Date",
+            "EmailAddress",
+            "Site",
+            "Committee",
+            "Residential Address",
+            "isEnabled"
         };
     }
 
@@ -161,7 +174,22 @@ public class VolunteerService {
             Optional.ofNullable(volunteer.getVolunteerName()).orElse(""),
             Optional.ofNullable(volunteer.getJamatKhanna()).orElse(""),
             Optional.ofNullable(volunteer.getVolunteerCnic()).orElse(""),
-            Optional.ofNullable(volunteer.getEmailAdddress()).orElse("")
+            Optional.ofNullable(volunteer.getCellPhone()).orElse(""),
+            Optional.ofNullable(volunteer.getDutyZone()).orElse(""),
+            Optional.ofNullable(volunteer.getDutyShift()).orElse(""),
+            Optional.ofNullable(volunteer.getDutyDay()).orElse(""),
+            Optional.ofNullable(volunteer.getCategory()).map(VolunteerCategory::toString)
+                .orElse(""),
+            Optional.ofNullable(volunteer.getInstitution()).orElse(""),
+            Optional.ofNullable(volunteer.getLocalCouncil()).orElse(""),
+            Optional
+                .ofNullable(volunteer.getVolunteerIsPrintedDate()).map(Timestamp::getTime)
+                .map(String::valueOf).orElse(""),
+            Optional.ofNullable(volunteer.getEmailAdddress()).orElse(""),
+            Optional.ofNullable(volunteer.getVolunteerSite()).orElse(""),
+            Optional.ofNullable(volunteer.getVolunteerCommittee()).orElse(""),
+            Optional.ofNullable(volunteer.getResidentialAddress()).orElse(""),
+            Optional.ofNullable(String.valueOf(volunteer.isEnabled())).orElse("")
         };
     }
 }
