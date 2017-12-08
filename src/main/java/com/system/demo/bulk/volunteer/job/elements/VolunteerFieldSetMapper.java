@@ -1,35 +1,27 @@
 package com.system.demo.bulk.volunteer.job.elements;
 
+import com.sun.org.apache.xml.internal.utils.StringToStringTable;
 import com.system.demo.volunteer.Volunteer;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 
+import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
 
 @Component
 public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
 
-
-    @Value("${header.volunteerformno}")
-    String formNo;
-
-    @Autowired
-    private HeaderConvertor headerConvertor;
-
     public Volunteer mapFieldSet(FieldSet fieldSet) {
         Volunteer volunteer = new Volunteer();
         try {
-            Map<String, String> map = (Map)(fieldSet.getProperties());
-
             volunteer.setVolunteerFormNo(fieldSet.readString(0));
 
-          ///  String temp = headerConvertor.getKeyForForm(map);
-          //  volunteer.setVolunteerFormNo(temp.equals("") ? fieldSet.readString(0): temp );
+//            String temp = headerConvertor.getKeyForForm(trimmedMap);
+//            volunteer.setVolunteerFormNo(temp.equals("") ? fieldSet.readString(0): temp );
+
             //volunteer.setRegistrationDate(fieldSet.readString(1));
-            volunteer.setVolunteerFormNo(fieldSet.readString(0));
             volunteer.setVolunteerName(fieldSet.readString(1));
             volunteer.setVolunteerCnic(fieldSet.readString(2));
             //contact
@@ -60,6 +52,18 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
             return volunteer;
 
         }
+    }
+
+
+    public Map<String,String> trimMap(Map<String,String> map){
+        for (Map.Entry<String, String> entry : new HashSet<>(map.entrySet())) {
+            String trimmed = entry.getKey().trim();
+            if (!trimmed.equals(entry.getKey())) {
+                map.remove(entry.getKey());
+                map.put(trimmed, entry.getValue());
+            }
+        }
+        return map;
     }
 
 //    private String getKey(){

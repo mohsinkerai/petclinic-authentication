@@ -20,6 +20,10 @@
           <input type="radio" class="form-check-input" value="FALSE" name="picture">
           Picture Not Available
         </label>
+        <label>
+          <input type="radio" class="form-check-input" value="TRUE" name="nicDuplication">
+           Allow NIC Duplication
+        </label>
       </div>
       <input type="hidden" name="_csrf" th:value="${_csrf.token}"/>
       <button class="btn btn-default" type="submit">Upload</button>

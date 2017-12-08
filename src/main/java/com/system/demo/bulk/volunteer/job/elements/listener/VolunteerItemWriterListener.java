@@ -59,7 +59,7 @@ public class VolunteerItemWriterListener implements ItemWriteListener<Volunteer>
         FailItems failItem = FailItems.builder()
             .failureReason(message)
             .failedItemsCnic(volunteer.getVolunteerCnic().equals("") ? "Empty" : volunteer.getVolunteerCnic())
-            .failedItemsFromNo(volunteer.getVolunteerFormNo().equals("") ? "Empty" : volunteer.getVolunteerFormNo())
+            .failedItemsFromNo(volunteer.getVolunteerName().equals("") ? "Empty" : volunteer.getVolunteerName())
             .userJobId(userJobData.getId())
             .build();
         failItemService.save(failItem);
