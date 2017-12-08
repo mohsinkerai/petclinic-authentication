@@ -168,7 +168,7 @@ public class CardPrinter {
             return 5;
         } else if (site.equalsIgnoreCase("Karachi")) {
             return 6;
-        } else if (site.equalsIgnoreCase("All Pakistan")) {
+        } else if (site.equalsIgnoreCase("Pakistan")) {
             return 7;
         } else if (site.equalsIgnoreCase("Darkhana")) {
             return 8;
