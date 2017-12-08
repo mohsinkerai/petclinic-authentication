@@ -220,7 +220,8 @@ public class VolunteerController {
   @RequestMapping(value = "/file", method = RequestMethod.POST)
   public String fileSave(
       @RequestParam("file") MultipartFile file,
-      @RequestParam("picture") boolean isPictureAvailable) {
+      @RequestParam("picture") boolean isPictureAvailable,
+      @RequestParam("nicDuplication") boolean allowNicDuplication) {
     // Expected to Receive a Zip File Here.
     Path targetPath = storageService.store(file);
     Long userId =
@@ -229,8 +230,15 @@ public class VolunteerController {
             .map(Authentication::getPrincipal)
             .map(o -> ((MyUser) o).getId())
             .orElse(-1l);
+    if(allowNicDuplication){
+        FileUploadEvent fileUploadEvent =
+            new FileUploadEvent(this, targetPath, userId, isPictureAvailable,allowNicDuplication);
+    } else {
+        FileUploadEvent fileUploadEvent =
+            new FileUploadEvent(this, targetPath, userId, isPictureAvailable,false);
+    }
     FileUploadEvent fileUploadEvent =
-        new FileUploadEvent(this, targetPath, userId, isPictureAvailable);
+        new FileUploadEvent(this, targetPath, userId, isPictureAvailable,allowNicDuplication);
     applicationEventPublisher.publishEvent(fileUploadEvent);
     return "redirect:/volunteer?upload";
   }

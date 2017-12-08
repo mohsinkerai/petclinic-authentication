@@ -117,7 +117,12 @@ public class Volunteer {
     }
 
     public boolean validateCnic() {
-        if (StringUtils.hasLength(volunteerCnic)) {
+        if (StringUtils.hasLength(volunteerCnic) &&
+            (this.volunteerCnic.matches("^[0-9]{5}-[0-9]{7}-[0-9]{1}$") || //NIC
+             this.volunteerCnic.matches("^[0-9]{6}-[0-9]{6}-[0-9]{1}$") || //NICOP
+             this.volunteerCnic.matches("^E[C,c,b,B]-[0-9]{11}$") ||
+             this.volunteerCnic.matches("^E[C,c,b,B][0-9]{11}$") ||//Afghan Citizen
+             this.volunteerCnic.matches("^[0-9]{5}-[0-9]{2}$"))) {
             return true;
         } else {
             return false;
@@ -167,6 +172,87 @@ public class Volunteer {
         }
     }
 
+    public boolean validateLocalCoucil(){
+        if (StringUtils.hasLength(this.localCouncil)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validateSite(){
+        if (this.volunteerSite.equalsIgnoreCase("Alyabad") ||
+            this.volunteerSite.equalsIgnoreCase("Garam Chashma") ||
+            this.volunteerSite.equalsIgnoreCase("All Zone") ||
+            this.volunteerSite.equalsIgnoreCase("Booni") ||
+            this.volunteerSite.equalsIgnoreCase("Tause") ||
+            this.volunteerSite.equalsIgnoreCase("Central") ||
+            this.volunteerSite.equalsIgnoreCase("Karachi") ||
+            this.volunteerSite.equalsIgnoreCase("Darkhana") ||
+            this.volunteerSite.equalsIgnoreCase("Clifton")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validateZone(){
+        if (this.dutyZone.equalsIgnoreCase("Pandal") ||
+            this.dutyZone.equalsIgnoreCase("Inner Cordon") ||
+            this.dutyZone.equalsIgnoreCase("MHI Entourage") ||
+            this.dutyZone.equalsIgnoreCase("Stage") ||
+            this.dutyZone.equalsIgnoreCase("Main Gate") ||
+            this.dutyZone.equalsIgnoreCase("Outer Cordon") ||
+            this.dutyZone.equalsIgnoreCase("Sacrifice Duty") ||
+            this.dutyZone.equalsIgnoreCase("Imamat Zone") ||
+            this.dutyZone.equalsIgnoreCase("All Zone") ||
+            this.dutyZone.equalsIgnoreCase("Pakistan")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validateShift(){
+        if (this.dutyShift.equalsIgnoreCase("All") ||
+            this.dutyShift.equals("1") ||
+            this.dutyShift.equals("2")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
+    public boolean validateDay(){
+        if( !StringUtils.isEmpty(this.dutyDay)){
+            if (this.dutyDay.equalsIgnoreCase("All") ||
+                 this.dutyDay.equals("1") ||
+                 this.dutyDay.equals("2") ||
+                 this.dutyDay.matches("^[1-6]{1},[2-6]{1},[3-6]{1},[3-6]{1}$") ||
+                 this.dutyDay.matches("^[1-6]{1},[2-6]{1},[3-6]{1}$") ||
+                 this.dutyDay.matches("^[1-6]{1},[2-6]{1}$") ||
+                 this.dutyDay.matches("^[1-6]{1},[2-6]{1}$") ||
+                 this.dutyDay.matches("^[1-6]{1}$") ||
+                 this.dutyDay.equals("-")) {
+
+                 return true;
+            } else {
+            return false;
+            }
+        } else {
+            return true;
+        }
+    }
+
+    public boolean validateCommittee() {
+        if (this.volunteerCommittee.equalsIgnoreCase("Darbar") ||
+            this.volunteerCommittee.equalsIgnoreCase("Security")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+
     public boolean valiateHomePhone() {
         if (this.homePhone.equals("") || this.homePhone.matches("^(\\d){3}-(\\d){8}$")) {
             return true;
@@ -192,6 +278,7 @@ public class Volunteer {
             !StringUtils.isEmpty(dutyShift) && !StringUtils.isEmpty(dutyDay))) {
             isValid = false;
         }
+
 
         if (!isValid) {
             log.info("Record id {} is invalid for Print {}", id, this);

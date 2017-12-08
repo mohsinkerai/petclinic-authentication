@@ -91,6 +91,7 @@ public class FileUploadListener {
             e.printStackTrace();
         }
         long userId = fileUploadEvent.getUserId();
+        boolean allowNicDuplication = fileUploadEvent.isNicDuplication();
         // We should copy/backup file after running job - maybe associate its name with jobId?
         String csvPath = dataHouse.getAbsolutePath() + File.separator + "data.csv";
         log.info("Csv Path is {}", csvPath);
@@ -105,6 +106,7 @@ public class FileUploadListener {
             .put("pictureFlag", new JobParameter(fileUploadEvent.isPictureAvailable() + ""));
         jobParamsMap.put("imagesSource", new JobParameter(dataHouse.getAbsolutePath()));
         jobParamsMap.put("userId", new JobParameter(userId));
+        jobParamsMap.put("allowNicDuplication" , new JobParameter(allowNicDuplication + ""));
         JobParameters bulkJobsParameters = new JobParameters(jobParamsMap);
         try {
             jobLauncher.run(volunteerBulkJob, bulkJobsParameters);

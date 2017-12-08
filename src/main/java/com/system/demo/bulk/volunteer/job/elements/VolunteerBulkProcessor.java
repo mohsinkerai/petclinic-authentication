@@ -32,6 +32,9 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
 
     String pictureFlag;
 
+    @Value("#{jobParameters['allowNicDuplication']}")
+    String allowNicDuplication;
+
     @Value("#{jobParameters['imagesSource']}")
     String ImageDirectory;
 
@@ -46,13 +49,31 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
 
     public Volunteer process(Volunteer v) throws Exception {
         if (!v.validateCnic()) {
-            recordError(BulkErrorType.INVALID_CNIC.toString(), v);
+            recordError(BulkErrorType.INVALID_CNIC.toString(),v);
+            return null;
+        } if(!v.validateName()){
+            recordError(BulkErrorType.VALIDATION_INVALID_NAME.toString(),v);
+            return null;
+        } if(!v.validateLocalCoucil()){
+            recordError(BulkErrorType.INVALID_LOCAL_COUNCIL.toString(),v);
+            return null;
+        } if(!v.validateCommittee()){
+            recordError(BulkErrorType.INVALID_COMMITTEE.toString(),v);
+            return null;
+        } if(!v.validateSite()){
+            recordError(BulkErrorType.INVALID_SITE.toString(),v);
+            return null;
+        } if(!v.validateZone()){
+            recordError(BulkErrorType.INVALID_ZONE.toString(),v);
+            return null;
+        } if(!v.validateDay()){
+            recordError(BulkErrorType.INVALID_DAY.toString(),v);
+            return null;
+        }  if(!v.validateShift()){
+            recordError(BulkErrorType.INVALID_SHIFT.toString(),v);
             return null;
         }
-        if(!v.validateName()){
-            recordError(BulkErrorType.VALIDATION_INVALID_NAME.toString(), v);
-            return null;
-        }
+
 //         else if (!v.valiateAge()) {
 //            recordError(BulkErrorType.VALIDATION_INVALID_AGE.toString(), v);
 //            return null;
@@ -70,29 +91,18 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
 //            recordError(BulkErrorType.VALIDATION_INVALID_MOBILE.toString(), v);
 //            return null;
 //        }
+
+        if(!allowNicDuplication.equalsIgnoreCase("true")){
             String checkCnic = v.getVolunteerCnic();
             List<Volunteer> vol;
-            if(checkCnic.contains("-")){
-                vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic());
-                if(vol.size() == 0){
-                    checkCnic = checkCnic.replaceAll("\"","");
-                    vol = volunteerService.findByCnic(checkCnic);
-                }
-            } else{
-                vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic());
-                if(vol.size() == 0){
-                    //add - then check
-                    //checkCnic = checkCnic.;
-                    checkCnic = checkCnic.substring(0,4) + "-"+ checkCnic.substring(5,11) + "-" +  checkCnic.substring(11,12);
-                    vol = volunteerService.findByCnic(checkCnic);
-                }
-            }
+            vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic())
             if (vol.size() == 0) {
                 v.setEnabled(true);
             } else {
                 recordError(BulkErrorType.CNIC_ALREADY_RESGISTERED.toString(), v);
                 return null;
             }
+        }
             if (jobExecution.getJobParameters().getString("pictureFlag").equalsIgnoreCase("true")) {
                 String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
                 if(volunteerImage.equals("")) {
@@ -139,7 +149,7 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
         FailItems failItem = FailItems.builder()
             .failureReason(message)
             .failedItemsCnic(volunteer.getVolunteerCnic().equals("") ? "Empty" : volunteer.getVolunteerCnic())
-            .failedItemsFromNo(volunteer.getVolunteerFormNo().equals("") ? "Empty" : volunteer.getVolunteerFormNo())
+            .failedItemsFromNo(volunteer.getVolunteerName().equals("") ? "Empty" : volunteer.getVolunteerName())
             .userJobId(userJobData.getId())
             .build();
         failItemService.save(failItem);
