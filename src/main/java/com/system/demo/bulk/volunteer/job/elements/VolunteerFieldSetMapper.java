@@ -1,12 +1,10 @@
 package com.system.demo.bulk.volunteer.job.elements;
 
-import com.sun.org.apache.xml.internal.utils.StringToStringTable;
 import com.system.demo.volunteer.Volunteer;
 import org.springframework.batch.item.file.mapping.FieldSetMapper;
 import org.springframework.batch.item.file.transform.FieldSet;
 import org.springframework.stereotype.Component;
 
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 
@@ -47,10 +45,9 @@ public class VolunteerFieldSetMapper implements FieldSetMapper<Volunteer> {
             volunteer.setDutyDay("");
             volunteer.setDutyShift("");
             volunteer.setDutyZone( "");
-                volunteer.setVolunteerCommittee("");
+            volunteer.setVolunteerCommittee("");
             volunteer.setAge("");
             return volunteer;
-
         }
     }
 

@@ -183,6 +183,7 @@ public class Volunteer {
     public boolean validateSite(){
         if (this.volunteerSite.equalsIgnoreCase("Alyabad") ||
             this.volunteerSite.equalsIgnoreCase("Garam Chashma") ||
+            this.volunteerSite.equalsIgnoreCase("All Zone") ||
             this.volunteerSite.equalsIgnoreCase("Booni") ||
             this.volunteerSite.equalsIgnoreCase("Tause") ||
             this.volunteerSite.equalsIgnoreCase("Central") ||
