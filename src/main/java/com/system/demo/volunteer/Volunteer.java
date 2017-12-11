@@ -122,7 +122,10 @@ public class Volunteer {
              this.volunteerCnic.matches("^[0-9]{6}-[0-9]{6}-[0-9]{1}$") || //NICOP
              this.volunteerCnic.matches("^E[C,c,b,B]-[0-9]{11}$") ||
              this.volunteerCnic.matches("^E[C,c,b,B][0-9]{11}$") ||//Afghan Citizen
-             this.volunteerCnic.matches("^[0-9]{5}-[0-9]{2}$"))) {
+             this.volunteerCnic.matches("^[0-9]{5}-[0-9]{2}$") ||
+             this.volunteerCnic.matches("^GL-[0-9]{12}$") ||
+             this.volunteerCnic.matches("^GL[0-9]{12}$")
+            )) {
             return true;
         } else {
             return false;

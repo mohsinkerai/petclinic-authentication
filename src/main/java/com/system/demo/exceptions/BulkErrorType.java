@@ -20,8 +20,6 @@ public enum BulkErrorType {
     INVALID_DAY(17,"Invalid Day"),
     INVALID_SHIFT(17,"Invalid SHIFT");
 
-
-
     private int code;
     private String errorMessage;
 
