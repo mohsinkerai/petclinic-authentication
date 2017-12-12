@@ -229,13 +229,11 @@ public class Volunteer {
     public boolean validateDay(){
         if( !StringUtils.isEmpty(this.dutyDay)){
             if (this.dutyDay.equalsIgnoreCase("All") ||
-                 this.dutyDay.equals("1") ||
-                 this.dutyDay.equals("2") ||
-                 this.dutyDay.matches("^[1-6]{1},[2-6]{1},[3-6]{1},[3-6]{1}$") ||
-                 this.dutyDay.matches("^[1-6]{1},[2-6]{1},[3-6]{1}$") ||
-                 this.dutyDay.matches("^[1-6]{1},[2-6]{1}$") ||
-                 this.dutyDay.matches("^[1-6]{1},[2-6]{1}$") ||
-                 this.dutyDay.matches("^[1-6]{1}$") ||
+                 this.dutyDay.replace(" ","").matches("[1-5]{1}") ||
+                 this.dutyDay.replace(" ","").matches("^[1-6]{1},[2-6]{1},[3-6]{1},[3-6]{1}$") ||
+                 this.dutyDay.replace(" ","").matches("^[1-6]{1},[2-6]{1},[3-6]{1}$") ||
+                 this.dutyDay.replace(" ","").matches("^[1-6]{1},[2-6]{1}$") ||
+                 this.dutyDay.replace(" ","").matches("^[1-6]{1}$") ||
                  this.dutyDay.equals("-")) {
 
                  return true;

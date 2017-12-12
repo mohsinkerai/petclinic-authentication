@@ -103,6 +103,18 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
                 return null;
             }
         }
+
+        if(allowNicDuplication.equalsIgnoreCase("true")){
+            String checkCnic = v.getVolunteerCnic();
+            List<Volunteer> vol;
+            vol = volunteerService.findByCnic(checkCnic);//v.getVolunteerCnic())
+            if (vol.get(0).getDutyZone().equalsIgnoreCase(v.getDutyZone())) {
+                recordError(BulkErrorType.CNIC_ALREADY_RESGISTERED.toString(), v);
+                return null;
+            } else {
+                v.setEnabled(true);
+            }
+        }
             if (jobExecution.getJobParameters().getString("pictureFlag").equalsIgnoreCase("true")) {
                 String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
                 if(volunteerImage.equals("")) {
