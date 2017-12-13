@@ -124,6 +124,8 @@
     <th style="width: 120px;">Category</a></th>
     <th style="width: 100px">Duty Site</th>
     <th style="width: 200px">Mobile Number</th>
+    <th style="width: 75px">Duty Day</th>
+    <th style="width: 75px">Duty Shift</th>
     <th style="width: 50px" sec:authorize="hasAuthority('AUTHORIZER')">Actions</th>
   </tr>
   </thead>
@@ -143,6 +145,8 @@
     <td th:text="${volunteer.category}"/>
     <td th:text="${volunteer.volunteerSite}"/>
     <td th:text="${volunteer.cellPhone}"/>
+    <td th:text="${volunteer.dutyDay}"/>
+    <td th:text="${volunteer.dutyShift}"/>
     <td sec:authorize="hasAuthority('AUTHORIZER')">
       <a th:unless="${volunteer.volunteerIsPrinted}"
          th:href="@{/volunteer/edit/__${volunteer.id}__}"><span

@@ -13,7 +13,7 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
 
-    Page<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+    Page<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCaseAndInstitutionContainingIgnoreCase(
         String volunteerSite,
         String volunteerName,
         String volunteerCnic,
@@ -22,9 +22,10 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         String CellPhone,
         String DutyDay,
         String DutyShift,
+        String Institution,
         Pageable page);
 
-    List<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+    List<Volunteer> findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCaseAndInstitutionContainingIgnoreCase(
         String volunteerSite,
         String volunteerName,
         String volunteerCnic,
@@ -32,7 +33,8 @@ public interface VolunteerRepository extends JpaRepository<Volunteer, Long> {
         String dutyZone,
         String CellPhone,
         String DutyDay,
-        String DutyShift);
+        String DutyShift,
+        String Institution);
 
     List<Volunteer> findByVolunteerSiteContainingIgnoreCase(
         String VolunteerSite

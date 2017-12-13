@@ -72,7 +72,7 @@ public class VolunteerService {
 
     public Page<Volunteer> advancedSearch(VolunteerSearchDTO query, Pageable pageable) {
         Page<Volunteer> searched = volunteerRepository
-            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCaseAndInstitutionContainingIgnoreCase(
                 Optional.ofNullable(query.getSite()).orElse(""),
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
@@ -81,13 +81,14 @@ public class VolunteerService {
                 Optional.ofNullable(query.getMobile()).orElse(""),
                 Optional.ofNullable(query.getDay()).orElse(""),
                 Optional.ofNullable(query.getShift()).orElse(""),
+                Optional.ofNullable(query.getInstitution()).orElse(""),
                 pageable);
         return searched;
     }
 
     public List<Volunteer> advancedSearch(VolunteerSearchDTO query) {
         return volunteerRepository
-            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCase(
+            .findByVolunteerSiteContainingIgnoreCaseAndVolunteerNameContainingIgnoreCaseAndVolunteerCnicContainingIgnoreCaseAndLocalCouncilContainingIgnoreCaseAndDutyZoneContainingIgnoreCaseAndCellPhoneContainingIgnoreCaseAndDutyDayContainingIgnoreCaseAndDutyShiftContainingIgnoreCaseAndInstitutionContainingIgnoreCase(
                 Optional.ofNullable(query.getSite()).orElse(""),
                 Optional.ofNullable(query.getName()).orElse(""),
                 Optional.ofNullable(query.getCnic()).orElse(""),
@@ -95,7 +96,8 @@ public class VolunteerService {
                 Optional.ofNullable(query.getZone()).orElse(""),
                 Optional.ofNullable(query.getMobile()).orElse(""),
                 Optional.ofNullable(query.getDay()).orElse(""),
-                Optional.ofNullable(query.getShift()).orElse(""));
+                Optional.ofNullable(query.getShift()).orElse(""),
+                Optional.ofNullable(query.getInstitution()).orElse(""));
     }
 
 //    public void  updateVolunteer(Volunteer v){ volunteerRepository.UpdateVolunteer(v);}
