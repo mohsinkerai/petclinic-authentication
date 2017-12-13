@@ -127,7 +127,8 @@ public class VolunteerBulkProcessor implements ItemProcessor<Volunteer,Volunteer
             } else {
                 String volunteerImage = getImageForVolunteer(v.getVolunteerCnic());
                 if(volunteerImage.equals("")) {
-                    v.setPictureAvailable(false);
+                    v.setVolunteerImage("cardLayouts/default.jpg");
+                    v.setPictureAvailable(true);
                    return v;
                 } else {
                     v.setVolunteerImage(volunteerImage);
