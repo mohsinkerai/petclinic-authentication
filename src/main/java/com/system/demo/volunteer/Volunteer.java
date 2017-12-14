@@ -268,7 +268,7 @@ public class Volunteer {
                 && volunteerImage != null
                 && !volunteerIsPrinted
                 && volunteerName != null
-                && validateCnic()
+//                && validateCnic()
                 && volunteerCommittee != null
                 && volunteerSite != null
                 && dutyZone != null
